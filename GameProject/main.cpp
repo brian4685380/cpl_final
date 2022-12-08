@@ -9,9 +9,8 @@ int main() {
 	Uint32 frameStart;
 	int frameTime;
 
-	game = new Game();	//Create game object
-	game->init("SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
-	
+	game = new Game();
+	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
 	while (game->running()) {
 		frameStart = SDL_GetTicks();
 
@@ -24,7 +23,7 @@ int main() {
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) {
 			SDL_Delay(frameDelay - frameTime);
-		}  
+		}  // prevent too object from moving too fast
 	}
 	game->clean();
 	return 0;

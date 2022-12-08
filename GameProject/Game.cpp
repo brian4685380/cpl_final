@@ -1,8 +1,11 @@
 #include <iostream>
+#include <vector>
 
 #include "GameObject.h"
 #include "SDL.h"
 
+vector<attacker> attacker_list;
+vector<defender> defender_list;
 GameObject *player;
 GameObject *enemy;
 
