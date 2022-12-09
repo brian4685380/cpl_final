@@ -6,12 +6,12 @@ using namespace std;
 
 // Constructor and Deconstructor
 
-// Attacker:: Attacker(){
+Attacker:: Attacker(){
 
-// }
-// Attacker:: ~Attacker(){
+}
+Attacker:: ~Attacker(){
 
-// }
+}
 
 // Moving and Pos
 vector<double> Attacker::A_pos_get(){
@@ -127,15 +127,15 @@ void Attacker:: A_attack_search(){
 // int A_attack_range = 0;
 
 
-int main(){
-    Attacker a;
+// int main(){
+//     Attacker a;
     
-    a.A_pos_get();
-    a.A_block_pos_get();
-    a.A_block_pos_update();
-    a.A_move();
-    a.A_change_dir('U');
-    a.A_v_get();
-    a.A_v_set(20);
-    return 0;
-}
+//     a.A_pos_get();
+//     a.A_block_pos_get();
+//     a.A_block_pos_update();
+//     a.A_move();
+//     a.A_change_dir('U');
+//     a.A_v_get();
+//     a.A_v_set(20);
+//     return 0;
+// }

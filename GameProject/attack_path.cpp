@@ -72,84 +72,84 @@ void restart(){
 }
 
 
-int main(){
+// int main(){
 
-    move_pos_list.push_back(make_pair(a_row, a_col));    // setting start point
-    map[a_row][a_col] = '+';    // setting start point
-    map[t_row][t_col] = 'X';    // setting end point
-    print_map();
+//     move_pos_list.push_back(make_pair(a_row, a_col));    // setting start point
+//     map[a_row][a_col] = '+';    // setting start point
+//     map[t_row][t_col] = 'X';    // setting end point
+//     print_map();
 
-    while(a_row != t_row || a_col != t_col){
-        char dir = 0;
-        cin >> dir;
-        cout << endl;
+//     while(a_row != t_row || a_col != t_col){
+//         char dir = 0;
+//         cin >> dir;
+//         cout << endl;
 
-        // input are invalid
-        if(dir != 'U' && dir != 'D' && dir != 'R' && dir != 'L' && dir != 'C'){
-            cout << "invalid input" << endl;
-            continue;
-        }
-        // reset
-        if(dir == 'C'){
-            restart();
-            continue;
-        }
+//         // input are invalid
+//         if(dir != 'U' && dir != 'D' && dir != 'R' && dir != 'L' && dir != 'C'){
+//             cout << "invalid input" << endl;
+//             continue;
+//         }
+//         // reset
+//         if(dir == 'C'){
+//             restart();
+//             continue;
+//         }
 
-        // simulate temp next positoin
-        new_row = a_row;
-        new_col = a_col;
-        if(dir == 'U'){
-            new_row -= 1; 
-        }
-        if(dir == 'D'){
-            new_row += 1; 
-        }
-        if(dir == 'R'){
-            new_col += 1; 
-        }
-        if(dir == 'L'){
-            new_col -= 1; 
-        }
+//         // simulate temp next positoin
+//         new_row = a_row;
+//         new_col = a_col;
+//         if(dir == 'U'){
+//             new_row -= 1; 
+//         }
+//         if(dir == 'D'){
+//             new_row += 1; 
+//         }
+//         if(dir == 'R'){
+//             new_col += 1; 
+//         }
+//         if(dir == 'L'){
+//             new_col -= 1; 
+//         }
 
-        // next pos over the border
-        if(is_over_border(new_row, new_col)){
-            cout << "over border" << endl;
-            continue;
-        }
+//         // next pos over the border
+//         if(is_over_border(new_row, new_col)){
+//             cout << "over border" << endl;
+//             continue;
+//         }
 
-        if(!move_dir_list.empty()){
-            // moving back 'U' + 'D' = 153, 'L' + 'R' = 156
-            if(dir + move_dir_list.back() == 153 || dir + move_dir_list.back() == 156){
-                cout << "cannot move back" << endl;
-                continue;
-            }
-        }
+//         if(!move_dir_list.empty()){
+//             // moving back 'U' + 'D' = 153, 'L' + 'R' = 156
+//             if(dir + move_dir_list.back() == 153 || dir + move_dir_list.back() == 156){
+//                 cout << "cannot move back" << endl;
+//                 continue;
+//             }
+//         }
 
-        // path intersects
-        if(find(move_pos_list.begin(), move_pos_list.end(), make_pair(new_row, new_col)) != move_pos_list.end()){
-            cout << "path intersects" << endl;
-            continue;
-        }
+//         // path intersects
+//         if(find(move_pos_list.begin(), move_pos_list.end(), make_pair(new_row, new_col)) != move_pos_list.end()){
+//             cout << "path intersects" << endl;
+//             continue;
+//         }
 
-        // is next pos is legal
-        map[a_row][a_col] = dir;
-        a_row = new_row;
-        a_col = new_col;
-        map[a_row][a_col] = '+';
-        move_dir_list.push_back(dir);
-        move_pos_list.push_back(make_pair(a_row, a_col));
-        print_map();
+//         // is next pos is legal
+//         map[a_row][a_col] = dir;
+//         a_row = new_row;
+//         a_col = new_col;
+//         map[a_row][a_col] = '+';
+//         move_dir_list.push_back(dir);
+//         move_pos_list.push_back(make_pair(a_row, a_col));
+//         print_map();
         
 
-    }
+//     }
 
-    // arrive end point
-    if(a_row == t_row && a_col == t_col){
-        cout << "arrive the destination" << endl;
-    }
+//     // arrive end point
+//     if(a_row == t_row && a_col == t_col){
+//         cout << "arrive the destination" << endl;
+//     }
 
-    for(char d: move_dir_list){
-        cout << d << " ";
-    }
+//     for(char d: move_dir_list){
+//         cout << d << " ";
+//     }
 
-}
+// }

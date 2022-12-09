@@ -1,9 +1,9 @@
 #include "Game.h"
 
-class GameObject {
+class attackerObject {
    public:
-	GameObject(const char *, SDL_Renderer *, int, int);
-	~GameObject();
+	attackerObject(const char *, SDL_Renderer *, int, int);
+	~attackerObject();
 
 	void Update();
 	void Render();
