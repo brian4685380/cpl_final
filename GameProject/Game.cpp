@@ -35,10 +35,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	} else {
 		isRunning = false;
 	}
-	student1 = new attackerObject("assets/Attackers/student1.png", renderer, 50, 50);
+	student1 = new attackerObject("assets/Attackers/student1.png", renderer, 40, 40);
 	attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 0));
-	attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 50, 0));
-	attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 100, 0));
+	attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 0));
+	attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 80, 0));
 	for (int i = 0; i < 25; i++) {
 		for (int j = 0; j < 25; j++) {
 			if ((i & 1) * (j & 1))
@@ -50,10 +50,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::update() {
-	for (auto &i: attacker_list) {
+	for (auto &i: map) {
 		i->Update();
 	}
-	for (auto &i: map) {
+	for (auto &i: attacker_list) {
 		i->Update();
 	}
 }
@@ -72,10 +72,10 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(renderer);
-	for (auto &i: attacker_list) {
+	for (auto &i: map) {
 		i->Render();
 	}
-	for (auto &i: map) {
+	for (auto &i: attacker_list) {
 		i->Render();
 	}
 	// attacker_list[0]->Render();

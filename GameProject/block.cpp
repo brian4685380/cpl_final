@@ -1,15 +1,13 @@
 #include "block.h"
 
 #include <utility>
-block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType type) {
+block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType block_type) {
 	renderer = ren;
 	objTexture = IMG_LoadTexture(renderer, textureSheet);
 	this->pos.first = pos.first;
 	this->pos.second = pos.second;
-	std::cout << this->pos.first << " " << this->pos.second << std::endl;
 	length = len;
-	std::cout << length << std::endl;
-	type = type;
+	type = block_type;
 	srcRect.h = length;
 	srcRect.w = length;
 	destRect.h = length;
@@ -34,7 +32,6 @@ void block::Update() {
 
 	destRect.x = length * pos.first;
 	destRect.y = length * pos.second;
-	std::cout << length << ' ' << pos.first << ' ' << pos.second << std::endl;
 	destRect.w = 40;
 	destRect.h = 40;
 }

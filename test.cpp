@@ -9,9 +9,7 @@ int main() {
 	pair<int, int> p1(x, y);
 	p1 = make_pair(x, y);
 	vp.push_back(make_pair(x, y));
-	for (int i = 0; i < vp.size(); i++) {
-		cout << vp[i].first << " " << vp[i].second << endl;
-	}
+	
 	// create a 2D vector with 10 by 2 and initialize all elements to 0
 	vector<vector<int>> v(10, vector<int>(2, 0));
 	for (auto &i: v) {
