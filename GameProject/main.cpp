@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "block.h"
 
 Game *game = nullptr;
 
@@ -10,7 +11,7 @@ int main() {
 	int frameTime;
 
 	game = new Game();
-	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 1000, false);
 	while (game->running()) {
 		frameStart = SDL_GetTicks();
 

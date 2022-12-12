@@ -1,18 +1,23 @@
 #include <iostream>
-#include <sstream>
-#include <string>
+#include <utility>
+#include <vector>
+
 using namespace std;
 int main() {
-	string s1("Input test 123 5.7 A"), s2, s3;
-	int i;
-	int x;
-	char c;
-	istringstream sin(s1);
-	sin >> s2 >> s3 >> i >> x >> c;
-	cout << "The following items are extracted:"
-		 << "\nstring: " << s2 << ", " << s3
-		 << "\ninteger: " << i
-		 << "\ndouble: " << x
-		 << "\ncharacter: " << c << endl
-		 << int(c) << endl;
+	int x = 0, y = 0;
+	vector<pair<int, int>> vp;
+	pair<int, int> p1(x, y);
+	p1 = make_pair(x, y);
+	vp.push_back(make_pair(x, y));
+	for (int i = 0; i < vp.size(); i++) {
+		cout << vp[i].first << " " << vp[i].second << endl;
+	}
+	// create a 2D vector with 10 by 2 and initialize all elements to 0
+	vector<vector<int>> v(10, vector<int>(2, 0));
+	for (auto &i: v) {
+		for (auto &j: i) {
+			cout << j << " ";
+		}
+		cout << endl;
+	}
 }

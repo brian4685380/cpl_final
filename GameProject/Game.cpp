@@ -3,11 +3,13 @@
 
 #include "SDL.h"
 #include "attackerObject.h"
+#include "block.h"
 
 // vector<attacker> attacker_list;
 // vector<defender> defender_list;
 std::vector<attackerObject *> attacker_list;
 attackerObject *student1;
+std::vector<block *> map;
 Game::Game() {}
 Game::~Game() {}
 
@@ -37,17 +39,23 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 0));
 	attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 50, 0));
 	attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 100, 0));
-	// attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 0));
+	for (int i = 0; i < 25; i++) {
+		for (int j = 0; j < 25; j++) {
+			if ((i & 1) * (j & 1))
+				map.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			else
+				map.push_back(new block("assets/Blocks/grass.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+		}
+	}
 }
 
 void Game::update() {
 	for (auto &i: attacker_list) {
 		i->Update();
 	}
-	// attacker_list[0]->Update();
-	student1->Update();
-	// player->Update();
-	// enemy->Update();
+	for (auto &i: map) {
+		i->Update();
+	}
 }
 
 void Game::handleEvents() {
@@ -67,9 +75,10 @@ void Game::render() {
 	for (auto &i: attacker_list) {
 		i->Render();
 	}
+	for (auto &i: map) {
+		i->Render();
+	}
 	// attacker_list[0]->Render();
-	student1->Render();
-	std::cout << "rendering..." << std::endl;
 	SDL_RenderPresent(renderer);
 }
 

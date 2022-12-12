@@ -1,10 +1,10 @@
-#include <Game.h>
-
+#pragma once
 #include <utility>
+
+#include "Game.h"
 enum blockType {
-	attakerOnly,
+	attackerOnly,
 	defenderOnly,
-	both,
 };
 class block {
    public:
@@ -13,6 +13,9 @@ class block {
 	std::pair<int, int> getPos();
 	int getLength();
 	blockType getType();
+
+	void Update();
+	void Render();
 
    private:
 	std::pair<int, int> pos;  // left top corner
