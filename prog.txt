@@ -1,0 +1,4 @@
+Week=7
+Year=2005
+Income=123.45
+Expenses=987.65

@@ -8,7 +8,7 @@ enum blockType {
 };
 class block {
    public:
-	block(std::pair<int, int> pos, int length, blockType type);
+	block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int length, blockType type);
 	~block();
 	std::pair<int, int> getPos();
 	int getLength();
