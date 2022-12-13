@@ -11,8 +11,8 @@ AttackPath::AttackPath(int r, int c) {
 	a_row = row - 1;
 	a_col = 0;
 
-	t_row = 1;
-	t_col = col - 3;
+	t_row = 2;
+	t_col = col - 4;
 
 	new_row = 0;
 	new_col = 0;
@@ -153,12 +153,14 @@ void AttackPath::draw_path(char dir) {
 	}
 
 	// if next pos is obstacle
-	for (auto &i: initialMap) {
-		if (i->getPos().second == new_row && i->getPos().first == new_col) {
-			cout << i->getType() << endl;
-			if (i->getType() == defenderOnly || i->getType() == defenderOnIt) {
-				cout << "next pos is obstacle" << endl;
-				return;
+	if (!(new_row <= t_row) || !(new_col >= t_col) || ((new_row == t_row) && (new_col == t_col))) {
+		for (auto &i: initialMap) {
+			if (i->getPos().second == new_row && i->getPos().first == new_col) {
+				cout << i->getType() << endl;
+				if (i->getType() == defenderOnly || i->getType() == defenderOnIt) {
+					cout << "next pos is obstacle" << endl;
+					return;
+				}
 			}
 		}
 	}
@@ -177,7 +179,7 @@ void AttackPath::draw_path(char dir) {
 
 // if arrive end point
 bool AttackPath::is_path_end() {
-	if (a_row <= t_row && a_col >= t_col) {
+	if (a_row <= t_row && a_col >= t_col && !((new_row == t_row) && (new_col == t_col))) {
 		cout << "attack path arrive the destination" << endl;
 		for (char d: move_dir_list) {
 			cout << d << " ";

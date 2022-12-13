@@ -21,11 +21,11 @@ void attackerObject::Update() {
 	if (move_dir_list[pathIndex] == 'U')
 		ypos -= 1;
 	if (move_dir_list[pathIndex] == 'D')
-		ypos += 2;
+		ypos += 1;
 	if (move_dir_list[pathIndex] == 'L')
-		xpos -= 4;
+		xpos -= 1;
 	if (move_dir_list[pathIndex] == 'R')
-		xpos += 8;
+		xpos += 1;
 
 	destRect.x = xpos;
 	destRect.y = ypos;

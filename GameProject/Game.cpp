@@ -44,6 +44,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	// attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 80, 0));
 	// attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 120, 0));
 	createMap();
+	map[13]->setType(attackerOnIt);
 	path = new AttackPath(14, 18);
 	path->getInitialMap(map);
 }
@@ -107,22 +108,22 @@ void Game::handleEvents() {
 			// std::cout << "path end" << std::endl;
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 560));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 520));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_2:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 0, 560));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 0, 520));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_3:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 0, 560));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 0, 520));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_4:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 0, 560));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 0, 520));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
