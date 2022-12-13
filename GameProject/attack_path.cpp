@@ -11,8 +11,8 @@ AttackPath::AttackPath(int r, int c) {
 	a_row = row - 1;
 	a_col = 0;
 
-	t_row = 0;
-	t_col = col - 1;
+	t_row = 1;
+	t_col = col - 3;
 
 	new_row = 0;
 	new_col = 0;
@@ -177,7 +177,7 @@ void AttackPath::draw_path(char dir) {
 
 // if arrive end point
 bool AttackPath::is_path_end() {
-	if (a_row == t_row && a_col == t_col) {
+	if (a_row <= t_row && a_col >= t_col) {
 		cout << "attack path arrive the destination" << endl;
 		for (char d: move_dir_list) {
 			cout << d << " ";
@@ -192,6 +192,9 @@ bool AttackPath::is_path_end() {
 
 vector<pair<int, int>> AttackPath::get_path() {
 	return move_pos_list;
+}
+vector<char> AttackPath::get_dir() {
+	return move_dir_list;
 }
 
 // int main(){

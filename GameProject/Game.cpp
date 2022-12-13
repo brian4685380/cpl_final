@@ -38,21 +38,44 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	} else {
 		isRunning = false;
 	}
-	student1 = new attackerObject("assets/Attackers/student1.png", renderer, 40, 40);
-	attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 0));
-	attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 0));
-	attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 80, 0));
-	attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 120, 0));
-	for (int i = 0; i < 21; i++) {
-		for (int j = 0; j < 15; j++) {
-			if ((i & 1) * (j & 1))
-				map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
-			else
+	// student1 = new attackerObject("assets/Attackers/student1.png", renderer, 40, 40);
+	// attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 0));
+	// attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 0));
+	// attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 80, 0));
+	// attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 120, 0));
+	createMap();
+	path = new AttackPath(14, 18);
+	path->getInitialMap(map);
+}
+
+void Game::createMap() {
+	for (int i = 0; i < 18; i++) {
+		for (int j = 0; j < 14; j++) {
+			if (i == 2 || i == 3 || i == 6 || i == 7 || i == 10 || i == 11) {
+				if (j == 2 || j == 3 || j == 6 || j == 7 || j == 10 || j == 11)
+					map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
+				else
+					map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			} else if (i == 14) {
+				if (j == 3 || j == 6 || j == 7 || j == 10 || j == 11)
+					map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
+				else
+					map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			} else if (i == 15) {
+				if (j == 0 || j == 1 || j == 6 || j == 7 || j == 10 || j == 11)
+					map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
+				else
+					map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			} else if (i == 16 || i == 17) {
+				if (j == 0 || j == 1)
+					map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
+				else
+					map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			} else {
 				map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+			}
 		}
 	}
-	path = new AttackPath(15, 21);
-	path->getInitialMap(map);
 }
 
 void Game::update() {
@@ -84,18 +107,27 @@ void Game::handleEvents() {
 			// std::cout << "path end" << std::endl;
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 40, 40));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 560));
+					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
+					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_2:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 40));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 0, 560));
+					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
+					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_3:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 40, 40));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 0, 560));
+					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
+					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_4:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 40, 40));
+					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 0, 560));
+					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
+					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 			}
+
 		} else {
 			std::cout << "path not end" << std::endl;
 			switch (event.key.keysym.sym) {

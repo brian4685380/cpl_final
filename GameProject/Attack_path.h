@@ -15,7 +15,8 @@ public:
     void restart();
     void draw_path(char);
     bool is_path_end();
-    vector< pair<int, int> > get_path();
+    vector <pair<int, int> > get_path();
+    vector <char> get_dir();
     void getInitialMap(vector<block *>);
 private:
 
