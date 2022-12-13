@@ -10,9 +10,10 @@ class attackerObject {
 	void Render();
 
    private:
-	int cnt = 0;
+	int pathIndex;
 	int xpos;
 	int ypos;
+	int path;
 
 	SDL_Texture *objTexture;
 	SDL_Rect srcRect, destRect;
