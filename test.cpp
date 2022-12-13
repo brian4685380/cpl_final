@@ -1,21 +1,34 @@
-#include <iostream>
-#include <utility>
-#include <vector>
+#include "SDL.h"
 
-using namespace std;
 int main() {
-	int x = 0, y = 0;
-	vector<pair<int, int>> vp;
-	pair<int, int> p1(x, y);
-	p1 = make_pair(x, y);
-	vp.push_back(make_pair(x, y));
-	
-	// create a 2D vector with 10 by 2 and initialize all elements to 0
-	vector<vector<int>> v(10, vector<int>(2, 0));
-	for (auto &i: v) {
-		for (auto &j: i) {
-			cout << j << " ";
+	// Initialize SDL
+	SDL_Init(SDL_INIT_VIDEO);
+
+	// Create a window
+	SDL_Window* window = SDL_CreateWindow("Mouse Position", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+
+	// Main loop
+	while (true) {
+		// Get the current position of the mouse
+		int x, y;
+
+		// Handle events
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			Uint32 mouse_state = SDL_GetMouseState(&x, &y);
+
+			// Print the position of the mouse
+			printf("Mouse position: (%d, %d)\n", x, y);
+			if (event.type == SDL_QUIT) {
+				// Quit the program
+				break;
+			}
 		}
-		cout << endl;
 	}
+
+	// Clean up
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+
+	return 0;
 }

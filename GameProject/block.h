@@ -3,8 +3,8 @@
 
 #include "Game.h"
 enum blockType {
-    attackerOnIt,
-    defenderOnIt,
+	attackerOnIt,
+	defenderOnIt,
 	attackerOnly,
 	defenderOnly,
 };
@@ -18,9 +18,11 @@ class block {
 
 	void Update();
 	void Render();
-    void setType(blockType);
+	void setType(blockType);
+	void getMousePos();
 
    private:
+	int mouseX, mouseY;
 	std::pair<int, int> pos;  // left top corner
 	int length;
 	blockType type;

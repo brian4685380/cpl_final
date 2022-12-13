@@ -26,18 +26,22 @@ blockType block::getType() {
 }
 void block::setType(blockType newType) {
 	type = newType;
-	if(type == attackerOnly)
+	if (type == attackerOnly)
 		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_stone.png");
-	if(type == defenderOnly)
+	if (type == defenderOnly)
 		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_stone.png");
-	if(type == attackerOnIt)
+	if (type == attackerOnIt)
 		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_highlight.png");
-	if(type == defenderOnIt)
+	if (type == defenderOnIt)
 		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_highlight.png");
 }
 
-void block::Update() {
+void block::getMousePos() {
+	SDL_GetMouseState(&mouseX, &mouseY);
+}
 
+void block::Update() {
+	getMousePos();
 	srcRect.h = 40;
 	srcRect.w = 40;
 	srcRect.x = 0;
@@ -47,6 +51,17 @@ void block::Update() {
 	destRect.y = length * pos.second;
 	destRect.w = 40;
 	destRect.h = 40;
+	if (mouseX - destRect.x < 40 && mouseX - destRect.x >= 0 && mouseY - destRect.y < 40 && mouseY - destRect.y >= 0) {
+		if (type == attackerOnly)
+			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_highlight.png");
+		if (type == defenderOnly)
+			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_highlight.png");
+	} else {
+		if (type == attackerOnly)
+			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_stone.png");
+		if (type == defenderOnly)
+			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_stone.png");
+	}
 }
 void block::Render() {
 	SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
