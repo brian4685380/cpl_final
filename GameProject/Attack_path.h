@@ -13,6 +13,8 @@ public:
     void print_map();
     void restart();
     void draw_path(char);
+    bool is_path_end();
+    vector< pair<int, int> > get_path();
 
 private:
 
