@@ -1,5 +1,5 @@
 #include "Attack_path.h"
-
+#include <cctype>
 using namespace std;
 
 // setting path_map row and col
@@ -81,6 +81,8 @@ void AttackPath:: restart(){
 
 
 void AttackPath:: draw_path(char dir){
+    //TODOTODO toupper
+    dir = toupper(dir);
 
     // input are invalid
     if(dir != 'U' && dir != 'D' && dir != 'R' && dir != 'L' && dir != 'C'){
@@ -155,16 +157,28 @@ void AttackPath:: draw_path(char dir){
     move_pos_list.push_back(make_pair(a_row, a_col));
     print_map();
 
-    // if arrive end point
-    if(a_row == t_row && a_col == t_col){
-        cout << "arrive the destination" << endl;
-        for(char d: move_dir_list){
-            cout << d << " ";
-        }
-    }
+
     return;
 }
 
+// if arrive end point
+bool AttackPath:: is_path_end(){
+    if(a_row == t_row && a_col == t_col){
+        cout << "attack path arrive the destination" << endl;
+        for(char d: move_dir_list){
+            cout << d << " ";
+        }
+        for(pair<int, int> d: move_pos_list){
+            cout << "(" << d.first << "," << d.second << ") ";
+        }
+        return true;
+    }
+    return false;
+}
+
+vector< pair<int, int> > AttackPath:: get_path(){
+    return move_pos_list;
+}
 
 // int main(){
 
@@ -174,6 +188,8 @@ void AttackPath:: draw_path(char dir){
 //         char d;
 //         cin >> d;
 //         P.draw_path(d);
-
+//         if(P.is_path_end()){
+//             break;
+//         }
 //     }
 // }
