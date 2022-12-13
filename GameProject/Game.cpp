@@ -43,15 +43,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 0));
 	attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 80, 0));
 	attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 120, 0));
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 21; i++) {
 		for (int j = 0; j < 15; j++) {
 			if ((i & 1) * (j & 1))
-				map.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+				map.push_back(new block("assets/Blocks/redclay_stone.png", renderer, std::make_pair(i, j), 40, defenderOnly));
 			else
 				map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
 		}
 	}
-	path = new AttackPath(20, 15);
+	path = new AttackPath(15, 21);
+	path->getInitialMap(map);
 }
 
 void Game::update() {
@@ -70,47 +71,65 @@ void Game::handleEvents() {
 		case SDL_QUIT:
 			isRunning = false;
 			break;
-		case SDLK_c:
-			std::cout << "c pressed" << std::endl;
-			path->restart();
-			break;
 	}
-
-	if (!path->is_path_end()) {
-		switch (event.type) {
-			case SDLK_w:
-				std::cout << "w pressed" << std::endl;
-				path->draw_path('U');
-				break;
-			case SDLK_a:
-				std::cout << "a pressed" << std::endl;
-				path->draw_path('L');
-				break;
-			case SDLK_s:
-				std::cout << "s pressed" << std::endl;
-				path->draw_path('D');
-				break;
-			case SDLK_d:
-				std::cout << "d pressed" << std::endl;
-				path->draw_path('R');
-				break;
-			default:
+	if (event.type == SDL_KEYDOWN) {
+		// cout << "key pressed" << endl;
+		switch (event.key.keysym.sym) {
+			case SDLK_c:
+				std::cout << "c pressed" << std::endl;
+				path->restart();
 				break;
 		}
-	} else {
-		switch (event.type) {
-			case SDLK_1:
-				attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 560, 0));
-				break;
-			case SDLK_2:
-				attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 560, 0));
-				break;
-			case SDLK_3:
-				attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 560, 0));
-				break;
-			case SDLK_4:
-				attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 560, 0));
-				break;
+		if (path->is_path_end()) {
+			// std::cout << "path end" << std::endl;
+			switch (event.key.keysym.sym) {
+				case SDLK_1:
+					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 40, 40));
+					break;
+				case SDLK_2:
+					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 40));
+					break;
+				case SDLK_3:
+					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 40, 40));
+					break;
+				case SDLK_4:
+					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 40, 40));
+					break;
+			}
+		} else {
+			std::cout << "path not end" << std::endl;
+			switch (event.key.keysym.sym) {
+				case SDLK_w:
+					std::cout << "w pressed" << std::endl;
+					path->draw_path('U');
+					break;
+				case SDLK_a:
+					std::cout << "a pressed" << std::endl;
+					path->draw_path('L');
+					break;
+				case SDLK_s:
+					std::cout << "s pressed" << std::endl;
+					path->draw_path('D');
+					break;
+				case SDLK_d:
+					std::cout << "d pressed" << std::endl;
+					path->draw_path('R');
+					break;
+				default:
+					break;
+			}
+			for (auto &i: map) {
+				if (i->getType() == attackerOnIt || i->getType() == attackerOnly)
+					i->setType(attackerOnly);
+			}
+			vector<pair<int, int>> path_list(path->get_path());
+			for (auto &i: path_list) {
+				for (auto &j: map) {
+					if (j->getPos().first == i.second && j->getPos().second == i.first)
+						j->setType(attackerOnIt);
+				}
+			}
+			path_list.clear();
 		}
 	}
 }

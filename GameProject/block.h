@@ -3,6 +3,8 @@
 
 #include "Game.h"
 enum blockType {
+    attackerOnIt,
+    defenderOnIt,
 	attackerOnly,
 	defenderOnly,
 };
@@ -16,6 +18,7 @@ class block {
 
 	void Update();
 	void Render();
+    void setType(blockType);
 
    private:
 	std::pair<int, int> pos;  // left top corner

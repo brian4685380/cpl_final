@@ -8,6 +8,7 @@ block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> po
 	this->pos.second = pos.second;
 	length = len;
 	type = block_type;
+	std::cout << type << std::endl;
 	srcRect.h = length;
 	srcRect.w = length;
 	destRect.h = length;
@@ -23,8 +24,20 @@ int block::getLength() {
 blockType block::getType() {
 	return type;
 }
+void block::setType(blockType newType) {
+	type = newType;
+	if(type == attackerOnly)
+		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_stone.png");
+	if(type == defenderOnly)
+		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_stone.png");
+	if(type == attackerOnIt)
+		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_highlight.png");
+	if(type == defenderOnIt)
+		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_highlight.png");
+}
 
 void block::Update() {
+
 	srcRect.h = 40;
 	srcRect.w = 40;
 	srcRect.x = 0;
