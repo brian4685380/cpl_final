@@ -5,7 +5,6 @@
 attackerObject::attackerObject(const char *textureSheet, SDL_Renderer *ren, int x, int y) {
 	renderer = ren;
 	objTexture = IMG_LoadTexture(renderer, textureSheet);
-	pathIndex = idx;
 	xpos = x;
 	ypos = y;
 	pathIndex = 0;
