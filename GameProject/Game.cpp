@@ -4,12 +4,15 @@
 #include "SDL.h"
 #include "attackerObject.h"
 #include "block.h"
+#include "Attack_path.h"
 
 // vector<attacker> attacker_list;
 // vector<defender> defender_list;
+
 std::vector<attackerObject *> attacker_list;
 attackerObject *student1;
 std::vector<block *> map;
+AttackPath *path;
 Game::Game() {}
 Game::~Game() {}
 
@@ -44,9 +47,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 			if ((i & 1) * (j & 1))
 				map.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(i, j), 40, attackerOnly));
 			else
-				map.push_back(new block("assets/Blocks/grass.png", renderer, std::make_pair(i, j), 40, attackerOnly));
+				map.push_back(new block("assets/Blocks/grass_stone.png", renderer, std::make_pair(i, j), 40, attackerOnly));
 		}
 	}
+	path = new AttackPath(25, 25);
 }
 
 void Game::update() {
@@ -61,12 +65,39 @@ void Game::update() {
 void Game::handleEvents() {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	switch (event.type) {
-		case SDL_QUIT:
-			isRunning = false;
-			break;
-		default:
-			break;
+	if(!is_path_end) {
+		switch (event.type) {
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+			case SDLK_c:
+				std::cout << "c pressed" << std::endl;
+				path.restart();
+				break;
+			case SDLK_w:
+				std::cout << "w pressed" << std::endl;
+				path.draw_path('U')
+				break;
+			case SDLK_a:
+				std::cout << "a pressed" << std::endl;
+				path.draw_path('L')
+				break;
+			case SDLK_s:
+				std::cout << "s pressed" << std::endl;
+				path.draw_path('D')
+				break;
+			case SDLK_d:
+				std::cout << "d pressed" << std::endl;
+				path.draw_path('R')
+				break;
+			default:
+				break;
+		}
+	}
+	else {
+		for (auto &i: attacker_list) {
+			i->updatePath();
+		}
 	}
 }
 
