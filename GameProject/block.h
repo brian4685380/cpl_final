@@ -29,6 +29,7 @@ class block {
 	int getDestX();
 	int getDestY();
 
+	void switchType();
 	void setMouseState(Uint32);
 	void setMouseX(int);
 	void setMouseY(int);

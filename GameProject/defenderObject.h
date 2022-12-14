@@ -7,7 +7,7 @@
 
 class defenderObject {
    public:
-	defenderObject(const char *, SDL_Renderer *, int, int);
+	defenderObject(const char *, SDL_Renderer *, int, int, int, int);
 	~defenderObject();
 
 	void Update();

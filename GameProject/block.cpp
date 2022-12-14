@@ -20,35 +20,9 @@ block::block(SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType bloc
 	srcRect.w = length;
 	destRect.h = length;
 	destRect.w = length;
-
+	srcRect.x = 0;
 	// std::cout << type << std::endl;
-	switch (type) {
-		case attackerOnly:
-			srcRect.x = 0;
-			srcRect.y = 0;
-			break;
-
-		case attackerOnIt:
-			srcRect.x = 0;
-			srcRect.y = 40;
-			break;
-		case defenderOnly:
-			srcRect.x = 0;
-			srcRect.y = 120;
-			break;
-		case defenderOnIt:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-		case defenderOption:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-		case defenderChosen:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-	}
+	switchType();
 }
 block::~block() {}
 std::pair<int, int> block::getPos() {
@@ -62,33 +36,7 @@ blockType block::getType() {
 }
 void block::setType(blockType newType) {
 	type = newType;
-	switch (type) {
-		case attackerOnly:
-			srcRect.x = 0;
-			srcRect.y = 0;
-			break;
-
-		case attackerOnIt:
-			srcRect.x = 0;
-			srcRect.y = 40;
-			break;
-		case defenderOnly:
-			srcRect.x = 0;
-			srcRect.y = 120;
-			break;
-		case defenderOnIt:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-		case defenderOption:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-		case defenderChosen:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-	}
+	switchType();
 }
 
 // void block::getMouseState(int x, int y, Uint32 state) {
@@ -103,32 +51,7 @@ void block::Update() {
 	}
 	srcRect.h = 40;
 	srcRect.w = 40;
-	switch (type) {
-		case attackerOnly:
-			srcRect.x = 0;
-			srcRect.y = 0;
-			break;
-		case attackerOnIt:
-			srcRect.x = 0;
-			srcRect.y = 40;
-			break;
-		case defenderOnly:
-			srcRect.x = 0;
-			srcRect.y = 120;
-			break;
-		case defenderOnIt:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-		case defenderOption:
-			srcRect.x = 0;
-			srcRect.y = 120;
-			break;
-		case defenderChosen:
-			srcRect.x = 0;
-			srcRect.y = 160;
-			break;
-	}
+	switchType();
 	destRect.x = length * pos.first;
 	destRect.y = length * pos.second;
 	destRect.w = 40;
@@ -170,4 +93,27 @@ void block::setMouseX(int x) {
 }
 void block::setMouseY(int y) {
 	block::mouseY = y;
+}
+
+void block::switchType() {
+	switch (type) {
+		case attackerOnly:
+			srcRect.y = 0;
+			break;
+		case attackerOnIt:
+			srcRect.y = 40;
+			break;
+		case defenderOnly:
+			srcRect.y = 120;
+			break;
+		case defenderOnIt:
+			srcRect.y = 160;
+			break;
+		case defenderOption:
+			srcRect.y = 120;
+			break;
+		case defenderChosen:
+			srcRect.y = 160;
+			break;
+	}
 }

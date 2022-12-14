@@ -2,26 +2,23 @@
 
 #include "SDL_image.h"
 
-defenderObject::defenderObject(const char *textureSheet, SDL_Renderer *ren, int x, int y) {
+defenderObject::defenderObject(const char *textureSheet, SDL_Renderer *ren, int x, int y, int width, int height) {
 	renderer = ren;
 	objTexture = IMG_LoadTexture(renderer, textureSheet);
 	xpos = x;
 	ypos = y;
+	destRect.w = width;
+	destRect.h = height;
+	srcRect.w = width;
+	srcRect.h = height;
 }
 
 void defenderObject::Update() {
-	int imageLength = 40;
-
-	srcRect.h = 40;
-	srcRect.w = 40;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
-
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = 40;
-	destRect.h = 40;
 }
 
 void defenderObject::Render() {

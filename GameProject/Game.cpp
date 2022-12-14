@@ -40,14 +40,19 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 1), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 0), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 0), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 1), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 1), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 2), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 2), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 3), 40, defenderOption));
-	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 0));
-	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 40));
-	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 80));
-	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 120));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 3), 40, defenderOption));
+	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 0, 40, 40));
+	defender_option.push_back(new defenderObject("assets/Defender/defender2.png", renderer, 840, 0, 40, 40));
+	defender_option.push_back(new defenderObject("assets/Defender/truck.png", renderer, 800, 40, 80, 40));
+	defender_option.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, 800, 80, 80, 80));
+	defender_option.push_back(new defenderObject("assets/Defender/BL_building_white.png", renderer, 600, 0, 120, 80));
 	createMap();
 
 	map[13]->setType(attackerOnIt);
@@ -111,30 +116,97 @@ void Game::handleEvents() {
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		int x, y;
 		Uint32 MouseState = SDL_GetMouseState(&x, &y);
-		defenderChoiceRegion[0]->setMouseState(MouseState);
-		defenderChoiceRegion[0]->setMouseX(x);
-		defenderChoiceRegion[0]->setMouseY(y);
-		for (auto &i: defenderChoiceRegion) {
-			if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
-				if (i->getType() == defenderOption) {
-					for (auto &j: defenderChoiceRegion) {
-						j->setChosen(false);
-						j->setType(defenderOption);
-					}
-					if (block::mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-						std::cout << "clicked" << std::endl;
-						i->setType(defenderChosen);
-						i->setChosen(true);
+		if (x >= 800) {
+			// click on defender option
+			defenderChoiceRegion[0]->setMouseState(MouseState);
+			defenderChoiceRegion[0]->setMouseX(x);
+			defenderChoiceRegion[0]->setMouseY(y);
+			for (int i = 0; i < defenderChoiceRegion.size(); i++) {
+				if (block::mouseX - defenderChoiceRegion[i]->getDestX() < 40 && block::mouseX - defenderChoiceRegion[i]->getDestX() >= 0 && block::mouseY - defenderChoiceRegion[i]->getDestY() < 40 && block::mouseY - defenderChoiceRegion[i]->getDestY() >= 0) {
+					if (defenderChoiceRegion[i]->getType() == defenderOption) {
+						for (auto &j: defenderChoiceRegion) {
+							j->setChosen(false);
+							j->setType(defenderOption);
+							setDefenderChosen(none);
+						}
+						if (block::mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+							if (i == 0) {
+								std::cout << "clicked" << std::endl;
+								defenderChoiceRegion[i]->setType(defenderChosen);
+								defenderChoiceRegion[i]->setChosen(true);
+								setDefenderChosen(defender1);
+							} else if (i == 1) {
+								std::cout << "clicked" << std::endl;
+								defenderChoiceRegion[i]->setType(defenderChosen);
+								defenderChoiceRegion[i]->setChosen(true);
+								setDefenderChosen(defender2);
+							} else if (i == 2 || i == 3) {
+								std::cout << "clicked" << std::endl;
+								defenderChoiceRegion[2]->setType(defenderChosen);
+								defenderChoiceRegion[2]->setChosen(true);
+								defenderChoiceRegion[3]->setType(defenderChosen);
+								defenderChoiceRegion[3]->setChosen(true);
+								setDefenderChosen(truck);
+							} else if (i == 4 || i == 5 || i == 6 || i == 7) {
+								std::cout << "clicked" << std::endl;
+								defenderChoiceRegion[4]->setType(defenderChosen);
+								defenderChoiceRegion[4]->setChosen(true);
+								defenderChoiceRegion[5]->setType(defenderChosen);
+								defenderChoiceRegion[5]->setChosen(true);
+								defenderChoiceRegion[6]->setType(defenderChosen);
+								defenderChoiceRegion[6]->setChosen(true);
+								defenderChoiceRegion[7]->setType(defenderChosen);
+								defenderChoiceRegion[7]->setChosen(true);
+								setDefenderChosen(NTULibrary);
+							}
+						}
 					}
 				}
 			}
 		}
-		// for (auto &i: map) {
-		// 	i->getMouseState(x, y, MouseState);
+
+	} else if (event.type == SDL_MOUSEMOTION) {
+		int x, y;
+		Uint32 MouseState = SDL_GetMouseState(&x, &y);
+		map[0]->setMouseState(MouseState);
+		map[0]->setMouseX(x);
+		map[0]->setMouseY(y);
+		for (auto &i: map) {
+			if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+				if (i->getType() == defenderOnly) {
+					i->setType(defenderOnIt);
+				}
+			} else {
+				if (i->getType() == defenderOnIt) {
+					i->setType(defenderOnly);
+				}
+			}
+		}
+		// if (getDefenderChosen() != none) {
+		// 	for (int i = 0; i < defenderChoiceRegion.size(); i++) {
+		// 		if (block::mouseX - defenderChoiceRegion[i]->getDestX() < 40 && block::mouseX - defenderChoiceRegion[i]->getDestX() >= 0 && block::mouseY - defenderChoiceRegion[i]->getDestY() < 40 && block::mouseY - defenderChoiceRegion[i]->getDestY() >= 0) {
+		// 			if (i == 0) {
+		// 				defenderChoiceRegion[i]->setType(defenderChosen);
+		// 			} else if (i == 1) {
+		// 				defenderChoiceRegion[i]->setType(defenderChosen);
+		// 			} else if (i == 2 || i == 3) {
+		// 				defenderChoiceRegion[2]->setType(defenderChosen);
+		// 				defenderChoiceRegion[3]->setType(defenderChosen);
+
+		// 			} else if (i == 4 || i == 5 || i == 6 || i == 7) {
+		// 				defenderChoiceRegion[4]->setType(defenderChosen);
+		// 				defenderChoiceRegion[5]->setType(defenderChosen);
+		// 				defenderChoiceRegion[6]->setType(defenderChosen);
+		// 				defenderChoiceRegion[7]->setType(defenderChosen);
+		// 			}
+		// 		} else {
+		// 			if (defenderChoiceRegion[i]->getType() == defenderChosen) {
+		// 				defenderChoiceRegion[i]->setType(defenderOption);
+		// 			}
+		// 		}
+		// 	}
 		// }
-		// for (auto &i: defenderChoiceRegion) {
-		// 	i->getMouseState(x, y, MouseState);
-		// }
+
 	} else if (event.type == SDL_KEYDOWN) {
 		// cout << "key pressed" << endl;
 		switch (event.key.keysym.sym) {
@@ -237,4 +309,11 @@ void Game::clean() {
 }
 bool Game::running() {
 	return isRunning;
+}
+
+defenderType Game::getDefenderChosen() {
+	return chosenDefender;
+}
+void Game::setDefenderChosen(defenderType i) {
+	chosenDefender = i;
 }
