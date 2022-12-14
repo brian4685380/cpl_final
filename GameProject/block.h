@@ -8,6 +8,7 @@ enum blockType {
 	attackerOnly,
 	defenderOnly,
 	defenderOption,
+	defenderChosen,
 };
 class block {
    public:
@@ -22,13 +23,20 @@ class block {
 	void setType(blockType);
 	void getMouseState(int, int, Uint32);
 	void setChosen(bool);
-
+	
 	bool isChosen();
 
+	int getDestX();
+	int getDestY();
+
+	void setMouseState(Uint32);
+	void setMouseX(int);
+	void setMouseY(int);
+	static int mouseX, mouseY;
+	static Uint32 mouseState;
+
    private:
-	int mouseX, mouseY;
 	bool chosen = false;
-	Uint32 mouseState;
 	std::pair<int, int> pos;  // left top corner
 	int length;
 	blockType type;
@@ -36,3 +44,4 @@ class block {
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer *renderer;
 };
+

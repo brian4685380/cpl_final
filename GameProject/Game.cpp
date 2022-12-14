@@ -108,15 +108,33 @@ void Game::handleEvents() {
 			isRunning = false;
 			break;
 	}
-	if (event.type == SDL_MOUSEMOTION) {
+	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		int x, y;
 		Uint32 MouseState = SDL_GetMouseState(&x, &y);
-		for (auto &i: map) {
-			i->getMouseState(x, y, MouseState);
-		}
+		defenderChoiceRegion[0]->setMouseState(MouseState);
+		defenderChoiceRegion[0]->setMouseX(x);
+		defenderChoiceRegion[0]->setMouseY(y);
 		for (auto &i: defenderChoiceRegion) {
-			i->getMouseState(x, y, MouseState);
+			if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+				if (i->getType() == defenderOption) {
+					for (auto &j: defenderChoiceRegion) {
+						j->setChosen(false);
+						j->setType(defenderOption);
+					}
+					if (block::mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+						std::cout << "clicked" << std::endl;
+						i->setType(defenderChosen);
+						i->setChosen(true);
+					}
+				}
+			}
 		}
+		// for (auto &i: map) {
+		// 	i->getMouseState(x, y, MouseState);
+		// }
+		// for (auto &i: defenderChoiceRegion) {
+		// 	i->getMouseState(x, y, MouseState);
+		// }
 	} else if (event.type == SDL_KEYDOWN) {
 		// cout << "key pressed" << endl;
 		switch (event.key.keysym.sym) {
