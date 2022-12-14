@@ -11,6 +11,14 @@ attackerObject::attackerObject(const char *textureSheet, SDL_Renderer *ren, int 
 }
 
 void attackerObject::Update() {
+	if (pathIndex == move_pos_list.size() - 1) {
+		// Destroy the texture
+		SDL_DestroyTexture(objTexture);
+		// Destroy the texture
+		SDL_RenderClear(renderer);
+		return;
+	}
+
 	int imageLength = 40;
 
 	srcRect.h = 40;
