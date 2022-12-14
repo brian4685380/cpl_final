@@ -20,6 +20,7 @@ class block {
 	void Render();
 	void setType(blockType);
 	void getMouseState(int, int, Uint32);
+	SDL_Rect srcRect, destRect;
 
    private:
 	int mouseX, mouseY;
@@ -28,6 +29,5 @@ class block {
 	int length;
 	blockType type;
 	SDL_Texture *objTexture;
-	SDL_Rect srcRect, destRect;
 	SDL_Renderer *renderer;
 };

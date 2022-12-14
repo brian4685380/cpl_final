@@ -180,8 +180,9 @@ void Game::handleEvents() {
 			vector<pair<int, int>> path_list(path->get_path());
 			for (auto &i: path_list) {
 				for (auto &j: map) {
-					if (j->getPos().first == i.second && j->getPos().second == i.first)
-						j->setType(attackerOnIt);
+					if (j->getPos().first == i.second && j->getPos().second == i.first) {
+						j->srcRect.y = 40;
+					}
 				}
 			}
 			path_list.clear();

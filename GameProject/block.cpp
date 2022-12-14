@@ -5,16 +5,36 @@
 #include "SDL.h"
 block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType block_type) {
 	renderer = ren;
-	objTexture = IMG_LoadTexture(renderer, textureSheet);
+	objTexture = IMG_LoadTexture(renderer, "assets/Blocks/blocks.png");
 	this->pos.first = pos.first;
 	this->pos.second = pos.second;
 	length = len;
 	type = block_type;
-	std::cout << type << std::endl;
 	srcRect.h = length;
 	srcRect.w = length;
 	destRect.h = length;
 	destRect.w = length;
+
+	std::cout << type << std::endl;
+	switch (type) {
+		case attackerOnly:
+			srcRect.x = 0;
+			srcRect.y = 0;
+			break;
+
+		case attackerOnIt:
+			srcRect.x = 0;
+			srcRect.y = 40;
+			break;
+		case defenderOnly:
+			srcRect.x = 0;
+			srcRect.y = 120;
+			break;
+		case defenderOnIt:
+			srcRect.x = 0;
+			srcRect.y = 160;
+			break;
+	}
 }
 block::~block() {}
 std::pair<int, int> block::getPos() {
@@ -28,14 +48,25 @@ blockType block::getType() {
 }
 void block::setType(blockType newType) {
 	type = newType;
-	if (type == attackerOnly)
-		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_stone.png");
-	if (type == defenderOnly)
-		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_stone.png");
-	if (type == attackerOnIt)
-		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_highlight.png");
-	if (type == defenderOnIt)
-		objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_highlight.png");
+	switch (type) {
+		case attackerOnly:
+			srcRect.x = 0;
+			srcRect.y = 0;
+			break;
+
+		case attackerOnIt:
+			srcRect.x = 0;
+			srcRect.y = 40;
+			break;
+		case defenderOnly:
+			srcRect.x = 0;
+			srcRect.y = 120;
+			break;
+		case defenderOnIt:
+			srcRect.x = 0;
+			srcRect.y = 160;
+			break;
+	}
 }
 
 void block::getMouseState(int x, int y, Uint32 state) {
@@ -47,23 +78,39 @@ void block::getMouseState(int x, int y, Uint32 state) {
 void block::Update() {
 	srcRect.h = 40;
 	srcRect.w = 40;
-	srcRect.x = 0;
-	srcRect.y = 0;
+	switch (type) {
+		case attackerOnly:
+			srcRect.x = 0;
+			srcRect.y = 0;
+			break;
 
+		case attackerOnIt:
+			srcRect.x = 0;
+			srcRect.y = 40;
+			break;
+		case defenderOnly:
+			srcRect.x = 0;
+			srcRect.y = 120;
+			break;
+		case defenderOnIt:
+			srcRect.x = 0;
+			srcRect.y = 160;
+			break;
+	}
 	destRect.x = length * pos.first;
 	destRect.y = length * pos.second;
 	destRect.w = 40;
 	destRect.h = 40;
 	if (mouseX - destRect.x < 40 && mouseX - destRect.x >= 0 && mouseY - destRect.y < 40 && mouseY - destRect.y >= 0) {
 		if (type == attackerOnly)
-			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_highlight.png");
+			setType(attackerOnIt);
 		if (type == defenderOnly)
-			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_highlight.png");
+			setType(defenderOnIt);
 	} else {
-		if (type == attackerOnly)
-			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/grass_stone.png");
-		if (type == defenderOnly)
-			objTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay_stone.png");
+		if (type == attackerOnIt)
+			setType(attackerOnly);
+		if (type == defenderOnIt)
+			setType(defenderOnly);
 	}
 }
 void block::Render() {
