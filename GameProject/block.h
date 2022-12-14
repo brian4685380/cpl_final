@@ -19,10 +19,11 @@ class block {
 	void Update();
 	void Render();
 	void setType(blockType);
-	void getMousePos();
+	void getMouseState(int, int, Uint32);
 
    private:
 	int mouseX, mouseY;
+	Uint32 mouseState;
 	std::pair<int, int> pos;  // left top corner
 	int length;
 	blockType type;

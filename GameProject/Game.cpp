@@ -5,10 +5,11 @@
 #include "SDL.h"
 #include "attackerObject.h"
 #include "block.h"
+#include "defenderObject.h"
 
-// vector<attacker> attacker_list;
-// vector<defender> defender_list;
-
+std::vector<defenderObject *> defender_list;
+std::vector<defenderObject *> defender_option;
+std::vector<block *> defenderChoiceRegion;
 std::vector<attackerObject *> attacker_list;
 attackerObject *student1;
 std::vector<block *> map;
@@ -43,7 +44,16 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	// attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 40, 0));
 	// attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 80, 0));
 	// attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 120, 0));
+	defenderChoiceRegion.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(20, 0), 40, defenderOnly));
+	defenderChoiceRegion.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(20, 1), 40, defenderOnly));
+	defenderChoiceRegion.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(20, 2), 40, defenderOnly));
+	defenderChoiceRegion.push_back(new block("assets/Blocks/redclay.png", renderer, std::make_pair(20, 3), 40, defenderOnly));
+	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 0));
+	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 40));
+	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 80));
+	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 120));
 	createMap();
+
 	map[13]->setType(attackerOnIt);
 	path = new AttackPath(14, 18);
 	path->getInitialMap(map);
@@ -80,7 +90,13 @@ void Game::createMap() {
 }
 
 void Game::update() {
+	for (auto &i: defenderChoiceRegion) {
+		i->Update();
+	}
 	for (auto &i: map) {
+		i->Update();
+	}
+	for (auto &i: defender_option) {
 		i->Update();
 	}
 	for (auto &i: attacker_list) {
@@ -96,7 +112,13 @@ void Game::handleEvents() {
 			isRunning = false;
 			break;
 	}
-	if (event.type == SDL_KEYDOWN) {
+	if (event.type == SDL_MOUSEMOTION) {
+		int x, y;
+		Uint32 MouseState = SDL_GetMouseState(&x, &y);
+		for (auto &i: map) {
+			i->getMouseState(x, y, MouseState);
+		}
+	} else if (event.type == SDL_KEYDOWN) {
 		// cout << "key pressed" << endl;
 		switch (event.key.keysym.sym) {
 			case SDLK_c:
@@ -168,7 +190,13 @@ void Game::handleEvents() {
 }
 void Game::render() {
 	SDL_RenderClear(renderer);
+	for (auto &i: defenderChoiceRegion) {
+		i->Render();
+	}
 	for (auto &i: map) {
+		i->Render();
+	}
+	for (auto &i: defender_option) {
 		i->Render();
 	}
 	for (auto &i: attacker_list) {
