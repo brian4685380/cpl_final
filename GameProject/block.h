@@ -7,10 +7,11 @@ enum blockType {
 	defenderOnIt,
 	attackerOnly,
 	defenderOnly,
+	defenderOption,
 };
 class block {
    public:
-	block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int length, blockType type);
+	block(SDL_Renderer *ren, std::pair<int, int> pos, int length, blockType type);
 	~block();
 	std::pair<int, int> getPos();
 	int getLength();
@@ -20,14 +21,18 @@ class block {
 	void Render();
 	void setType(blockType);
 	void getMouseState(int, int, Uint32);
-	SDL_Rect srcRect, destRect;
+	void setChosen(bool);
+
+	bool isChosen();
 
    private:
 	int mouseX, mouseY;
+	bool chosen = false;
 	Uint32 mouseState;
 	std::pair<int, int> pos;  // left top corner
 	int length;
 	blockType type;
 	SDL_Texture *objTexture;
+	SDL_Rect srcRect, destRect;
 	SDL_Renderer *renderer;
 };

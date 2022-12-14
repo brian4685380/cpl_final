@@ -14,11 +14,15 @@ class attackerObject {
 	void getAttackerPath(std::vector<std::pair<int, int>>);
 	void getAttackerDir(std::vector<char>);
 
+	bool isDead();
+
    private:
 	int pathIndex = 0;
 	int xpos;
 	int ypos;
 	int path;
+	bool dead;
+
 	std::vector<char> move_dir_list;
 	std::vector<std::pair<int, int>> move_pos_list;
 

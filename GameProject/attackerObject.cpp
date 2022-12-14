@@ -12,10 +12,11 @@ attackerObject::attackerObject(const char *textureSheet, SDL_Renderer *ren, int 
 
 void attackerObject::Update() {
 	if (pathIndex == move_pos_list.size() - 1) {
-		// Destroy the texture
-		SDL_DestroyTexture(objTexture);
-		// Destroy the texture
-		SDL_RenderClear(renderer);
+		// // Destroy the texture
+		// SDL_DestroyTexture(objTexture);
+		// // Destroy the texture
+		// SDL_RenderClear(renderer);
+		destRect.x = -100;
 		return;
 	}
 
@@ -60,4 +61,8 @@ void attackerObject::getAttackerDir(std::vector<char> dir) {
 	for (int i = 0; i < dir.size(); i++) {
 		move_dir_list[i] = dir[i];
 	}
+}
+
+bool attackerObject::isDead() {
+	return dead;
 }

@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "SDL.h"
-block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType block_type) {
+block::block(SDL_Renderer *ren, std::pair<int, int> pos, int len, blockType block_type) {
 	renderer = ren;
 	objTexture = IMG_LoadTexture(renderer, "assets/Blocks/blocks.png");
 	this->pos.first = pos.first;
@@ -15,7 +15,7 @@ block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> po
 	destRect.h = length;
 	destRect.w = length;
 
-	std::cout << type << std::endl;
+	// std::cout << type << std::endl;
 	switch (type) {
 		case attackerOnly:
 			srcRect.x = 0;
@@ -31,6 +31,10 @@ block::block(const char *textureSheet, SDL_Renderer *ren, std::pair<int, int> po
 			srcRect.y = 120;
 			break;
 		case defenderOnIt:
+			srcRect.x = 0;
+			srcRect.y = 160;
+			break;
+		case defenderOption:
 			srcRect.x = 0;
 			srcRect.y = 160;
 			break;
@@ -66,6 +70,10 @@ void block::setType(blockType newType) {
 			srcRect.x = 0;
 			srcRect.y = 160;
 			break;
+		case defenderOption:
+			srcRect.x = 0;
+			srcRect.y = 160;
+			break;
 	}
 }
 
@@ -96,23 +104,34 @@ void block::Update() {
 			srcRect.x = 0;
 			srcRect.y = 160;
 			break;
+		case defenderOption:
+			srcRect.x = 0;
+			srcRect.y = 120;
+			break;
 	}
 	destRect.x = length * pos.first;
 	destRect.y = length * pos.second;
 	destRect.w = 40;
 	destRect.h = 40;
 	if (mouseX - destRect.x < 40 && mouseX - destRect.x >= 0 && mouseY - destRect.y < 40 && mouseY - destRect.y >= 0) {
-		if (type == attackerOnly)
-			setType(attackerOnIt);
-		if (type == defenderOnly)
-			setType(defenderOnIt);
+		if (type == defenderOption) {
+			if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+				setChosen(true);
+			}
+		}
 	} else {
-		if (type == attackerOnIt)
-			setType(attackerOnly);
 		if (type == defenderOnIt)
 			setType(defenderOnly);
 	}
 }
 void block::Render() {
 	SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
+}
+
+bool block::isChosen() {
+	return chosen;
+}
+
+void block::setChosen(bool choose) {
+	chosen = choose;
 }
