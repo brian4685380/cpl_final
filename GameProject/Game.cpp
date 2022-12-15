@@ -466,8 +466,61 @@ void Game::handleEvents() {
 					}
 				}
 			} else {
-				if (i->getType() == defenderOnIt) {
-					i->setType(defenderOnly);
+				if (chosenDefender == defender1 || chosenDefender == defender2) {
+					if (i->getType() == defenderOnIt) {
+						i->setType(defenderOnly);
+					}
+				} else if (chosenDefender == truck) {
+					int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+					corner currentCorner = getCorner(idx);
+					switch (currentCorner) {
+						case leftUp:
+							if (block::mouseX - i->getDestX() < 80 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case rightUp:
+							if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= -40 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case leftDown:
+							if (block::mouseX - i->getDestX() < 80 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case rightDown:
+							if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= -40 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
@@ -623,4 +676,6 @@ corner Game::getCorner(int x) {
 		return leftDown;
 	else if (binary_search(rightdownCorner.begin(), rightdownCorner.end(), x))
 		return rightDown;
+	else
+		return notCorner;
 }

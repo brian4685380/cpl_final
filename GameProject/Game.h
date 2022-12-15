@@ -16,6 +16,7 @@ enum corner {
 	rightUp,
 	leftDown,
 	rightDown,
+	notCorner,
 };
 
 class Game {
@@ -38,6 +39,7 @@ class Game {
 	bool aDefenderChosen = false;
 
 	corner getCorner(int);
+
    private:
 	defenderType chosenDefender = none;
 	bool isRunning;
