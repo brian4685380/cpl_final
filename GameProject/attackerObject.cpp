@@ -66,3 +66,7 @@ void attackerObject::getAttackerDir(std::vector<char> dir) {
 bool attackerObject::isDead() {
 	return dead;
 }
+
+void attackerObject::setDestRectX(int x) {
+	destRect.x = x;
+}

@@ -13,6 +13,7 @@ class attackerObject {
 	void Render();
 	void getAttackerPath(std::vector<std::pair<int, int>>);
 	void getAttackerDir(std::vector<char>);
+	void setDestRectX(int);
 
 	bool isDead();
 

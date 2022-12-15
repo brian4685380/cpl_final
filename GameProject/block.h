@@ -25,10 +25,12 @@ class block {
 	void setChosen(bool);
 	
 	bool isChosen();
+	bool isOcupied();
 
 	int getDestX();
 	int getDestY();
 
+	void setOcupied(bool);
 	void switchType();
 	void setMouseState(Uint32);
 	void setMouseX(int);
@@ -38,6 +40,7 @@ class block {
 
    private:
 	bool chosen = false;
+	bool ocupied = false;
 	std::pair<int, int> pos;  // left top corner
 	int length;
 	blockType type;

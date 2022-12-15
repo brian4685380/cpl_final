@@ -52,10 +52,17 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	defender_option.push_back(new defenderObject("assets/Defender/defender2.png", renderer, 840, 0, 40, 40));
 	defender_option.push_back(new defenderObject("assets/Defender/truck.png", renderer, 800, 40, 80, 40));
 	defender_option.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, 800, 80, 80, 80));
-	defender_option.push_back(new defenderObject("assets/Defender/BL_building_white.png", renderer, 600, 0, 120, 80));
+	defender_list.push_back(new defenderObject("assets/Defender/BL_building_white.png", renderer, 600, 0, 120, 80));
 	createMap();
 
 	map[13]->setType(attackerOnIt);
+	map[210]->setOcupied(true);
+	map[211]->setOcupied(true);
+	map[224]->setOcupied(true);
+	map[225]->setOcupied(true);
+	map[238]->setOcupied(true);
+	map[239]->setOcupied(true);
+
 	path = new AttackPath(14, 18);
 	path->getInitialMap(map);
 }
@@ -101,6 +108,9 @@ void Game::update() {
 		i->Update();
 	}
 	for (auto &i: attacker_list) {
+		i->Update();
+	}
+	for (auto &i: defender_list) {
 		i->Update();
 	}
 }
@@ -163,6 +173,31 @@ void Game::handleEvents() {
 					}
 				}
 			}
+		} else {
+			int x, y;
+			Uint32 MouseState = SDL_GetMouseState(&x, &y);
+			map[0]->setMouseState(MouseState);
+			map[0]->setMouseX(x);
+			map[0]->setMouseY(y);
+			for (auto &i: map) {
+				if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
+					cout << "mouse clicked" << endl;
+					cout << i->getType() << endl;
+					if (i->getType() == defenderOnIt) {
+						if (i->isOcupied() == false) {
+							if (chosenDefender == defender1) {
+								defender_list.push_back(new defenderObject("assets/Defender/defender1.png", renderer, i->getDestX(), i->getDestY(), 40, 40));
+								i->setOcupied(true);
+								i->setType(defenderOnIt);
+							} else if (chosenDefender == defender2) {
+								defender_list.push_back(new defenderObject("assets/Defender/defender2.png", renderer, i->getDestX(), i->getDestY(), 40, 40));
+								i->setOcupied(true);
+								i->setType(defenderOnIt);
+							}
+						}
+					}
+				}
+			}
 		}
 
 	} else if (event.type == SDL_MOUSEMOTION) {
@@ -174,7 +209,10 @@ void Game::handleEvents() {
 		for (auto &i: map) {
 			if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
 				if (i->getType() == defenderOnly) {
-					i->setType(defenderOnIt);
+					if (i->isOcupied() == false) {
+						cout << chosenDefender << endl;
+						i->setType(defenderOnIt);
+					}
 				}
 			} else {
 				if (i->getType() == defenderOnIt) {
@@ -218,7 +256,7 @@ void Game::handleEvents() {
 		if (path->is_path_end()) {
 			for (auto &i: attacker_list) {
 				if (i->isDead()) {
-					attacker_list.erase(std::remove(attacker_list.begin(), attacker_list.end(), i), attacker_list.end());
+					i->setDestRectX(-100);
 				}
 			}
 			// std::cout << "path end" << std::endl;
@@ -295,6 +333,9 @@ void Game::render() {
 		i->Render();
 	}
 	for (auto &i: attacker_list) {
+		i->Render();
+	}
+	for (auto &i: defender_list) {
 		i->Render();
 	}
 	// attacker_list[0]->Render();

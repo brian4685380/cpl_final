@@ -74,6 +74,13 @@ bool block::isChosen() {
 	return chosen;
 }
 
+bool block::isOcupied() {
+	return ocupied;
+}
+
+void block::setOcupied(bool ocup) {
+	ocupied = ocup;
+}
 void block::setChosen(bool choose) {
 	chosen = choose;
 }
