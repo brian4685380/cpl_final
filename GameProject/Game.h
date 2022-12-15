@@ -25,6 +25,7 @@ class Game {
 	void createMap();
 	defenderType getDefenderChosen();
 	void setDefenderChosen(defenderType);
+	void gameEnd();
 
 	bool running();
 	bool aDefenderChosen = false;

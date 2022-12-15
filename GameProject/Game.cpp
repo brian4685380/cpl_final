@@ -3,11 +3,11 @@
 
 #include "Attack_path.h"
 #include "SDL.h"
+#include "Timer.h"
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
 #include "Timer.h"
-#include "Money.h"
 
 std::vector<defenderObject *> defender_list;
 std::vector<defenderObject *> defender_option;
@@ -72,7 +72,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	path = new AttackPath(14, 18);
 	path->getInitialMap(map);
 
-	//Timer
+	// Timer
 	gameTimer = new Timer(10000);
 
 	//Money
@@ -127,21 +127,21 @@ void Game::update() {
 		i->Update();
 	}
 
-	//Timer update
+	// Timer update
 	gameTimer->timer_update();
-	if(gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount){
+	if (gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount) {
 		gameTimerCount++;
-		cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
+		// cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
 		
 		//Money update
 		*attackerMoney += 10;
 		*defenderMoney += 10;
-		cout << "attacker money : " << attackerMoney->money_get() << endl;
-		cout << "defender money : " << defenderMoney->money_get() << endl;
+		// cout << "attacker money : " << attackerMoney->money_get() << endl;
+		// cout << "defender money : " << defenderMoney->money_get() << endl;
 	}
-	if(gameTimer->is_time_up()){
-		//cout << "Time's up" << endl;
-	}
+	// if(gameTimer->is_time_up()){
+	// 	cout << "Time's up" << endl;
+	// }
 
 	
 }
@@ -388,4 +388,8 @@ defenderType Game::getDefenderChosen() {
 }
 void Game::setDefenderChosen(defenderType i) {
 	chosenDefender = i;
+}
+
+void Game::gameEnd() {
+	isRunning = false;
 }
