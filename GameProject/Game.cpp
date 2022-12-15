@@ -380,7 +380,7 @@ void Game::handleEvents() {
 						std::cout << "current corner: " << currentCorner << std::endl;
 						switch (currentCorner) {
 							case leftUp:
-								if (map[idx + 14]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -388,7 +388,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case rightUp:
-								if (map[idx - 14]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -396,7 +396,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case rightDown:
-								if (map[idx - 14]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -404,7 +404,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case leftDown:
-								if (map[idx + 14]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -421,7 +421,7 @@ void Game::handleEvents() {
 						std::cout << "current corner: " << currentCorner << std::endl;
 						switch (currentCorner) {
 							case leftUp:
-								if (map[idx + 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx + 15]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx + 15]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -431,7 +431,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case rightUp:
-								if (map[idx - 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx - 13]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx - 13]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -441,7 +441,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case rightDown:
-								if (map[idx - 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx - 15]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx - 15]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -451,7 +451,7 @@ void Game::handleEvents() {
 								}
 								break;
 							case leftDown:
-								if (map[idx + 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx + 13]->isOcupied() == true) {
+								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx + 13]->isOcupied() == true) {
 									cout << "can't place here" << endl;
 								} else {
 									i->setType(defenderOnIt);
@@ -518,6 +518,56 @@ void Game::handleEvents() {
 								}
 							}
 							break;
+						default:
+							break;
+					}
+				} else if (chosenDefender == NTULibrary) {
+					int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+					corner currentCorner = getCorner(idx);
+					switch (currentCorner) {
+						case leftUp:
+							if (block::mouseX - i->getDestX() < 80 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 80 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case rightUp:
+							if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= -40 && block::mouseY - i->getDestY() < 80 && block::mouseY - i->getDestY() >= 0) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case leftDown:
+							if (block::mouseX - i->getDestX() < 80 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= -40) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
+							break;
+						case rightDown:
+							if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= -40 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= -40) {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnIt);
+								}
+							} else {
+								if (i->getType() == defenderOnIt) {
+									i->setType(defenderOnly);
+								}
+							}
 						default:
 							break;
 					}
