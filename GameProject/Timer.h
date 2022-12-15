@@ -10,11 +10,13 @@ public:
 // constructor
 Timer(int); // int total_time
 
-bool timer_update();
+void timer_update();
+bool is_time_up();
 int get_elapsed_s();
 int get_left_s();
 int get_elapsed_ms();
 int get_left_ms();
+
 
 private:
     chrono::steady_clock::time_point _time_start;   // game start time

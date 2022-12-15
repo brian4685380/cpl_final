@@ -6,6 +6,7 @@
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
+#include "Timer.h"
 
 std::vector<defenderObject *> defender_list;
 std::vector<defenderObject *> defender_option;
@@ -14,6 +15,8 @@ std::vector<attackerObject *> attacker_list;
 attackerObject *student1;
 std::vector<block *> map;
 AttackPath *path;
+Timer *gameTimer;
+int gameTimerCount = 1;
 Game::Game() {}
 Game::~Game() {}
 
@@ -65,6 +68,9 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 	path = new AttackPath(14, 18);
 	path->getInitialMap(map);
+
+	//Timer
+	gameTimer = new Timer(10000);
 }
 
 void Game::createMap() {
@@ -112,6 +118,16 @@ void Game::update() {
 	}
 	for (auto &i: defender_list) {
 		i->Update();
+	}
+
+	//Timer update
+	gameTimer->timer_update();
+	if(gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount){
+		gameTimerCount++;
+		cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
+	}
+	if(gameTimer->is_time_up()){
+		cout << "Time's up" << endl;
 	}
 }
 

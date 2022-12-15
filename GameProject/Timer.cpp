@@ -46,7 +46,7 @@ Timer:: Timer(int total_time){
 }
 
 
-bool Timer:: timer_update(){
+void Timer:: timer_update(){
 
     _time_now = chrono::steady_clock::now();
     
@@ -54,12 +54,7 @@ bool Timer:: timer_update(){
     _time_elapsed = temp_elapsed;  //setting elapsed time
 
     _time_left = _time_total - _time_elapsed; //setting left time;
-
-    if(_time_left.count() <= 0){
-        cout << "Time's Up" << endl;
-        return false;
-    }
-    return true;
+    return;
 
 }
 
@@ -75,7 +70,9 @@ int Timer:: get_elapsed_ms(){
 int Timer:: get_left_ms(){
     return _time_left.count();
 }
-
+bool Timer:: is_time_up(){
+    return _time_left.count() <= 0 ? true : false;
+}
 
 // // Example code
 // int main()
