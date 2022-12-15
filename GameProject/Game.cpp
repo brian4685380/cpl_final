@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -9,6 +10,10 @@
 #include "block.h"
 #include "defenderObject.h"
 
+std::vector<int> leftupCorner = {30, 34, 38, 86, 90, 94, 142, 146, 150, 202, 206};
+std::vector<int> leftdownCorner = {31, 35, 39, 87, 91, 95, 143, 147, 151, 203, 207};
+std::vector<int> rightupCorner = {44, 48, 52, 100, 104, 108, 156, 160, 164, 216, 220};
+std::vector<int> rightdownCorner = {45, 49, 53, 101, 105, 109, 157, 161, 165, 217, 221};
 std::vector<defenderObject *> defender_list;
 std::vector<defenderObject *> defender_option;
 std::vector<block *> defenderChoiceRegion;
@@ -59,6 +64,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	defender_option.push_back(new defenderObject("assets/Defender/truck.png", renderer, 800, 40, 80, 40));
 	defender_option.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, 800, 80, 80, 80));
 	defender_list.push_back(new defenderObject("assets/Defender/BL_building_hollow.png", renderer, 600, 0, 120, 80));
+
 	createMap();
 
 	map[13]->setType(attackerOnIt);
@@ -222,6 +228,130 @@ void Game::handleEvents() {
 								defender_list.push_back(new defenderObject("assets/Defender/defender2.png", renderer, i->getDestX(), i->getDestY(), 40, 40));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
+							} else if (chosenDefender == truck) {
+								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+								corner currentCorner = getCorner(idx);
+								std::cout << "idx = " << idx << std::endl;
+								std::cout << "current corner: " << currentCorner << std::endl;
+								switch (currentCorner) {
+									case rightUp:
+										if (map[idx - 14]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 40));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx - 14]->setOcupied(true);
+											map[idx - 14]->setType(defenderOnIt);
+										}
+										break;
+									case leftUp:
+										if (map[idx + 14]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX(), i->getDestY(), 80, 40));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx + 14]->setOcupied(true);
+											map[idx + 14]->setType(defenderOnIt);
+										}
+										break;
+									case rightDown:
+										if (map[idx - 14]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 40));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx - 14]->setOcupied(true);
+											map[idx - 14]->setType(defenderOnIt);
+										}
+										break;
+									case leftDown:
+										if (map[idx + 14]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX(), i->getDestY(), 80, 40));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx + 14]->setOcupied(true);
+											map[idx + 14]->setType(defenderOnIt);
+										}
+										break;
+
+									default:
+										break;
+								}
+							} else if (chosenDefender == NTULibrary) {
+								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+								corner currentCorner = getCorner(idx);
+								std::cout << "idx = " << idx << std::endl;
+								std::cout << "current corner: " << currentCorner << std::endl;
+								switch (currentCorner) {
+									case rightUp:
+										if (map[idx - 14]->isOcupied() == true || map[idx - 13]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 80));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx - 14]->setOcupied(true);
+											map[idx - 14]->setType(defenderOnIt);
+											map[idx - 13]->setOcupied(true);
+											map[idx - 13]->setType(defenderOnIt);
+											map[idx + 1]->setOcupied(true);
+											map[idx + 1]->setType(defenderOnIt);
+										}
+										break;
+									case leftUp:
+										if (map[idx + 14]->isOcupied() == true || map[idx + 15]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX(), i->getDestY(), 80, 80));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx + 14]->setOcupied(true);
+											map[idx + 14]->setType(defenderOnIt);
+											map[idx + 15]->setOcupied(true);
+											map[idx + 15]->setType(defenderOnIt);
+											map[idx + 1]->setOcupied(true);
+											map[idx + 1]->setType(defenderOnIt);
+										}
+										break;
+									case rightDown:
+										if (map[idx - 14]->isOcupied() == true || map[idx - 15]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX() - 40, i->getDestY() - 40, 80, 80));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx - 14]->setOcupied(true);
+											map[idx - 14]->setType(defenderOnIt);
+											map[idx - 15]->setOcupied(true);
+											map[idx - 15]->setType(defenderOnIt);
+											map[idx - 1]->setOcupied(true);
+											map[idx - 1]->setType(defenderOnIt);
+										}
+										break;
+									case leftDown:
+										if (map[idx + 14]->isOcupied() == true || map[idx + 13]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
+											cout << "can't place" << endl;
+										} else {
+											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX(), i->getDestY() - 40, 80, 80));
+											i->setOcupied(true);
+											i->setType(defenderOnIt);
+											map[idx + 14]->setOcupied(true);
+											map[idx + 14]->setType(defenderOnIt);
+											map[idx + 13]->setOcupied(true);
+											map[idx + 13]->setType(defenderOnIt);
+											map[idx - 1]->setOcupied(true);
+											map[idx - 1]->setType(defenderOnIt);
+										}
+										break;
+
+									default:
+										break;
+								}
 							}
 						}
 					}
@@ -238,9 +368,101 @@ void Game::handleEvents() {
 		for (auto &i: map) {
 			if (block::mouseX - i->getDestX() < 40 && block::mouseX - i->getDestX() >= 0 && block::mouseY - i->getDestY() < 40 && block::mouseY - i->getDestY() >= 0) {
 				if (i->getType() == defenderOnly) {
-					if (i->isOcupied() == false) {
-						cout << chosenDefender << endl;
-						i->setType(defenderOnIt);
+					if (chosenDefender == defender1 || chosenDefender == defender2) {
+						if (i->isOcupied() == false) {
+							cout << chosenDefender << endl;
+							i->setType(defenderOnIt);
+						}
+					} else if (chosenDefender == truck) {
+						int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+						corner currentCorner = getCorner(idx);
+						std::cout << "idx = " << idx << std::endl;
+						std::cout << "current corner: " << currentCorner << std::endl;
+						switch (currentCorner) {
+							case leftUp:
+								if (map[idx + 14]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx + 14]->setType(defenderOnIt);
+								}
+								break;
+							case rightUp:
+								if (map[idx - 14]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx - 14]->setType(defenderOnIt);
+								}
+								break;
+							case rightDown:
+								if (map[idx - 14]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx - 14]->setType(defenderOnIt);
+								}
+								break;
+							case leftDown:
+								if (map[idx + 14]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx + 14]->setType(defenderOnIt);
+								}
+								break;
+							default:
+								break;
+						}
+					} else if (chosenDefender == NTULibrary) {
+						int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
+						corner currentCorner = getCorner(idx);
+						std::cout << "idx = " << idx << std::endl;
+						std::cout << "current corner: " << currentCorner << std::endl;
+						switch (currentCorner) {
+							case leftUp:
+								if (map[idx + 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx + 15]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx + 14]->setType(defenderOnIt);
+									map[idx + 1]->setType(defenderOnIt);
+									map[idx + 15]->setType(defenderOnIt);
+								}
+								break;
+							case rightUp:
+								if (map[idx - 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx - 13]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx - 14]->setType(defenderOnIt);
+									map[idx + 1]->setType(defenderOnIt);
+									map[idx - 13]->setType(defenderOnIt);
+								}
+								break;
+							case rightDown:
+								if (map[idx - 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx - 15]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx - 14]->setType(defenderOnIt);
+									map[idx - 1]->setType(defenderOnIt);
+									map[idx - 15]->setType(defenderOnIt);
+								}
+								break;
+							case leftDown:
+								if (map[idx + 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx + 13]->isOcupied() == true) {
+									cout << "can't place here" << endl;
+								} else {
+									i->setType(defenderOnIt);
+									map[idx + 14]->setType(defenderOnIt);
+									map[idx - 1]->setType(defenderOnIt);
+									map[idx + 13]->setType(defenderOnIt);
+								}
+								break;
+							default:
+								break;
+						}
 					}
 				}
 			} else {
@@ -390,4 +612,15 @@ void Game::setDefenderChosen(defenderType i) {
 
 void Game::gameEnd() {
 	isRunning = false;
+}
+
+corner Game::getCorner(int x) {
+	if (binary_search(leftupCorner.begin(), leftupCorner.end(), x))
+		return leftUp;
+	else if (binary_search(rightupCorner.begin(), rightupCorner.end(), x))
+		return rightUp;
+	else if (binary_search(leftdownCorner.begin(), leftdownCorner.end(), x))
+		return leftDown;
+	else if (binary_search(rightdownCorner.begin(), rightdownCorner.end(), x))
+		return rightDown;
 }

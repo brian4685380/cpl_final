@@ -11,6 +11,13 @@ enum defenderType {
 	truck,
 	NTULibrary,
 };
+enum corner {
+	leftUp,
+	rightUp,
+	leftDown,
+	rightDown,
+};
+
 class Game {
    public:
 	Game();
@@ -30,6 +37,7 @@ class Game {
 	bool running();
 	bool aDefenderChosen = false;
 
+	corner getCorner(int);
    private:
 	defenderType chosenDefender = none;
 	bool isRunning;
