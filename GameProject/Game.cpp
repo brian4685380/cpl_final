@@ -7,6 +7,7 @@
 #include "block.h"
 #include "defenderObject.h"
 #include "Timer.h"
+#include "Money.h"
 
 std::vector<defenderObject *> defender_list;
 std::vector<defenderObject *> defender_option;
@@ -17,6 +18,8 @@ std::vector<block *> map;
 AttackPath *path;
 Timer *gameTimer;
 int gameTimerCount = 1;
+Money *attackerMoney;
+Money *defenderMoney;
 Game::Game() {}
 Game::~Game() {}
 
@@ -71,6 +74,10 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 	//Timer
 	gameTimer = new Timer(10000);
+
+	//Money
+	attackerMoney = new Money(0);
+	defenderMoney = new Money(0);
 }
 
 void Game::createMap() {
@@ -125,10 +132,18 @@ void Game::update() {
 	if(gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount){
 		gameTimerCount++;
 		cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
+		
+		//Money update
+		*attackerMoney += 10;
+		*defenderMoney += 10;
+		cout << "attacker money : " << attackerMoney->money_get() << endl;
+		cout << "defender money : " << defenderMoney->money_get() << endl;
 	}
 	if(gameTimer->is_time_up()){
-		cout << "Time's up" << endl;
+		//cout << "Time's up" << endl;
 	}
+
+	
 }
 
 void Game::handleEvents() {

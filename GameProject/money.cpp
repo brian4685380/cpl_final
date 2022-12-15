@@ -1,39 +1,69 @@
 #include <iostream>
 #include <string>
-#include "money.h"
+#include "Money.h"
 
 using namespace std;
 
+/*
+使用方法
+class name : Money
+constructor : Money() or Money(n) to set player's initial money
+
+Functions:
+money_set() set player's money
+money_get() return player's money(int)
+
+Operators:
+support 
+Money+=Money, Money+=int, Money+Money, Money+int, int+Money 
+Money-=int, Money-Money, Money-int, int-Money
+if _money < 0 after deduction, it will be set to 0 automatically
+
+Examples:
+    Money my_money;
+    Money my_money2(100);
+    my_money.money_set(1000);
+    my_money -= 200;
+    my_money += my_money2;
+    cout << A.money_get() << endl;
+*/
+
 // constructor
-player_money:: player_money(){};
-player_money:: player_money(int n){
+Money:: Money(){
+    _money = 0;
+}
+Money:: Money(int n){
     _money = n;
 }
-player_money:: ~player_money(){};
+Money:: ~Money(){};
 
 // +
-void player_money:: operator+=(int n){  // _money +=
+void Money:: operator+=(Money & m){  // _money +=
+    _money += m._money;
+    return;
+}
+void Money:: operator+=(int n){  // _money +=
     _money += n;
     return;
 }
-player_money player_money:: operator+ (player_money & m){  // _money + _money
-    player_money temp;
+Money Money:: operator+ (Money & m){  // _money + _money
+    Money temp;
     temp._money = this->_money + m._money;
     return temp;
 }
-player_money player_money:: operator+ (int n){  // _money + int
-    player_money temp;
+Money Money:: operator+ (int n){  // _money + int
+    Money temp;
     temp._money = this->_money + n;
     return temp;   
 }
-player_money operator+ (int n, player_money & m)  {   // int + _money (global)
-    player_money temp;
+Money operator+ (int n, Money & m)  {   // int + _money (global)
+    Money temp;
     temp._money = m._money + n;
     return temp;
 }
 
 // -
-bool player_money:: is_positive(){ // if money < 0, set money to 0
+bool Money:: is_positive(){ // if money < 0, set money to 0
     if(this -> _money < 0){
         _money = 0;
         return false;
@@ -42,47 +72,48 @@ bool player_money:: is_positive(){ // if money < 0, set money to 0
         return true;
     }
 }
-void player_money:: operator-= (int n){    // _money -=
+void Money:: operator-= (Money & m){    // _money -=
+    _money -= m._money;
+    this->is_positive();
+    return;
+}
+void Money:: operator-= (int n){    // _money -=
     _money -= n;
     this->is_positive();
     return;
 }
-player_money player_money:: operator- (player_money & m){  // _money - _money
-    player_money temp;
+Money Money:: operator- (Money & m){  // _money - _money
+    Money temp;
     temp._money = this->_money - m._money;
     temp.is_positive();
     return temp;
 }
-player_money player_money:: operator- (int n){  // _money - int
-    player_money temp;
+Money Money:: operator- (int n){  // _money - int
+    Money temp;
     temp._money = this->_money - n;
     temp.is_positive();
     return temp;   
 }
-player_money operator- (int n, player_money & m){  // int - _money (global)
-    player_money temp;
+Money operator- (int n, Money & m){  // int - _money (global)
+    Money temp;
     temp._money = n - m._money;
     temp.is_positive();
     return temp;
 }
 
 // set and get
-void player_money:: money_set(int n){
+void Money:: money_set(int n){
     _money = n;
 }
-int player_money:: money_get(){
+int Money:: money_get(){
     return _money;
 }
 
 // int main(){
-//     cout << "RUN" << endl;
-//     player_money A;
-//     player_money B(1);
-//     A.money_set(10000);
-//     A -= 1000;
-//     A = A - 100;
-//     A = A - B;
-//     A = 10 - A;
-
-//     cout << A.money_get() << endl;
+//     Money my_money;
+//     Money my_money2(100);
+//     my_money.money_set(1000);
+//     my_money -= 200;
+//     my_money += my_money2;
+//     cout << my_money.money_get() << endl;
 // }
