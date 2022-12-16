@@ -28,6 +28,7 @@ class building {
 	void occupied_set();    // called when placed firmly, be cautious with negative index.
     int block_xpos_get();
     int block_ypos_get();
+	od_type get_type();
 };
 
 class defender: public building {
@@ -47,6 +48,7 @@ class defender: public building {
     int D_block_xpos_get();
     int D_block_ypos_get();
 	void D_attack_block_set();
+	od_type D_get_type();
 	// Heart
 	int D_heart_get();
 	void D_heart_set(int);

@@ -127,12 +127,55 @@ void attackerObject::Update() {
 void attackerObject::A_range_attack(vector<defenderObject *> & defender_list){
 	for(auto &i: defender_list){
 		if(i->D_is_dead()) continue;
-		cout << "x : " << i->D_block_xpos_get() << " - " <<block_xpos << " y : " << i->D_block_ypos_get() << " - " << block_ypos << endl;
-		if(abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range){
-			//cout << "attacker " << A_id << " range attack !" << endl;
-			i->D_heart_minus(100);
-			cout << i->D_heart_get();
+
+		switch(i->D_get_type()){
+			case Prof1:
+			case Prof2:
+				//cout << "x : " << i->D_block_xpos_get() << " - " <<block_xpos << " y : " << i->D_block_ypos_get() << " - " << block_ypos << endl;
+				if(abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range){
+					//cout << "attacker " << A_id << " range attack !" << endl;
+					i->D_heart_minus(A_attack);	//A_attack = A's damage, A_Attack is a function
+					cout << i->D_heart_get();
+				}
+				break;
+			case Bike:
+				if((abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range) ||
+					(abs(i->D_block_xpos_get() + 1 - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range)){
+					//cout << "attacker " << A_id << " range attack !" << endl;
+					i->D_heart_minus(A_attack);	//A_attack = A's damage, A_Attack is a function
+					cout << i->D_heart_get();
+				}
+				break;
+			case Library:
+				if((abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range) ||
+					(abs(i->D_block_xpos_get() + 1 - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range) ||
+					(abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() + 1 - block_ypos) <= A_attack_range) ||
+					(abs(i->D_block_xpos_get() + 1 - block_xpos) + abs(i->D_block_ypos_get() + 1 - block_ypos) <= A_attack_range)){
+					//cout << "attacker " << A_id << " range attack !" << endl;
+					i->D_heart_minus(A_attack);	//A_attack = A's damage, A_Attack is a function
+					cout << i->D_heart_get();
+				}
+				break;
+			case Home:
+				if((abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= 1) ||
+				 	(abs(i->D_block_xpos_get() + 1 - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= 1) ||
+					(abs(i->D_block_xpos_get() + 2 - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= 1) ||
+					(abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() + 1 - block_ypos) <= 1) ||
+					(abs(i->D_block_xpos_get() + 1 - block_xpos) + abs(i->D_block_ypos_get() + 1 - block_ypos) <= 1) ||
+					(abs(i->D_block_xpos_get() + 2 - block_xpos) + abs(i->D_block_ypos_get() + 1 - block_ypos) <= 1)){
+					//cout << "attacker " << A_id << " range attack !" << endl;
+					i->D_heart_minus(A_attack);	//A_attack = A's damage, A_Attack is a function
+					cout << i->D_heart_get();
+				}
+				break;
+			default:
+				break;
+
 		}
+
+
+
+
 	}
 }
 

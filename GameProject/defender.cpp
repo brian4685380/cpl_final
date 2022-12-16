@@ -90,6 +90,10 @@ void defender::D_attack_block_set() {
 	// }
 }
 
+od_type defender::D_get_type(){
+	return Od_type;
+}
+
 // heart
 void defender::D_heart_set(int a) {
 	D_heart = a;
