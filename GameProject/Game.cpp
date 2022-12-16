@@ -25,6 +25,7 @@ Timer *gameTimer;
 int gameTimerCount = 1;
 Money *attackerMoney;
 Money *defenderMoney;
+int A_id = 0;	// Attacker id
 Game::Game() {}
 Game::~Game() {}
 
@@ -608,30 +609,34 @@ void Game::handleEvents() {
 				break;
 		}
 		if (path->is_path_end()) {
-			for (auto &i: attacker_list) {
-				if (i->isDead()) {
-					i->setDestRectX(-100);
-				}
-			}
+		
 			// std::cout << "path end" << std::endl;
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student1.png", renderer, 0, 520));
+					A_id++;
+					//cout << "1 pressed" << endl;
+					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker1));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_2:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student2.png", renderer, 0, 520));
+					A_id++;
+					//cout << "2 pressed" << endl;
+					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker2));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_3:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student3.png", renderer, 0, 520));
+					A_id++;
+					//cout << "3 pressed" << endl;
+					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker3));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_4:
-					attacker_list.push_back(new attackerObject("assets/Attackers/student4.png", renderer, 0, 520));
+					A_id++;
+					//cout << "4 pressed" << endl;
+					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker4));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;

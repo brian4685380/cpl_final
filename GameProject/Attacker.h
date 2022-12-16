@@ -3,24 +3,38 @@
 #include <string>
 using namespace std;
 
+enum oa_type{Attacker1, Attacker2, Attacker3, Attacker4};
+enum a_attack_type{a_Single, a_Range};
 
-enum DIR {U, L, D, R};
+class People{
+    protected:
+        int xpos, ypos;  // pixel position
+        int block_xpos, block_ypos; //block position
+        oa_type Oa_type; // Attacker type
+    public:
+        People(){};
+        ~People(){};
+};
 
-class Attacker{
+class Attacker: public People{
+protected:
+    int A_id;   // unique for each attacker
+    int A_v;    // Attacker moving velocity
+    int A_heart;    // Attacker heart
+    int A_attack;   // Attacker attack
+    a_attack_type A_attack_type; // S for single, R for range
+    int A_attack_range;
 
 public:
     // Constructor and Deconstructor
-    Attacker();
-    ~Attacker();
+    Attacker(){};
+    ~Attacker(){};
 
-    // Moving and Pos
-    vector<double> A_pos_get();
-    vector<int> A_block_pos_get();
-    void A_block_pos_update();
-    void A_move();
-    void A_change_dir(char);
-    double A_v_get();
-    void A_v_set(double);
+    // Position and Moving
+    pair<int,int> A_block_pos_get(); //todo
+    
+    int A_v_get();
+    void A_v_set(int);
     
     // Heart
     int A_heart_get();
@@ -30,20 +44,7 @@ public:
     bool A_is_dead();
 
     // Attack
-    int A_damage_get();
-    void A_damage_set(int);
-    void A_attack_search(); //回傳值應該不是void
-
-private:
-    int A_id;           // unique for each attacker
-    vector<double> A_pos;    // {Row, Col}
-    vector<int> A_block_pos;  // {Row, Col}
-    double A_v;
-    //char A_direction;   // U, L, D, R
-    DIR A_direction;
-    int A_heart;
-    int A_damage;
-    char A_attack_type; // S for single, R for range
-    int A_attack_range;
-
+    int A_attack_get();
+    void A_attack_set(int);
+    void A_attack_search(); //回傳值應該不是voids
 };

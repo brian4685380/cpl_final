@@ -181,12 +181,12 @@ void AttackPath::draw_path(char dir) {
 bool AttackPath::is_path_end() {
 	if (a_row <= t_row && a_col >= t_col && !((new_row == t_row) && (new_col == t_col))) {
 		cout << "attack path arrive the destination" << endl;
-		for (char d: move_dir_list) {
-			cout << d << " ";
-		}
-		for (pair<int, int> d: move_pos_list) {
-			cout << "(" << d.first << "," << d.second << ") ";
-		}
+		// for (char d: move_dir_list) {
+		// 	cout << d << " ";
+		// }
+		// for (pair<int, int> d: move_pos_list) {
+		// 	cout << "(" << d.first << "," << d.second << ") ";
+		// }
 		return true;
 	}
 	return false;
