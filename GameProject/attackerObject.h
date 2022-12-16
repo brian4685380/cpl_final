@@ -9,7 +9,7 @@ class attackerObject : public Attacker{
 	attackerObject(SDL_Renderer *, int, int, int = 0, oa_type = Attacker1);
 	~attackerObject();
 
-	void Init_Profile(int, oa_type, SDL_Renderer *);
+	void A_Init_Profile(int, oa_type, SDL_Renderer *);
 
 	void Update();
 	void Render();

@@ -6,51 +6,59 @@
 
 using namespace std;
 
+enum od_type {Prof1, Prof2, Bike, Library, Home};
+enum d_attack_type {d_Single, d_Range};
+
 class building {
    protected:
-	int8_t type;
-	bool orientation;				  // 0 for horizontal, 1 for vertical;
-	pair<double, double> coordinate;  // CAUTION! "coordinate" is similar �I!dd�}!to "pos" of Attacker!
-	pair<int, int> pos;				  // arbitrary, just for convenience
-	int8_t width, height;
+	od_type Od_type;
+	bool orientation;		        // 0 for horizontal, 1 for vertical;
+	int block_xpos, block_ypos;     // coordinate for blocks
+	int xpos, ypos;	                // position for pixels
+	int block_width, block_height;  // height for blocks
+    int width, height;              // height for pixels
 	vector<pair<int, int>> block_occupied;
 
    public:
-	building(int8_t, pair<double, double>);	 // building type, coordinate generated.
-	~building();
-	pair<int, int> pos_get();
+
+	building();             // constructor
+	~building();            // destructor
 	void orn_change();
 	bool orn_get();
-	void occupied_set();  // called when placed firmly, be cautious with negative index.
-
-	// debug
+	void occupied_set();    // called when placed firmly, be cautious with negative index.
+    pair<int, int> block_pos_get();
 };
 
 class defender: public building {
-   private:
-	int8_t D_type;
-	int D_id;
+ protected:
+    d_attack_type D_attack_type;              // Single or Range
+	int D_id;                               // id in number order
 	int D_heart;
 	int D_attack;
-	int8_t D_attack_radius;
-	vector<pair<int, int>> D_attack_block;	// be cautious with negative index.
+	int D_attack_radius;
+	vector<pair<int, int>> D_attack_block;
 
    public:
 	// defender
-	defender(int8_t, pair<double, double>, int, int, int, int8_t);	// defender type(mostly correspond to building type), coordinate, id generated, heart, attack, radius
+	defender();
 	~defender();
+
 	void D_attack_block_set();
 	// Heart
+	int D_heart_get();
 	void D_heart_set(int);
-	void D_heart_add(int a = 1);	// default add 1
-	void D_heart_minus(int a = 1);	// default minus 1
+	void D_heart_add(int);	// default add 1
+	void D_heart_minus(int);	// default minus 1
 
 	// Attack
-	void D_attack_set(int);
-	void D_attack_add(int a = 1);
-	void D_attack_minus(int a = 1);
-	
-	int D_heart_get();
     int D_attack_get();
-	// vector<int> D_attack_search(*Attacker attacker, int NumOfAttacker)	// return target ID
+	void D_attack_set(int);
+	void D_attack_add(int);   // default add 1
+	void D_attack_minus(int); // default minus 1
+
+    pair<int, int> D_block_pos_get();
+	//vector<int> D_attack_search(const * Attacker, int)
+    bool is_dead();                   // default false
+
+
 };

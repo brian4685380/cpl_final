@@ -26,6 +26,7 @@ int gameTimerCount = 1;
 Money *attackerMoney;
 Money *defenderMoney;
 int A_id = 0;	// Attacker id
+int D_id = 0;	// Defender id
 Game::Game() {}
 Game::~Game() {}
 
@@ -60,11 +61,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 2), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 3), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 3), 40, defenderOption));
-	defender_option.push_back(new defenderObject("assets/Defender/defender1.png", renderer, 800, 0, 40, 40));
-	defender_option.push_back(new defenderObject("assets/Defender/defender2.png", renderer, 840, 0, 40, 40));
-	defender_option.push_back(new defenderObject("assets/Defender/truck.png", renderer, 800, 40, 80, 40));
-	defender_option.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, 800, 80, 80, 80));
-	defender_list.push_back(new defenderObject("assets/Defender/BL_building_hollow.png", renderer, 600, 0, 120, 80));
+	defender_option.push_back(new defenderObject(renderer, 800, 0, 40, 40, 0, Prof1));
+	defender_option.push_back(new defenderObject(renderer, 840, 0, 40, 40, 0, Prof2));
+	defender_option.push_back(new defenderObject(renderer, 800, 40, 80, 40, 0, Bike));
+	defender_option.push_back(new defenderObject(renderer, 800, 80, 80, 80, 0, Library));
+	defender_list.push_back(new defenderObject(renderer, 600, 0, 120, 80, 0, Home));
 
 	createMap();
 
@@ -222,11 +223,13 @@ void Game::handleEvents() {
 					if (i->getType() == defenderOnIt) {
 						if (i->isOcupied() == false) {
 							if (chosenDefender == defender1) {
-								defender_list.push_back(new defenderObject("assets/Defender/defender1.png", renderer, i->getDestX(), i->getDestY(), 40, 40));
+								D_id++;
+								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof1));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
 							} else if (chosenDefender == defender2) {
-								defender_list.push_back(new defenderObject("assets/Defender/defender2.png", renderer, i->getDestX(), i->getDestY(), 40, 40));
+								D_id++;
+								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof2));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
 							} else if (chosenDefender == truck) {
@@ -239,7 +242,8 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 40));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx - 14]->setOcupied(true);
@@ -250,7 +254,8 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX(), i->getDestY(), 80, 40));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx + 14]->setOcupied(true);
@@ -261,7 +266,8 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 40));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx - 14]->setOcupied(true);
@@ -272,7 +278,8 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/truck.png", renderer, i->getDestX(), i->getDestY(), 80, 40));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx + 14]->setOcupied(true);
@@ -293,7 +300,8 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true || map[idx - 13]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX() - 40, i->getDestY(), 80, 80));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 80, D_id, Library));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx - 14]->setOcupied(true);
@@ -308,7 +316,8 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true || map[idx + 15]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX(), i->getDestY(), 80, 80));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 80, D_id, Library));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx + 14]->setOcupied(true);
@@ -323,7 +332,8 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true || map[idx - 15]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX() - 40, i->getDestY() - 40, 80, 80));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY() - 40, 80, 80, D_id, Library));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx - 14]->setOcupied(true);
@@ -338,7 +348,8 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true || map[idx + 13]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
-											defender_list.push_back(new defenderObject("assets/Defender/NTULibrary.png", renderer, i->getDestX(), i->getDestY() - 40, 80, 80));
+											D_id++;
+											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY() - 40, 80, 80, D_id, Library));
 											i->setOcupied(true);
 											i->setType(defenderOnIt);
 											map[idx + 14]->setOcupied(true);

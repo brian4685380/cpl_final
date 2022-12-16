@@ -9,19 +9,14 @@
 using namespace std;
 
 // building
-building::building(int8_t tp, pair<double, double> co) {
-	type = tp;
+
+building::building() {
 	orientation = false;  // default horizontal
-	coordinate = co;
-	//  obtain width, height from type definition
+
 	occupied_set();
 }
 
 building::~building() {}
-
-pair<int, int> building::pos_get() {
-	return pos;
-}
 
 void building::orn_change() {
 	orientation = !orientation;
@@ -31,50 +26,65 @@ bool building::orn_get() {
 	return orientation;
 }
 
-void building::occupied_set() {
-	block_occupied.clear();
-	int8_t row, col;
-	if (!orientation) {
-		row = height;
-		col = width;
-	}  // horizontal
-	else {
-		row = width;
-		col = height;
-	}  // vertical
 
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col; j++) {
-			block_occupied.push_back(make_pair(pos.first + i, pos.second + j));
-		}
-	}
+void building::occupied_set() {
+	//////BUG
+
+	// block_occupied.clear();
+	// int row, col;
+	// if (!orientation) {
+	// 	row = block_height;
+	// 	col = block_width;
+	// }  // horizontal
+	// else {
+	// 	row = block_width;
+	// 	col = block_height;
+	// }  // vertical
+
+	// for (int i = 0; i < row; i++) {
+	// 	for (int j = 0; j < col; j++) {
+	// 		block_occupied.push_back(make_pair(block_xpos + i, block_ypos + j));
+	// 	}
+	// }
+}
+
+pair<int, int> building::block_pos_get()
+{
+    return (make_pair(block_xpos, block_ypos));
 }
 
 // defender
 
-defender::defender(int8_t tp, pair<double, double> co, int id, int attack, int heart, int8_t radius)
-	: building(tp, co), D_id(id), D_attack(attack), D_heart(heart), D_attack_radius(radius) {
+defender::defender()
+{
+    // TODO3: set parameters below from D_type list
+    //D_attack_set(?);
+    //D_heart_set(?);
+    //D_attack_radius = ?
+	//
 	D_attack_block_set();
 }
 
 defender::~defender() {}
 
 void defender::D_attack_block_set() {
-	D_attack_block.clear();
-	int row, col;
-	if (!orientation) {
-		row = height;
-		col = width;
-	} else {
-		row = width;
-		col = height;
-	}
+	////////BUGBUG
 
-	for (int i = -D_attack_radius; i < 0 || (i >= row && i < row + D_attack_radius); i++) {
-		for (int j = -D_attack_radius; j < 0 || (i >= col && i < col + D_attack_radius); j++) {
-			block_occupied.push_back(make_pair(pos.first + i, pos.second + j));
-		}
-	}
+	// D_attack_block.clear();
+	// int row, col;
+	// if (!orientation) {
+	// 	row = block_height;
+	// 	col = block_width;
+	// } else {
+	// 	row = block_width;
+	// 	col = block_height;
+	// }
+
+	// for (int i = -D_attack_radius; i < 0 || (i >= row && i < row + D_attack_radius); i++) {
+	// 	for (int j = -D_attack_radius; j < 0 || (i >= col && i < col + D_attack_radius); j++) {
+	// 		block_occupied.push_back(make_pair(block_xpos + i, block_ypos + j));
+	// 	}
+	// }
 }
 
 // heart
@@ -112,7 +122,14 @@ void defender::D_attack_minus(int a) {
 	D_attack -= a;
 }
 
-// vector<int> defender::D_attack_search(*Attacker attacker, int NumOfAttacker)  //
+pair<int, int> defender::D_block_pos_get()
+{
+    return make_pair(block_xpos, block_ypos);
+}
+
+
+
+// vector<int> defender::D_attack_search(const * Attacker attacker, int NumOfAttacker)  //
 // {
 // 	vector<int> target;
 // 	target = new int[NumOfAttacker];
@@ -124,3 +141,7 @@ void defender::D_attack_minus(int a) {
 // 	}*/
 // 	return target;
 // }
+
+bool defender::is_dead(){
+	return (D_heart > 0);
+}

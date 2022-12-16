@@ -2,9 +2,9 @@
 #include "SDL_image.h"
 
 // Constructor
-attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type Oa_type) {
+attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type atp) {
 	//cout << "create attacker" << id << endl;
-	Init_Profile(id, Oa_type, ren);
+	A_Init_Profile(id, atp, ren);
 	//renderer = ren;
 	//objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student1.png");
 	xpos = x;
@@ -14,6 +14,55 @@ attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type 
 }
 
 attackerObject:: ~attackerObject(){};
+
+void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
+	cout << "INIT Attacker " << id << endl;
+	renderer = ren;
+	switch(atp){
+		case Attacker1:
+			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student1.png");
+			Oa_type = Attacker1;
+			A_id = id;
+			A_v = 1;
+			A_heart = 100;
+			A_attack = 10;
+			A_attack_type = a_Single;
+			A_attack_range = 3;
+			break;
+		case Attacker2:
+			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student2.png");
+			Oa_type = Attacker2;
+			A_id = id;
+			A_v = 2;
+			A_heart = 100;
+			A_attack = 10;
+			A_attack_type = a_Single;
+			A_attack_range = 3;
+			break;
+		case Attacker3:
+			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student3.png");
+			Oa_type = Attacker3;
+			A_id = id;
+			A_v = 4;
+			A_heart = 100;
+			A_attack = 10;
+			A_attack_type = a_Single;
+			A_attack_range = 3;
+			break;
+		case Attacker4:
+			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student4.png");
+			Oa_type = Attacker4;
+			A_id = id;
+			A_v = 8;
+			A_heart = 100;
+			A_attack = 10;
+			A_attack_type = a_Single;
+			A_attack_range = 3;
+			break;
+	}
+	
+	return;
+}
 
 void attackerObject::Update() {
 	if (A_is_dead()) {
@@ -60,56 +109,6 @@ void attackerObject::Update() {
 
 }
 
-
-void attackerObject:: Init_Profile(int id, oa_type _type, SDL_Renderer *ren){
-	cout << "INIT Attacker " << id << endl;
-	renderer = ren;
-	/// TODO
-	switch(_type){
-		case Attacker1:
-			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student1.png");
-			Oa_type = Attacker1;
-			A_id = id;
-			A_v = 1;
-			A_heart = 100;
-			A_attack = 10;
-			A_attack_type = a_Single;
-			A_attack_range = 3;
-			break;
-		case Attacker2:
-			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student2.png");
-			Oa_type = Attacker2;
-			A_id = id;
-			A_v = 2;
-			A_heart = 100;
-			A_attack = 10;
-			A_attack_type = a_Single;
-			A_attack_range = 3;
-			break;
-		case Attacker3:
-			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student3.png");
-			Oa_type = Attacker3;
-			A_id = id;
-			A_v = 4;
-			A_heart = 100;
-			A_attack = 10;
-			A_attack_type = a_Single;
-			A_attack_range = 3;
-			break;
-		case Attacker4:
-			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student4.png");
-			Oa_type = Attacker4;
-			A_id = id;
-			A_v = 8;
-			A_heart = 100;
-			A_attack = 10;
-			A_attack_type = a_Single;
-			A_attack_range = 3;
-			break;
-	}
-	
-	return;
-}
 
 void attackerObject::Render() {
 	SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
