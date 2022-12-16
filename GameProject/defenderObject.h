@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "defender.h"
+class attackerObject;	//Forward Declartion to prevent circular dependancy
 
 class defenderObject : public defender{
    public:
@@ -14,6 +15,9 @@ class defenderObject : public defender{
 
 	void Update();
 	void Render();
+
+	//void D_range_attack(vector<attackerObject*>);
+	//void D_single_attack(vector<attackerObject*>);
 	
 
    private:

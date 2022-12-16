@@ -26,7 +26,8 @@ class building {
 	void orn_change();
 	bool orn_get();
 	void occupied_set();    // called when placed firmly, be cautious with negative index.
-    pair<int, int> block_pos_get();
+    int block_xpos_get();
+    int block_ypos_get();
 };
 
 class defender: public building {
@@ -43,12 +44,15 @@ class defender: public building {
 	defender();
 	~defender();
 
+    int D_block_xpos_get();
+    int D_block_ypos_get();
 	void D_attack_block_set();
 	// Heart
 	int D_heart_get();
 	void D_heart_set(int);
 	void D_heart_add(int);	// default add 1
 	void D_heart_minus(int);	// default minus 1
+    bool D_is_dead();                   // default false
 
 	// Attack
     int D_attack_get();
@@ -56,9 +60,6 @@ class defender: public building {
 	void D_attack_add(int);   // default add 1
 	void D_attack_minus(int); // default minus 1
 
-    pair<int, int> D_block_pos_get();
-	//vector<int> D_attack_search(const * Attacker, int)
-    bool is_dead();                   // default false
 
 
 };

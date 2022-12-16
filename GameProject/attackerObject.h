@@ -1,8 +1,9 @@
 #pragma once
 #include <utility>
 #include <vector>
-#include "Game.h"
+#include "defenderObject.h"
 #include "Attacker.h"
+#include "Game.h"
 
 class attackerObject : public Attacker{
    public:
@@ -12,6 +13,8 @@ class attackerObject : public Attacker{
 	void A_Init_Profile(int, oa_type, SDL_Renderer *);
 
 	void Update();
+	void A_Attack(vector<defenderObject *> &);
+	void A_range_attack(vector<defenderObject *> &);
 	void Render();
 	void getAttackerPath(std::vector<std::pair<int, int>>);
 	void getAttackerDir(std::vector<char>);

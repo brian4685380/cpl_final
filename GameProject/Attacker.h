@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include <string>
+
+
 using namespace std;
 
 enum oa_type{Attacker1, Attacker2, Attacker3, Attacker4};
@@ -31,7 +32,8 @@ public:
     ~Attacker(){};
 
     // Position and Moving
-    pair<int,int> A_block_pos_get(); //todo
+    int A_block_xpos_get();
+    int A_block_ypos_get();
     
     int A_v_get();
     void A_v_set(int);

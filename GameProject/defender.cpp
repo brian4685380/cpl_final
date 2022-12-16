@@ -48,9 +48,12 @@ void building::occupied_set() {
 	// }
 }
 
-pair<int, int> building::block_pos_get()
-{
-    return (make_pair(block_xpos, block_ypos));
+int building::block_xpos_get(){
+    return block_xpos;
+}
+
+int building::block_ypos_get(){
+    return block_ypos;
 }
 
 // defender
@@ -122,9 +125,12 @@ void defender::D_attack_minus(int a) {
 	D_attack -= a;
 }
 
-pair<int, int> defender::D_block_pos_get()
-{
-    return make_pair(block_xpos, block_ypos);
+int defender::D_block_xpos_get(){
+    return block_xpos;
+}
+
+int defender::D_block_ypos_get(){
+    return block_ypos;
 }
 
 
@@ -142,6 +148,7 @@ pair<int, int> defender::D_block_pos_get()
 // 	return target;
 // }
 
-bool defender::is_dead(){
-	return (D_heart > 0);
+bool defender::D_is_dead(){
+	return (D_heart <= 0);
 }
+

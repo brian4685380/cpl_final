@@ -2,8 +2,11 @@
 #include "Attacker.h"
 using namespace std;
 
-pair<int,int> Attacker:: A_block_pos_get(){
-    return make_pair(block_xpos, block_ypos);
+int Attacker::A_block_xpos_get(){
+    return block_xpos;
+}
+int Attacker::A_block_ypos_get(){
+    return block_ypos;
 }
 
 int Attacker:: A_v_get(){

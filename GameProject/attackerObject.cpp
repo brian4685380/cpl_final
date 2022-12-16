@@ -1,5 +1,7 @@
 #include "attackerObject.h"
 #include "SDL_image.h"
+#include <cmath>
+
 
 // Constructor
 attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type atp) {
@@ -9,6 +11,8 @@ attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type 
 	//objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student1.png");
 	xpos = x;
 	ypos = y;
+	block_xpos = 0;
+	block_ypos = 13;	//block_pos initialize to (0,13)
 	pathIndex = 0;
 	update_count = 0;
 }
@@ -25,9 +29,9 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_id = id;
 			A_v = 1;
 			A_heart = 100;
-			A_attack = 10;
+			A_attack = 1;
 			A_attack_type = a_Single;
-			A_attack_range = 3;
+			A_attack_range = 1;
 			break;
 		case Attacker2:
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student2.png");
@@ -35,9 +39,9 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_id = id;
 			A_v = 2;
 			A_heart = 100;
-			A_attack = 10;
+			A_attack = 2;
 			A_attack_type = a_Single;
-			A_attack_range = 3;
+			A_attack_range = 2;
 			break;
 		case Attacker3:
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student3.png");
@@ -45,7 +49,7 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_id = id;
 			A_v = 4;
 			A_heart = 100;
-			A_attack = 10;
+			A_attack = 3;
 			A_attack_type = a_Single;
 			A_attack_range = 3;
 			break;
@@ -55,9 +59,9 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_id = id;
 			A_v = 8;
 			A_heart = 100;
-			A_attack = 10;
+			A_attack = 4;
 			A_attack_type = a_Single;
-			A_attack_range = 3;
+			A_attack_range = 4;
 			break;
 	}
 	
@@ -65,6 +69,8 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 }
 
 void attackerObject::Update() {
+
+	// Dead
 	if (A_is_dead()) {
 		// // Destroy the texture
 		// SDL_DestroyTexture(objTexture);
@@ -81,6 +87,7 @@ void attackerObject::Update() {
 		return;
 	}
 
+	// Render setting
 	int imageLength = 40;
 
 	srcRect.h = 40;
@@ -88,6 +95,8 @@ void attackerObject::Update() {
 	srcRect.x = 0;
 	srcRect.y = 0;
 
+
+	// Moving
 	update_count++;
 	if(update_count >= 4){
 		update_count = 0;
@@ -99,13 +108,46 @@ void attackerObject::Update() {
 			xpos -= A_v;
 		if (move_dir_list[pathIndex] == 'R')
 			xpos += A_v;
-		if (xpos % 40 == 0 && ypos % 40 == 0)
+		if (xpos % 40 == 0 && ypos % 40 == 0){
 			pathIndex++;
+		}
+
+		block_xpos = max((xpos + 20) / 40, 0);	//must positive
+		block_ypos = max((ypos + 20) / 40, 0);
+			
+		destRect.x = xpos;
+		destRect.y = ypos;
+		destRect.w = 40;
+		destRect.h = 40;
 	}
-	destRect.x = xpos;
-	destRect.y = ypos;
-	destRect.w = 40;
-	destRect.h = 40;
+	
+
+}
+
+void attackerObject::A_range_attack(vector<defenderObject *> & defender_list){
+	for(auto &i: defender_list){
+		if(i->D_is_dead()) continue;
+		cout << "x : " << i->D_block_xpos_get() << " - " <<block_xpos << " y : " << i->D_block_ypos_get() << " - " << block_ypos << endl;
+		if(abs(i->D_block_xpos_get() - block_xpos) + abs(i->D_block_ypos_get() - block_ypos) <= A_attack_range){
+			//cout << "attacker " << A_id << " range attack !" << endl;
+			i->D_heart_minus(100);
+			cout << i->D_heart_get();
+		}
+	}
+}
+
+void attackerObject::A_Attack(vector<defenderObject *> & defender_list){
+	
+		if(A_is_dead()){	
+			return;
+		}
+		if(1){
+			this->A_range_attack(defender_list);
+			return;
+		}
+		else{
+			return;
+		}
 
 }
 

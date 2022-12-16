@@ -135,6 +135,10 @@ void Game::update() {
 		i->Update();
 	}
 
+	// Attacker attack
+		for (auto &i: attacker_list) {
+			i->A_Attack(defender_list);
+		}
 	// Timer update
 	gameTimer->timer_update();
 	if (gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount) {
@@ -146,6 +150,8 @@ void Game::update() {
 		*defenderMoney += 10;
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
+
+		
 	}
 	// if(gameTimer->is_time_up()){
 	// 	cout << "Time's up" << endl;
@@ -691,6 +697,7 @@ void Game::handleEvents() {
 		}
 	}
 }
+
 void Game::render() {
 	SDL_RenderClear(renderer);
 	for (auto &i: defenderChoiceRegion) {
