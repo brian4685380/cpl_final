@@ -273,11 +273,11 @@ void attackerObject::A_Attack(vector<defenderObject *> & defender_list){
 		switch(Oa_type){
 			case Attacker1:
 			case Attacker3:
-			case Attacker2:
-			case Attacker4:
 				this->A_single_attack(defender_list);
 				break;
-				//this->A_range_attack(defender_list);
+			case Attacker2:
+			case Attacker4:
+				this->A_range_attack(defender_list);
 		}
 		return;
 

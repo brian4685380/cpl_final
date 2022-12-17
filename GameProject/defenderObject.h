@@ -14,9 +14,14 @@ class defenderObject : public defender{
 	void O_Init_Profile(int, od_type, SDL_Renderer *);
 
 	void Update();
+	void D_Attack(vector<attackerObject*> &);
+	void D_range_attack(vector<attackerObject*> &);
+	void D_single_attack(vector<attackerObject*> &);
 	void Render();
 
-	//void D_range_attack(vector<attackerObject*>);
+
+
+
 	//void D_single_attack(vector<attackerObject*>);
 	
 

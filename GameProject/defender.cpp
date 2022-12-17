@@ -111,6 +111,9 @@ void defender::D_heart_minus(int a) {
 	D_heart -= a;
 }
 
+bool defender::D_is_dead(){
+	return (D_heart <= 0);
+}
 // attack
 
 void defender::D_attack_set(int a) {
@@ -152,7 +155,4 @@ int defender::D_block_ypos_get(){
 // 	return target;
 // }
 
-bool defender::D_is_dead(){
-	return (D_heart <= 0);
-}
 

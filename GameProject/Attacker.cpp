@@ -34,7 +34,7 @@ void Attacker:: A_heart_minus(int n){
     return;
 }
 bool Attacker:: A_is_dead(){
-    return A_heart <= 0 ? true : false;
+    return (A_heart <= 0);
 }
 
 // Attack
