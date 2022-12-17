@@ -74,7 +74,7 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/BL_building_hollow.png");
 			Od_type = Home;
 			D_id = id;
-			D_heart = 1;
+			D_heart = 500;
 			D_attack = 10;
 		    D_attack_type = d_Single;
 			D_attack_radius = 5;

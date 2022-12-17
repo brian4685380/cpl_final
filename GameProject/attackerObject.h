@@ -15,6 +15,7 @@ class attackerObject : public Attacker{
 	void Update();
 	void A_Attack(vector<defenderObject *> &);
 	void A_range_attack(vector<defenderObject *> &);
+	void A_single_attack(vector<defenderObject *> &);
 	void Render();
 	void getAttackerPath(std::vector<std::pair<int, int>>);
 	void getAttackerDir(std::vector<char>);
