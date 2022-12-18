@@ -125,6 +125,8 @@ void attackerObject::Update() {
 }
 
 void attackerObject::A_range_attack(vector<defenderObject *> & defender_list){
+	if(defender_list.empty()) return;
+	
 	for(auto &i: defender_list){
 		if(i->D_is_dead()) continue;
 
@@ -173,6 +175,7 @@ void attackerObject::A_range_attack(vector<defenderObject *> & defender_list){
 }
 
 void attackerObject::A_single_attack(vector<defenderObject *> & defender_list){
+	if(defender_list.empty()) return;
 
 	int A_min_dis_to_D = INT_MAX;
 	defenderObject* A_closest_D = defender_list[0];

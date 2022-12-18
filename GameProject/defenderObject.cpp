@@ -32,7 +32,7 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender1.png");
 			Od_type = Prof1;
 			D_id = id;
-			D_heart = 1000;
+			D_heart = 100;
 			D_attack = 1000;
 		    D_attack_type = d_Single;
 			D_attack_radius = 2;
@@ -44,7 +44,7 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			D_id = id;
 			D_heart = 200;
 			D_attack = 1000;
-		    D_attack_type = d_Single;
+		    D_attack_type = d_Range;
 			D_attack_radius = 3;
             break;
 
@@ -66,7 +66,7 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			D_id = id;
 			D_heart = 400;
 			D_attack = 1000;
-		    D_attack_type = d_Single;
+		    D_attack_type = d_Range;
 			D_attack_radius = 2;
             break;
 
@@ -92,6 +92,9 @@ void defenderObject::Update() {
 
 	if(D_is_dead()){
 		destRect.x = 750;
+		// TODO TODO
+		// Update block state
+		//map[i]->serOcupied(false)
 		return;
 	}
 }
@@ -101,8 +104,9 @@ void defenderObject::Render() {
 }
 
 
-void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list)
-{
+void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list){
+	if(attacker_list.empty())	return;
+
 	switch(Od_type){
 		case Prof1:
 		case Prof2:
@@ -225,28 +229,129 @@ void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list)
    return;
 }
 
-// void defenderObject::D_single_attack(vector<attackerObject*> attacker_list)
-// {
+void defenderObject::D_single_attack(vector<attackerObject*> & attacker_list){
+	if(attacker_list.empty())	return;
 
-//     return;
-// }
+	int D_min_dis_to_A = INT_MAX;
+	attackerObject* D_closest_A = attacker_list[0];
+
+
+	switch(Od_type){
+		case Prof1:
+		case Prof2:
+			for(auto &i: attacker_list){
+				if(i->A_is_dead()) continue;
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+			}
+			break;
+
+		case Bike:
+			for(auto &i: attacker_list){
+				if(i->A_is_dead()) continue;
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+			}
+			break;
+
+		case Library:
+			for(auto &i: attacker_list){
+				if(i->A_is_dead()) continue;
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 1) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 1) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+			}
+			break;
+
+		case Home:
+			for(auto &i: attacker_list){
+				if(i->A_is_dead()) continue;
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 1) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 2) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 2) - i->A_block_xpos_get()) + abs(block_ypos - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs(block_xpos - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs(block_xpos - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 1) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 1) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+
+				if(abs((block_xpos + 2) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get()) < D_min_dis_to_A){
+					D_min_dis_to_A = abs((block_xpos + 2) - i->A_block_xpos_get()) + abs((block_ypos + 1) - i->A_block_ypos_get());
+					D_closest_A = i;
+				}
+			}
+			break;
+
+		default:
+			break;
+	
+	}
+	if(D_closest_A->A_is_dead()) return;	// prevent D_closest_A default value (defender_list[0]) being attacked when it is dead
+	if(D_min_dis_to_A <= D_attack_radius){
+		D_closest_A->A_heart_minus(D_attack);	//A_attack = A's damage, A_Attack is a function
+	}
+	
+}
 
 void defenderObject::D_Attack(vector<attackerObject*> & attacker_list){
 	if(D_is_dead()){	
 		return;
 	}
 
-	switch(Od_type){
-		case Prof1:
-		case Prof2:
-		case Bike:
-		case Library:
+	switch(D_attack_type){
+		case d_Single:
+			this->D_single_attack(attacker_list);
+			break;
+		case d_Range:
 			this->D_range_attack(attacker_list);
 			break;
-			//this->D_single_attack(attacker_list);
-		case Home:
+		default:
 			break;
 	}
 	return;
 }
-

@@ -118,6 +118,7 @@ bool defender::D_is_dead(){
 
 void defender::D_attack_set(int a) {
 	D_attack = a;
+	return;
 }
 
 int defender::D_attack_get() {
