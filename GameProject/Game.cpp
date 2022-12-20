@@ -84,8 +84,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	gameTimer = new Timer(10000);
 
 	// Money
-	attackerMoney = new Money(0);
-	defenderMoney = new Money(0);
+	attackerMoney = new Money(500);
+	defenderMoney = new Money(500);
 }
 
 void Game::createMap() {
@@ -236,11 +236,25 @@ void Game::handleEvents() {
 					if (i->getType() == defenderOnIt) {
 						if (i->isOcupied() == false) {
 							if (chosenDefender == defender1) {
+								if(defenderMoney->money_get() < defenderObject::D_get_price(Prof1)){
+									cout << "Defender not have enough money" << endl;
+									break;
+								}
+								*defenderMoney -= defenderObject::D_get_price(Prof1);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 								D_id++;
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof1));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
 							} else if (chosenDefender == defender2) {
+								if(defenderMoney->money_get() < defenderObject::D_get_price(Prof2)){
+									cout << "Defender not have enough money" << endl;
+									break;
+								}
+								*defenderMoney -= defenderObject::D_get_price(Prof2);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 								D_id++;
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof2));
 								i->setOcupied(true);
@@ -255,6 +269,13 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Bike)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Bike);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
@@ -267,6 +288,13 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Bike)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Bike);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
@@ -279,6 +307,13 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Bike)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Bike);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
@@ -291,6 +326,13 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Bike)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Bike);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
@@ -313,6 +355,13 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true || map[idx - 13]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Library)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Library);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 80, D_id, Library));
 											i->setOcupied(true);
@@ -329,6 +378,13 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true || map[idx + 15]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Library)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Library);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 80, D_id, Library));
 											i->setOcupied(true);
@@ -345,6 +401,13 @@ void Game::handleEvents() {
 										if (map[idx - 14]->isOcupied() == true || map[idx - 15]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Library)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Library);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY() - 40, 80, 80, D_id, Library));
 											i->setOcupied(true);
@@ -361,6 +424,13 @@ void Game::handleEvents() {
 										if (map[idx + 14]->isOcupied() == true || map[idx + 13]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
 										} else {
+											if(defenderMoney->money_get() < defenderObject::D_get_price(Library)){
+												cout << "Defender not have enough money" << endl;
+												break;
+											}
+											*defenderMoney -= defenderObject::D_get_price(Library);
+											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY() - 40, 80, 80, D_id, Library));
 											i->setOcupied(true);
@@ -637,6 +707,13 @@ void Game::handleEvents() {
 			// std::cout << "path end" << std::endl;
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
+					if(attackerMoney->money_get() < attackerObject::A_get_price(Attacker1)){
+						cout << "Attacker not having enough money" << endl;
+						break;
+					}
+					*attackerMoney -= attackerObject::A_get_price(Attacker1);
+					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					
 					A_id++;
 					//cout << "1 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker1));
@@ -644,6 +721,13 @@ void Game::handleEvents() {
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_2:
+					if(attackerMoney->money_get() < attackerObject::A_get_price(Attacker2)){
+						cout << "Attacker not having enough money" << endl;
+						break;
+					}
+					*attackerMoney -= attackerObject::A_get_price(Attacker2);
+					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					
 					A_id++;
 					//cout << "2 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker2));
@@ -651,6 +735,13 @@ void Game::handleEvents() {
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_3:
+					if(attackerMoney->money_get() < attackerObject::A_get_price(Attacker3)){
+						cout << "Attacker not having enough money" << endl;
+						break;
+					}
+					*attackerMoney -= attackerObject::A_get_price(Attacker3);
+					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					
 					A_id++;
 					//cout << "3 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker3));
@@ -658,6 +749,13 @@ void Game::handleEvents() {
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
 				case SDLK_4:
+					if(attackerMoney->money_get() < attackerObject::A_get_price(Attacker4)){
+						cout << "Attacker not having enough money" << endl;
+						break;
+					}
+					*attackerMoney -= attackerObject::A_get_price(Attacker4);
+					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					
 					A_id++;
 					//cout << "4 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker4));

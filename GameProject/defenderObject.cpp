@@ -24,7 +24,7 @@ defenderObject::defenderObject(SDL_Renderer *ren, int x, int y, int w, int h, in
 defenderObject:: ~defenderObject(){};
 
 void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
-	cout << "INIT Defender " << id << endl;
+	//cout << "INIT Defender " << id << endl;
 	renderer = ren;
 	orientation = false;
 	switch(otp){
@@ -176,7 +176,7 @@ void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list){
 
 				for (int i = max(0, block_xpos - D_attack_radius); i <= block_xpos; i++){
 					for(int j = max(0, block_ypos - (D_attack_radius - abs(block_xpos - i))); j <= block_ypos; j++){
-						cout << i << " " << j << endl;
+						//cout << i << " " << j << endl;
 						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
 							a_idx->A_heart_minus(D_attack);
 							D_attack_finished = true;
@@ -185,7 +185,7 @@ void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list){
 					}
 					if(D_attack_finished)	break;
 					for(int j = block_ypos + 1; j < min(18, block_ypos + block_height + (D_attack_radius - abs(block_xpos - i))); j++){
-						cout << i << " " << j << endl;
+						//cout << i << " " << j << endl;
 						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
 							a_idx->A_heart_minus(D_attack);
 							D_attack_finished = true;
@@ -199,7 +199,7 @@ void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list){
 
 				for (int i = block_xpos + 1; i < min(18, block_xpos + block_width + D_attack_radius); i++){
 					for(int j = max(0, block_ypos - (D_attack_radius - abs((block_xpos + 1) - i))); j <= block_ypos; j++){
-						cout << i << " " << j << endl;
+						//cout << i << " " << j << endl;
 						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
 							a_idx->A_heart_minus(D_attack);
 							D_attack_finished = true;
@@ -208,7 +208,7 @@ void defenderObject::D_range_attack(vector<attackerObject*> & attacker_list){
 					}
 					if(D_attack_finished)	break;
 					for(int j = block_ypos + 1; j < min(18, block_ypos + block_height + (D_attack_radius - abs((block_xpos + 1) - i))); j++){
-						cout << i << " " << j << endl;
+						//cout << i << " " << j << endl;
 						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
 							a_idx->A_heart_minus(D_attack);
 							D_attack_finished = true;

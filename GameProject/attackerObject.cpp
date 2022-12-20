@@ -20,7 +20,7 @@ attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type 
 attackerObject:: ~attackerObject(){};
 
 void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
-	cout << "INIT Attacker " << id << endl;
+	//cout << "INIT Attacker " << id << endl;
 	renderer = ren;
 	switch(atp){
 		case Attacker1:
@@ -60,7 +60,7 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_v = 8;
 			A_heart = 100;
 			A_attack = 4;
-			A_attack_type = a_Single;
+			A_attack_type = a_Range;
 			A_attack_range = 4;
 			break;
 	}
@@ -273,14 +273,15 @@ void attackerObject::A_Attack(vector<defenderObject *> & defender_list){
 		if(A_is_dead()){	
 			return;
 		}
-		switch(Oa_type){
-			case Attacker1:
-			case Attacker3:
+		switch(A_attack_type){
+			case a_Single:
 				this->A_single_attack(defender_list);
 				break;
-			case Attacker2:
-			case Attacker4:
+			case a_Range:
 				this->A_range_attack(defender_list);
+				break;
+			default:
+				break;
 		}
 		return;
 

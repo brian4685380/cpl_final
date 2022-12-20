@@ -12,6 +12,26 @@ class attackerObject : public Attacker{
 
 	void A_Init_Profile(int, oa_type, SDL_Renderer *);
 
+	static int A_get_price(oa_type atp){
+		switch(atp){
+			case Attacker1:
+				return 50;
+				break;
+			case Attacker2:
+				return 100;
+				break;
+			case Attacker3:
+				return 150;
+				break;
+			case Attacker4:
+				return 250;
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
 	void Update();
 	void A_Attack(vector<defenderObject *> &);
 	void A_range_attack(vector<defenderObject *> &);

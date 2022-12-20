@@ -13,6 +13,26 @@ class defenderObject : public defender{
 
 	void O_Init_Profile(int, od_type, SDL_Renderer *);
 
+	static int D_get_price(od_type otp){
+		switch(otp){
+			case Prof1:
+				return 50;
+				break;
+			case Prof2:
+				return 100;
+				break;
+			case Bike:
+				return 150;
+				break;
+			case Library:
+				return 250;
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
 	void Update();
 	void D_Attack(vector<attackerObject*> &);
 	void D_range_attack(vector<attackerObject*> &);

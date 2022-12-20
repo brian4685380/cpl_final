@@ -48,3 +48,4 @@ void Attacker:: A_attack_set(int n){
 void Attacker:: A_attack_search(){ 
     //////TODOTODO
 } 
+

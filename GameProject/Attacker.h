@@ -49,4 +49,5 @@ public:
     int A_attack_get();
     void A_attack_set(int);
     void A_attack_search(); //回傳值應該不是voids
+
 };
