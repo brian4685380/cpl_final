@@ -33,7 +33,7 @@ class attackerObject: public Attacker {
 		}
 	}
 
-	void Update();
+	void Update(Music *);
 	void A_Attack(vector<defenderObject *> &);
 	void A_range_attack(vector<defenderObject *> &);
 	void A_single_attack(vector<defenderObject *> &);

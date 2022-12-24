@@ -69,15 +69,19 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 	return;
 }
 
-void attackerObject::Update() {
+void attackerObject::Update(Music * gameMusic) {
 
 	// Dead
 	if (A_is_dead()) {
-		// // Destroy the texture
-		// SDL_DestroyTexture(objTexture);
-		// // Destroy the texture
-		// SDL_RenderClear(renderer);
-		destRect.x = 750;
+		if(xpos != 750){
+			gameMusic->Play_A_dead();
+			cout << "Adead" << " " << xpos << endl;
+			xpos = 750;
+			ypos = ypos;
+			block_xpos = 19;
+			block_ypos = block_ypos;
+			destRect.x = 750;
+		}
 		return;
 	}
 	if (pathIndex == move_pos_list.size() - 1) {

@@ -6,6 +6,8 @@
 #include "SDL_image.h"
 #include "attackerObject.h"
 
+
+
 defenderObject::defenderObject(SDL_Renderer *ren, int x, int y, int w, int h, int id, od_type otp) {
 	O_Init_Profile(id, otp, ren);
 	xpos = x;
@@ -28,6 +30,7 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 	// cout << "INIT Defender " << id << endl;
 	renderer = ren;
 	orientation = false;
+	
 	switch (otp) {
 		case Prof1:
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender1.png");
@@ -94,7 +97,7 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 	}
 }
 
-void defenderObject::Update(Money * attackerMoney, Money * defnederMoney) {
+void defenderObject::Update(Money * attackerMoney, Money * defnederMoney, Music * gameMusic) {
 	srcRect.x = 0;
 	srcRect.y = 0;
 
@@ -103,6 +106,7 @@ void defenderObject::Update(Money * attackerMoney, Money * defnederMoney) {
 
 
 	if (D_is_dead() && (xpos != 750)) {
+		gameMusic -> Play_D_dead();
 		xpos = 750;
 		ypos = ypos;
 		block_xpos = 19;
@@ -114,9 +118,6 @@ void defenderObject::Update(Money * attackerMoney, Money * defnederMoney) {
 		cout << "dead" << endl;
 		*attackerMoney += D_dead_reward;
 
-		// TODO TODO
-		// Update block state
-		// map[i]->serOcupied(false)
 		return;
 	}
 	else{	// Defender is alive

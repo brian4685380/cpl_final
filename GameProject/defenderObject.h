@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Money.h"
 #include "defender.h"
+#include "Music.h"
 
 class attackerObject;  // Forward Declartion to prevent circular dependancy
 
@@ -35,7 +36,7 @@ class defenderObject: public defender {
 		}
 	}
 
-	void Update(Money *, Money *);
+	void Update(Money *, Money *, Music *);
 	void D_Attack(vector<attackerObject *> &);
 	void D_range_attack(vector<attackerObject *> &);
 	void D_single_attack(vector<attackerObject *> &);

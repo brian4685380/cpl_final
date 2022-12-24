@@ -9,6 +9,7 @@
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
+#include "Music.h"
 
 std::vector<int> leftupCorner = {30, 34, 38, 86, 90, 94, 142, 146, 150, 202, 206};
 std::vector<int> leftdownCorner = {31, 35, 39, 87, 91, 95, 143, 147, 151, 203, 207};
@@ -27,6 +28,11 @@ Money *attackerMoney;
 Money *defenderMoney;
 int A_id = 0;  // Attacker id
 int D_id = 0;  // Defender id
+
+//Music;
+Music *gameMusic;
+bool playCompletePathMusic = false;
+
 Game::Game() {}
 Game::~Game() {}
 
@@ -43,11 +49,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 			std::cout << "Window created" << std::endl;
 		}
 
-		renderer = SDL_CreateRenderer(window, -1, 0);  // Render window
+		// Render window
+		renderer = SDL_CreateRenderer(window, -1, 0);  
 		if (renderer) {
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			std::cout << "renderer created" << std::endl;
 		}
+
+		// SDL Mixer (Musics and sounds)
+		if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ){
+			cout << "SDL_mixer could not initialize!" << endl;
+		}
+
 		isRunning = true;
 	} else {
 		isRunning = false;
@@ -88,9 +101,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	defenderMoney = new Money(10000);
 
 	for (auto &i: defender_option) {
-		i->Update(attackerMoney, defenderMoney);
+		i->Update(attackerMoney, defenderMoney, gameMusic);
 	}
+
+	// Music
+	gameMusic = new Music;
+	gameMusic->MusicLoad();
+
+	// Start playing music
+	gameMusic->Play_bgm();
 }
+
+
 
 void Game::createMap() {
 	for (int i = 0; i < 18; i++) {
@@ -194,10 +216,10 @@ void Game::update() {
 		i->Update();
 	}
 	for (auto &i: attacker_list) {
-		i->Update();
+		i->Update(gameMusic);
 	}
 	for (auto &i: defender_list) {
-		i->Update(attackerMoney, defenderMoney);
+		i->Update(attackerMoney, defenderMoney, gameMusic);
 	}
 
 	// Attacker attack
@@ -257,6 +279,7 @@ void Game::handleEvents() {
 							setDefenderChosen(none);
 						}
 						if (block::mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+							gameMusic->Play_D_select();
 							if (i == 0) {
 								std::cout << "clicked" << std::endl;
 								defenderChoiceRegion[i]->setType(defenderChosen);
@@ -304,9 +327,12 @@ void Game::handleEvents() {
 						if (i->isOcupied() == false) {
 							if (chosenDefender == defender1) {
 								if (defenderMoney->money_get() < defenderObject::D_get_price(Prof1)) {
+									gameMusic->Play_noMoney();
 									cout << "Defender not have enough money" << endl;
 									break;
 								}
+
+								gameMusic->Play_D_build();
 								*defenderMoney -= defenderObject::D_get_price(Prof1);
 								cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -314,11 +340,15 @@ void Game::handleEvents() {
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof1));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
-							} else if (chosenDefender == defender2) {
+							} 
+							else if (chosenDefender == defender2) {
 								if (defenderMoney->money_get() < defenderObject::D_get_price(Prof2)) {
+									gameMusic->Play_noMoney();
 									cout << "Defender not have enough money" << endl;
 									break;
 								}
+								
+								gameMusic->Play_D_build();
 								*defenderMoney -= defenderObject::D_get_price(Prof2);
 								cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -326,7 +356,8 @@ void Game::handleEvents() {
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof2));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
-							} else if (chosenDefender == truck) {
+							} 
+							else if (chosenDefender == truck) {
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -337,9 +368,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -356,9 +390,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -376,8 +413,11 @@ void Game::handleEvents() {
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
 												cout << "Defender not have enough money" << endl;
+												gameMusic->Play_noMoney();
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -394,9 +434,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
+												gameMusic->Play_noMoney();	
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -412,7 +455,8 @@ void Game::handleEvents() {
 									default:
 										break;
 								}
-							} else if (chosenDefender == NTULibrary) {
+							} 
+							else if (chosenDefender == NTULibrary) {
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -423,9 +467,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -446,9 +493,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -469,9 +519,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -492,9 +545,12 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
+
+											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
 
@@ -767,7 +823,9 @@ void Game::handleEvents() {
 		// cout << "key pressed" << endl;
 		switch (event.key.keysym.sym) {
 			case SDLK_c:
-				std::cout << "c pressed" << std::endl;
+				gameMusic->Play_clearPath();
+				playCompletePathMusic = false;
+				//std::cout << "c pressed" << std::endl;
 				path->restart();
 				break;
 		}
@@ -776,54 +834,65 @@ void Game::handleEvents() {
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker1)) {
+						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker1);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
-
+					
+					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "1 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker1));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
+
 				case SDLK_2:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker2)) {
+						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker2);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
 
+					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "2 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker2));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
+
 				case SDLK_3:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker3)) {
+						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker3);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
 
+					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "3 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker3));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
 					break;
+
 				case SDLK_4:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker4)) {
+						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker4);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
 
+					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "4 pressed" << endl;
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker4));
@@ -833,24 +902,49 @@ void Game::handleEvents() {
 			}
 
 		} else {
-			std::cout << "path not end" << std::endl;
 			switch (event.key.keysym.sym) {
 				case SDLK_w:
+					gameMusic->Play_buildPath();
 					std::cout << "w pressed" << std::endl;
 					path->draw_path('U');
+					if(path->is_path_end() && playCompletePathMusic == false) {
+						gameMusic->Play_completePath();
+						playCompletePathMusic = true;
+					}
 					break;
 				case SDLK_a:
+					gameMusic->Play_buildPath();
 					std::cout << "a pressed" << std::endl;
 					path->draw_path('L');
+					if(path->is_path_end() && playCompletePathMusic == false) {
+						gameMusic->Play_completePath();
+						playCompletePathMusic = true;
+					}
 					break;
 				case SDLK_s:
+					gameMusic->Play_buildPath();
 					std::cout << "s pressed" << std::endl;
 					path->draw_path('D');
+					if(path->is_path_end() && playCompletePathMusic == false) {
+						gameMusic->Play_completePath();
+						playCompletePathMusic = true;
+					}
 					break;
 				case SDLK_d:
+					gameMusic->Play_buildPath();
 					std::cout << "d pressed" << std::endl;
 					path->draw_path('R');
+					if(path->is_path_end() && playCompletePathMusic == false) {
+						gameMusic->Play_completePath();
+						playCompletePathMusic = true;
+					}
 					break;
+				case SDLK_1:
+				case SDLK_2:
+				case SDLK_3:
+				case SDLK_4:
+					gameMusic->Play_noMoney();
+					std::cout << "path not end" << std::endl;
 				default:
 					break;
 			}
@@ -895,9 +989,14 @@ void Game::render() {
 void Game::clean() {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+
+	gameMusic->MusicClean();
+
 	SDL_Quit();
+	Mix_Quit();
 	std::cout << "Game Cleaned" << std::endl;
 }
+
 bool Game::running() {
 	return isRunning;
 }
