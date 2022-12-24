@@ -28,6 +28,8 @@ class building {
 	void occupied_set();    // called when placed firmly, be cautious with negative index.
     int block_xpos_get();
     int block_ypos_get();
+	int xpos_get();
+    int ypos_get();
 	od_type get_type();
 };
 
@@ -40,6 +42,10 @@ class defender: public building {
 	int D_attack_radius;
 	vector<pair<int, int>> D_attack_block;
 
+	// Reward
+	int D_dead_reward;	// Give money to attacker when died
+	int D_alive_reward;	// Give money to defender when alive
+
    public:
 	// defender
 	defender();
@@ -47,6 +53,8 @@ class defender: public building {
 
     int D_block_xpos_get();
     int D_block_ypos_get();
+	int D_xpos_get();
+    int D_ypos_get();
 	void D_attack_block_set();
 	od_type D_get_type();
 	// Heart
@@ -61,6 +69,7 @@ class defender: public building {
 	void D_attack_set(int);
 	void D_attack_add(int);   // default add 1
 	void D_attack_minus(int); // default minus 1
+
 
 
 

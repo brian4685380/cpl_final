@@ -56,6 +56,14 @@ int building::block_ypos_get(){
     return block_ypos;
 }
 
+int building::xpos_get(){
+    return xpos;
+}
+
+int building::ypos_get(){
+    return ypos;
+}
+
 // defender
 
 defender::defender()
@@ -141,6 +149,13 @@ int defender::D_block_ypos_get(){
     return block_ypos;
 }
 
+int defender::D_xpos_get(){
+    return xpos;
+}
+
+int defender::D_ypos_get(){
+    return ypos;
+}
 
 
 // vector<int> defender::D_attack_search(const * Attacker attacker, int NumOfAttacker)  //

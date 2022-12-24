@@ -37,6 +37,8 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_attack = 10;
 			D_attack_type = d_Single;
 			D_attack_radius = 2;
+			D_dead_reward = 80;
+			D_alive_reward = 1;
 			break;
 
 		case Prof2:
@@ -47,6 +49,8 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_attack = 15;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
+			D_dead_reward = 240;
+			D_alive_reward = 1;
 			break;
 
 		case Bike:
@@ -58,6 +62,8 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_attack = 20;
 			D_attack_type = d_Single;
 			D_attack_radius = 2;
+			D_dead_reward = 400;
+			D_alive_reward = 1;
 			break;
 
 		case Library:
@@ -69,6 +75,8 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_attack = 25;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
+			D_dead_reward = 1200;
+			D_alive_reward = 1;
 			break;
 
 		case Home:
@@ -76,28 +84,48 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/BL_building_hollow.png");
 			Od_type = Home;
 			D_id = id;
-			D_heart = 500;
-			D_attack = 10;
-			D_attack_type = d_Single;
-			D_attack_radius = 5;
+			D_heart = 3000;
+			D_attack = 5;
+			D_attack_type = d_Range;
+			D_attack_radius = 2;
+			D_dead_reward = 0;
+			D_alive_reward = 0;
 			break;
 	}
 }
 
-void defenderObject::Update() {
+void defenderObject::Update(Money * attackerMoney, Money * defnederMoney) {
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
 
-	if (D_is_dead()) {
+
+	if (D_is_dead() && (xpos != 750)) {
+		xpos = 750;
+		ypos = ypos;
+		block_xpos = 19;
+		block_ypos = block_ypos;
 		destRect.x = 750;
+
+		// Give attacker money
+
+		cout << "dead" << endl;
+		*attackerMoney += D_dead_reward;
+
 		// TODO TODO
 		// Update block state
 		// map[i]->serOcupied(false)
 		return;
 	}
+	else{	// Defender is alive
+		*defnederMoney += D_alive_reward;
+	}
+
+	// if(Od_type == Home){
+	// 	cout << D_heart << endl;
+	// }
 }
 
 void defenderObject::Render() {
@@ -219,6 +247,20 @@ void defenderObject::D_range_attack(vector<attackerObject *> &attacker_list) {
 			}
 			break;
 		case Home:
+			for (auto &a_idx: attacker_list) {
+				if (a_idx->A_is_dead()) continue;
+				for (int i = max(0, block_xpos - D_attack_radius); i < min(18, block_xpos + block_width + D_attack_radius); i++){
+					bool D_attack_finished = false;
+					for (int j = max (0, block_ypos - D_attack_radius); j < min(14, block_ypos + block_height + D_attack_radius); j++){
+						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
+							a_idx->A_heart_minus(D_attack);
+							D_attack_finished = true;
+							break;
+						}
+					}
+					if(D_attack_finished)	break;
+				}
+			}
 			break;
 		default:
 			break;

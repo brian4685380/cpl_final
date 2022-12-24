@@ -88,7 +88,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	defenderMoney = new Money(10000);
 
 	for (auto &i: defender_option) {
-		i->Update();
+		i->Update(attackerMoney, defenderMoney);
 	}
 }
 
@@ -123,18 +123,70 @@ void Game::createMap() {
 }
 
 void Game::update() {
+	// for (auto &i: map) {
+	// 	bool check = false;
+	// 	for (auto &j: defender_list) {
+	// 		if (i->getDestX() == j->getDestX() && i->getDestY() == j->getDestY()) {
+	// 			check = true;
+	// 			break;
+	// 		}
+	// 	}
+	// 	if (check == false) {
+	// 		i->setOcupied(false);
+	// 	}
+	// }
+
 	for (auto &i: map) {
-		bool check = false;
+		i->setOcupied(false);
+
 		for (auto &j: defender_list) {
-			if (i->getDestX() == j->getDestX() && i->getDestY() == j->getDestY()) {
-				check = true;
+			if(i->isOcupied()){
 				break;
 			}
-		}
-		if (check == false) {
-			i->setOcupied(false);
+			switch(j->D_get_type()){
+				case Prof1:
+				case Prof2:
+					if (i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) {
+						i->setOcupied(true);
+						break;
+					}
+					break;
+				case Bike:
+					if ((i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get())
+					) {
+						i->setOcupied(true);
+						break;
+					}
+					break;
+				case Library:
+					if ((i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get() + 40) ||
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get() + 40)
+					) {
+						i->setOcupied(true);
+						break;
+					}
+					break;
+				case Home:
+					if ((i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() + 80 && i->getDestY() == j->D_ypos_get()) ||
+						(i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get() + 40) ||
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get() + 40) ||
+						(i->getDestX() == j->D_xpos_get() + 80 && i->getDestY() == j->D_ypos_get() + 40)
+					) {
+						i->setOcupied(true);
+						break;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	}
+
 	for (auto &i: defenderChoiceRegion) {
 		i->Update();
 	}
@@ -145,7 +197,7 @@ void Game::update() {
 		i->Update();
 	}
 	for (auto &i: defender_list) {
-		i->Update();
+		i->Update(attackerMoney, defenderMoney);
 	}
 
 	// Attacker attack
@@ -158,7 +210,7 @@ void Game::update() {
 	for (auto &i: defender_list) {
 		i->D_Attack(attacker_list);
 	}
-
+	
 	// // Money
 	// *attackerMoney += 1;
 	// *defenderMoney += 1;
@@ -170,8 +222,8 @@ void Game::update() {
 		// cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
 
 		// Money update
-		*attackerMoney += 1;
-		*defenderMoney += 1;
+		//*attackerMoney += 1;
+		//*defenderMoney += 1;
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
 	}

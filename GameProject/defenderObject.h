@@ -35,7 +35,7 @@ class defenderObject: public defender {
 		}
 	}
 
-	void Update();
+	void Update(Money *, Money *);
 	void D_Attack(vector<attackerObject *> &);
 	void D_range_attack(vector<attackerObject *> &);
 	void D_single_attack(vector<attackerObject *> &);
