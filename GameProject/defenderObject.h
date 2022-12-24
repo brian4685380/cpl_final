@@ -3,20 +3,20 @@
 #include <vector>
 
 #include "Game.h"
-#include "defender.h"
 #include "Money.h"
+#include "defender.h"
 
-class attackerObject;	//Forward Declartion to prevent circular dependancy
+class attackerObject;  // Forward Declartion to prevent circular dependancy
 
-class defenderObject : public defender{
+class defenderObject: public defender {
    public:
 	defenderObject(SDL_Renderer *, int, int, int, int, int, od_type);
 	~defenderObject();
 
 	void O_Init_Profile(int, od_type, SDL_Renderer *);
 
-	static int D_get_price(od_type otp){
-		switch(otp){
+	static int D_get_price(od_type otp) {
+		switch (otp) {
 			case Prof1:
 				return 100;
 				break;
@@ -36,19 +36,17 @@ class defenderObject : public defender{
 	}
 
 	void Update();
-	void D_Attack(vector<attackerObject*> &);
-	void D_range_attack(vector<attackerObject*> &);
-	void D_single_attack(vector<attackerObject*> &);
+	void D_Attack(vector<attackerObject *> &);
+	void D_range_attack(vector<attackerObject *> &);
+	void D_single_attack(vector<attackerObject *> &);
 	void Render();
 
+	int getDestX();
+	int getDestY();
 
-
-
-	//void D_single_attack(vector<attackerObject*>);
-	
+	// void D_single_attack(vector<attackerObject*>);
 
    private:
-
 	int D_attack_count = 0;
 	SDL_Texture *objTexture;
 	SDL_Rect srcRect, destRect;
