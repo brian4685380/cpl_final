@@ -21,10 +21,10 @@ class attackerObject : public Attacker{
 				return 100;
 				break;
 			case Attacker3:
-				return 150;
+				return 200;
 				break;
 			case Attacker4:
-				return 250;
+				return 500;
 				break;
 			default:
 				return 0;
@@ -45,7 +45,8 @@ class attackerObject : public Attacker{
    private:
 	int pathIndex = 0;
 	int path;
-	int update_count = 0;
+	int A_update_count = 0;
+	int A_attack_count = 0;
 
 
 	std::vector<char> move_dir_list;

@@ -14,7 +14,8 @@ attackerObject::attackerObject(SDL_Renderer *ren, int x, int y, int id, oa_type 
 	block_xpos = 0;
 	block_ypos = 13;	//block_pos initialize to (0,13)
 	pathIndex = 0;
-	update_count = 0;
+	A_update_count = 0;
+	A_attack_count = 0;
 }
 
 attackerObject:: ~attackerObject(){};
@@ -29,18 +30,18 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			A_id = id;
 			A_v = 1;
 			A_heart = 100;
-			A_attack = 1;
+			A_attack = 10;
 			A_attack_type = a_Single;
-			A_attack_range = 1;
+			A_attack_range = 2;
 			break;
 		case Attacker2:
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student2.png");
 			Oa_type = Attacker2;
 			A_id = id;
 			A_v = 2;
-			A_heart = 100;
-			A_attack = 2;
-			A_attack_type = a_Single;
+			A_heart = 150;
+			A_attack = 10;
+			A_attack_type = a_Range;
 			A_attack_range = 2;
 			break;
 		case Attacker3:
@@ -48,20 +49,20 @@ void attackerObject:: A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren){
 			Oa_type = Attacker3;
 			A_id = id;
 			A_v = 4;
-			A_heart = 100;
-			A_attack = 3;
+			A_heart = 600;
+			A_attack = 8;
 			A_attack_type = a_Single;
-			A_attack_range = 3;
+			A_attack_range = 2;
 			break;
 		case Attacker4:
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student4.png");
 			Oa_type = Attacker4;
 			A_id = id;
-			A_v = 8;
-			A_heart = 100;
-			A_attack = 4;
+			A_v = 1;
+			A_heart = 1000;
+			A_attack = 10;
 			A_attack_type = a_Range;
-			A_attack_range = 4;
+			A_attack_range = 3;
 			break;
 	}
 	
@@ -97,9 +98,9 @@ void attackerObject::Update() {
 
 
 	// Moving
-	update_count++;
-	if(update_count >= 4){
-		update_count = 0;
+	A_update_count++;
+	if(A_update_count >= 4){
+		A_update_count = 0;
 		if (move_dir_list[pathIndex] == 'U')
 			ypos -= A_v;
 		if (move_dir_list[pathIndex] == 'D')
@@ -269,22 +270,25 @@ void attackerObject::A_single_attack(vector<defenderObject *> & defender_list){
 }
 
 void attackerObject::A_Attack(vector<defenderObject *> & defender_list){
-	
+	A_attack_count++;
+	if(A_attack_count % 4 == 0){
+		A_attack_count = 0;
 		if(A_is_dead()){	
+				return;
+			}
+			switch(A_attack_type){
+				case a_Single:
+					this->A_single_attack(defender_list);
+					break;
+				case a_Range:
+					this->A_range_attack(defender_list);
+					break;
+				default:
+					break;
+			}
 			return;
-		}
-		switch(A_attack_type){
-			case a_Single:
-				this->A_single_attack(defender_list);
-				break;
-			case a_Range:
-				this->A_range_attack(defender_list);
-				break;
-			default:
-				break;
-		}
-		return;
-
+	}
+	
 }
 
 

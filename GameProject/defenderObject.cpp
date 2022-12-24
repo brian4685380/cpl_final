@@ -32,8 +32,8 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender1.png");
 			Od_type = Prof1;
 			D_id = id;
-			D_heart = 100;
-			D_attack = 1000;
+			D_heart = 250;
+			D_attack = 10;
 		    D_attack_type = d_Single;
 			D_attack_radius = 2;
             break;
@@ -42,10 +42,10 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender2.png");
 			Od_type = Prof2;
 			D_id = id;
-			D_heart = 200;
-			D_attack = 1000;
+			D_heart = 350;
+			D_attack = 15;
 		    D_attack_type = d_Range;
-			D_attack_radius = 3;
+			D_attack_radius = 2;
             break;
 
         case Bike:
@@ -53,8 +53,8 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/truck.png");
 			Od_type = Bike;
 			D_id = id;
-			D_heart = 300;
-			D_attack = 1000;
+			D_heart = 600;
+			D_attack = 20;
 		    D_attack_type = d_Single;
 			D_attack_radius = 2;
             break;
@@ -64,8 +64,8 @@ void defenderObject:: O_Init_Profile(int id, od_type otp, SDL_Renderer *ren){
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/NTULibrary.png");
 			Od_type = Library;
 			D_id = id;
-			D_heart = 400;
-			D_attack = 1000;
+			D_heart = 1000;
+			D_attack = 25;
 		    D_attack_type = d_Range;
 			D_attack_radius = 2;
             break;
@@ -339,19 +339,21 @@ void defenderObject::D_single_attack(vector<attackerObject*> & attacker_list){
 }
 
 void defenderObject::D_Attack(vector<attackerObject*> & attacker_list){
-	if(D_is_dead()){	
+	D_attack_count++;
+	if(D_attack_count % 4 == 0){
+		if(D_is_dead()){	
+			return;
+		}
+		switch(D_attack_type){
+			case d_Single:
+				this->D_single_attack(attacker_list);
+				break;
+			case d_Range:
+				this->D_range_attack(attacker_list);
+				break;
+			default:
+				break;
+		}
 		return;
 	}
-
-	switch(D_attack_type){
-		case d_Single:
-			this->D_single_attack(attacker_list);
-			break;
-		case d_Range:
-			this->D_range_attack(attacker_list);
-			break;
-		default:
-			break;
-	}
-	return;
 }

@@ -84,8 +84,8 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	gameTimer = new Timer(10000);
 
 	// Money
-	attackerMoney = new Money(500);
-	defenderMoney = new Money(500);
+	attackerMoney = new Money(10000);
+	defenderMoney = new Money(10000);
 }
 
 void Game::createMap() {
@@ -144,18 +144,22 @@ void Game::update() {
 	// Defender attack
 	for (auto &i: defender_list) {
 		i->D_Attack(attacker_list);
-	}
+	}	
+
+	// // Money
+	// *attackerMoney += 1;
+	// *defenderMoney += 1;
 	
 	
 	// Timer update
 	gameTimer->timer_update();
-	if (gameTimer->get_elapsed_ms() >= 1000 * gameTimerCount) {
+	if (gameTimer->get_elapsed_ms() >= 10 * gameTimerCount) {
 		gameTimerCount++;
 		// cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
 
 		// Money update
-		*attackerMoney += 10;
-		*defenderMoney += 10;
+		*attackerMoney += 1;
+		*defenderMoney += 1;
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
 

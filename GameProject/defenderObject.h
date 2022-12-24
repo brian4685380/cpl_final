@@ -4,6 +4,8 @@
 
 #include "Game.h"
 #include "defender.h"
+#include "Money.h"
+
 class attackerObject;	//Forward Declartion to prevent circular dependancy
 
 class defenderObject : public defender{
@@ -16,16 +18,16 @@ class defenderObject : public defender{
 	static int D_get_price(od_type otp){
 		switch(otp){
 			case Prof1:
-				return 50;
-				break;
-			case Prof2:
 				return 100;
 				break;
+			case Prof2:
+				return 300;
+				break;
 			case Bike:
-				return 150;
+				return 500;
 				break;
 			case Library:
-				return 250;
+				return 1500;
 				break;
 			default:
 				return 0;
@@ -47,6 +49,7 @@ class defenderObject : public defender{
 
    private:
 
+	int D_attack_count = 0;
 	SDL_Texture *objTexture;
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer *renderer;
