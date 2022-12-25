@@ -6,11 +6,12 @@
 #include "Money.h"
 #include "Music.h"
 #include "SDL.h"
-#include "Text.h"
 #include "Timer.h"
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
+
+#include "Text.h"
 
 std::vector<int> leftupCorner = {30, 34, 38, 86, 90, 94, 142, 146, 150, 202, 206};
 std::vector<int> leftdownCorner = {31, 35, 39, 87, 91, 95, 143, 147, 151, 203, 207};
@@ -39,6 +40,7 @@ Text *systemText;
 Text *attackerText;
 Text *defenderText;
 
+
 Game::Game() {}
 Game::~Game() {}
 
@@ -65,6 +67,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 		// SDL Mixer (Musics and sounds)
 		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			cout << "SDL_mixer could not initialize!" << endl;
+		}
+
+		// SDL ttf
+		if (TTF_Init() < 0){
+			cout << "SDL_ttf could not initialize!" << endl;
 		}
 
 		isRunning = true;
@@ -117,8 +124,11 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	// Start playing music
 	gameMusic->Play_bgm();
 
-	// Text
-	TTF_Init();
+	
+	
+	// systemText = new Text(0, 0);
+	// systemText->UpdateAndRender(renderer);
+	
 	attackerText = new Text(0, 600);
 	defenderText = new Text(280, 600);
 	systemText = new Text(520, 600);
@@ -156,7 +166,7 @@ void Game::createMap() {
 }
 
 void Game::update() {
-	defenderText->Update();
+
 	// for (auto &i: map) {
 	// 	bool check = false;
 	// 	for (auto &j: defender_list) {
@@ -258,6 +268,7 @@ void Game::update() {
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
 	}
+
 	// if(gameTimer->is_time_up()){
 	// 	cout << "Time's up" << endl;
 	// }
@@ -844,6 +855,7 @@ void Game::handleEvents() {
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
+
 					*attackerMoney -= attackerObject::A_get_price(Attacker1);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
 
@@ -989,7 +1001,13 @@ void Game::render() {
 	for (auto &i: defender_list) {
 		i->Render();
 	}
-	defenderText->Render(renderer);
+
+	// Text
+
+	systemText->UpdateAndRender(renderer);
+	defenderText->UpdateAndRender(renderer);
+	attackerText->UpdateAndRender(renderer);
+	
 	SDL_RenderPresent(renderer);
 }
 
@@ -999,8 +1017,17 @@ void Game::clean() {
 
 	gameMusic->MusicClean();
 
+
+	// Text
+
+	systemText->TextClean();
+	defenderText->TextClean();
+	attackerText->TextClean();
+
+
 	SDL_Quit();
 	Mix_Quit();
+	
 	std::cout << "Game Cleaned" << std::endl;
 }
 

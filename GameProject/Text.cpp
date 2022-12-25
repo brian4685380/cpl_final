@@ -1,40 +1,71 @@
+#pragma once
+
 #include "Text.h"
+using namespace std;
 
-#include "SDL.h"
-
-Text::Text(int x, int y) {
-	textRect.x = x;
-	textRect.y = y;
+Text::Text(int x, int y){
+    textRect.x = x;
+    textRect.y = y;
 }
 
-Text::~Text() {
-}
+// void Text::TextInit(SDL_Renderer *renderer){         // Redundant (equivalent to TextUpdate)
+    
+//     textSurface = TTF_RenderUTF8_Solid(font, text[0].c_str(), textColor);
+//     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+//     SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+    
+	
+//     //todo textsurface = TTF_RenderUTF8_Solid(font, i.c_str(), textColor);
+//     //textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+//     //SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+// 	SDL_FreeSurface(textSurface);
+// 	textSurface = nullptr;
 
-void Text::Render(SDL_Renderer *renderer) {
-	// Render the text
-	SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-}
+// }
 
-void Text::Update() {
-	// Render the text
-	// int fontHeight = TTF_FontHeight(font);
-	for (auto &i: text) {
+// void Text::TextUpdate(SDL_Renderer *renderer){
+//     for (auto &i: text) {
+// 		textSurface = TTF_RenderUTF8_Solid(font, i.c_str(), textColor);
+// 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+// 		SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
+// 		// SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+// 		// textRect.y += fontHeight; 
+// 	}
+//     // textRect.y -= fontHeight * text.size();
+
+//     // for (auto &i: text) {
+// 	// 	cout << i << endl;
+// 	// }
+//     return;
+// }
+
+void Text::UpdateAndRender(SDL_Renderer *renderer){
+    for (auto &i: text) {
 		textSurface = TTF_RenderUTF8_Solid(font, i.c_str(), textColor);
 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 		SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-		textRect.y += 10;
+		textRect.y += fontHeight; 
 	}
-	for (auto &i: text) {
-		cout << i << endl;
-	}
+    textRect.y -= fontHeight * text.size();
+    //SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+    return;
 }
+
+void Text::TextClean(){
+    SDL_FreeSurface(textSurface);
+    textSurface = nullptr;
+
+    SDL_DestroyTexture(textTexture);
+	textTexture = nullptr;
+}
+
 
 void Text::showDrawingHint() {
 	text.clear();
-	text.push_back("按下wasd可繪製路徑");
-	text.push_back("按下c鍵可清除路徑");
-	text.push_back("wasd建亦可收回路徑");
+	text.push_back("按下WASD可繪製路徑");
+	text.push_back("按下C鍵可清除路徑");
+	text.push_back("WASD鍵亦可收回路徑");
 }
 void Text::overBorderHint() {
 	text.clear();
@@ -108,6 +139,7 @@ void Text::showAttackerData() {
 	text.push_back("移動速度: 1");
 	text.push_back("攻擊範圍: 1");
 }
+
 void Text::showSystemData(int attackerMoney, int defenderMoney, int remainTime) {
 	text.clear();
 	text.push_back("攻擊方金錢: " + std::to_string(attackerMoney));
