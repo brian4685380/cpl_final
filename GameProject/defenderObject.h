@@ -41,6 +41,7 @@ class defenderObject: public defender {
 	void D_range_attack(vector<attackerObject *> &);
 	void D_single_attack(vector<attackerObject *> &);
 	void Render();
+	void destroy();
 
 	int getDestX();
 	int getDestY();

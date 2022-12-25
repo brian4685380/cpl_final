@@ -35,6 +35,7 @@ class block {
 	void setMouseState(Uint32);
 	void setMouseX(int);
 	void setMouseY(int);
+	void destroy();
 	static int mouseX, mouseY;
 	static Uint32 mouseState;
 

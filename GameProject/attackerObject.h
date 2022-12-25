@@ -41,8 +41,7 @@ class attackerObject: public Attacker {
 	void getAttackerPath(std::vector<std::pair<int, int>>);
 	void getAttackerDir(std::vector<char>);
 	void setDestRectX(int);
-
-	
+	void destroy();
 
    private:
 	int pathIndex = 0;

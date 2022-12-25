@@ -6,12 +6,11 @@
 #include "Money.h"
 #include "Music.h"
 #include "SDL.h"
+#include "Text.h"
 #include "Timer.h"
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
-
-#include "Text.h"
 
 std::vector<int> leftupCorner = {30, 34, 38, 86, 90, 94, 142, 146, 150, 202, 206};
 std::vector<int> leftdownCorner = {31, 35, 39, 87, 91, 95, 143, 147, 151, 203, 207};
@@ -36,10 +35,9 @@ Music *gameMusic;
 bool playCompletePathMusic = false;
 
 // Text
-Text *systemText;
-Text *attackerText;
-Text *defenderText;
-
+Text *systemText = nullptr;
+Text *attackerText = nullptr;
+Text *defenderText = nullptr;
 
 Game::Game() {}
 Game::~Game() {}
@@ -107,7 +105,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	path->getInitialMap(map);
 
 	// Timer
-	gameTimer = new Timer(10000);
+	gameTimer = new Timer(10000000);
 
 	// Money
 	attackerMoney = new Money(10000);
@@ -124,11 +122,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	// Start playing music
 	gameMusic->Play_bgm();
 
-	
-	
-	// systemText = new Text(0, 0);
-	// systemText->UpdateAndRender(renderer);
-	
+	// Text
 	attackerText = new Text(0, 600);
 	defenderText = new Text(280, 600);
 	systemText = new Text(520, 600);
@@ -166,7 +160,6 @@ void Game::createMap() {
 }
 
 void Game::update() {
-
 	// for (auto &i: map) {
 	// 	bool check = false;
 	// 	for (auto &j: defender_list) {
@@ -268,10 +261,12 @@ void Game::update() {
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
 	}
-
-	// if(gameTimer->is_time_up()){
-	// 	cout << "Time's up" << endl;
-	// }
+	if (gameTimer->is_time_up()) {
+		winner = defenderPlayer;
+	}
+	if (defender_list[0]->D_is_dead()) {
+		winner = attackerPlayer;
+	}
 }
 
 void Game::handleEvents() {
@@ -855,7 +850,6 @@ void Game::handleEvents() {
 						cout << "Attacker not having enough money" << endl;
 						break;
 					}
-
 					*attackerMoney -= attackerObject::A_get_price(Attacker1);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
 
@@ -985,29 +979,55 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(renderer);
-	
-	for (auto &i: defenderChoiceRegion) {
-		i->Render();
-	}
-	for (auto &i: map) {
-		i->Render();
-	}
-	for (auto &i: defender_option) {
-		i->Render();
-	}
-	for (auto &i: attacker_list) {
-		i->Render();
-	}
-	for (auto &i: defender_list) {
-		i->Render();
+	if (winner != unassigned) {
+		// render a 1080 * 720 image
+		// clear all objects on the screen
+		// show the winner
+		for (auto &i: map) {
+			i->destroy();
+		}
+		for (auto &i: defender_list) {
+			i->destroy();
+		}
+		for (auto &i: attacker_list) {
+			i->destroy();
+		}
+		for (auto &i: defender_option) {
+			i->destroy();
+		}
+		for (auto &i: defenderChoiceRegion) {
+			i->destroy();
+		}
+
+		if (winner == defenderPlayer) {
+			resultTexture = IMG_LoadTexture(renderer, "assets/backgrounds/Defender Wins.png");
+		} else if (winner == attackerPlayer) {
+			resultTexture = IMG_LoadTexture(renderer, "assets/backgrounds/Challenger Wins.png");
+		}
+		SDL_RenderCopy(renderer, resultTexture, NULL, NULL);
+	} else {
+		for (auto &i: defenderChoiceRegion) {
+			i->Render();
+		}
+		for (auto &i: map) {
+			i->Render();
+		}
+		for (auto &i: defender_option) {
+			i->Render();
+		}
+		for (auto &i: attacker_list) {
+			i->Render();
+		}
+		for (auto &i: defender_list) {
+			i->Render();
+		}
 	}
 
 	// Text
-
 	systemText->UpdateAndRender(renderer);
 	defenderText->UpdateAndRender(renderer);
 	attackerText->UpdateAndRender(renderer);
-	
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -1016,18 +1036,14 @@ void Game::clean() {
 	SDL_DestroyRenderer(renderer);
 
 	gameMusic->MusicClean();
-
-
+	
 	// Text
-
 	systemText->TextClean();
 	defenderText->TextClean();
 	attackerText->TextClean();
 
-
 	SDL_Quit();
 	Mix_Quit();
-	
 	std::cout << "Game Cleaned" << std::endl;
 }
 

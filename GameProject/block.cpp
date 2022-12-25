@@ -124,3 +124,10 @@ void block::switchType() {
 			break;
 	}
 }
+
+void block::destroy() {
+	// Destroy the texture
+	SDL_DestroyTexture(objTexture);
+	// Destroy the texture
+	SDL_RenderClear(renderer);
+}

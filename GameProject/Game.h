@@ -19,7 +19,11 @@ enum corner {
 	rightDown,
 	notCorner,
 };
-
+enum player {
+	defenderPlayer,
+	attackerPlayer,
+	unassigned,
+};
 class Game {
    public:
 	Game();
@@ -27,6 +31,7 @@ class Game {
 
 	void init(const char *, int, int, int, int, bool);
 
+	SDL_Texture *resultTexture;
 	void handleEvents();
 	void update();
 	void render();
@@ -38,7 +43,7 @@ class Game {
 
 	bool running();
 	bool aDefenderChosen = false;
-
+	player winner = unassigned;
 	corner getCorner(int);
 
    private:

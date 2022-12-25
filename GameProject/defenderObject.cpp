@@ -6,8 +6,6 @@
 #include "SDL_image.h"
 #include "attackerObject.h"
 
-
-
 defenderObject::defenderObject(SDL_Renderer *ren, int x, int y, int w, int h, int id, od_type otp) {
 	O_Init_Profile(id, otp, ren);
 	xpos = x;
@@ -30,7 +28,7 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 	// cout << "INIT Defender " << id << endl;
 	renderer = ren;
 	orientation = false;
-	
+
 	switch (otp) {
 		case Prof1:
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender1.png");
@@ -87,7 +85,7 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/BL_building_hollow.png");
 			Od_type = Home;
 			D_id = id;
-			D_heart = 3000;
+			D_heart = 10;
 			D_attack = 5;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
@@ -97,16 +95,15 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 	}
 }
 
-void defenderObject::Update(Money * attackerMoney, Money * defnederMoney, Music * gameMusic) {
+void defenderObject::Update(Money *attackerMoney, Money *defnederMoney, Music *gameMusic) {
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
 
-
 	if (D_is_dead() && (xpos != 750)) {
-		gameMusic -> Play_D_dead();
+		gameMusic->Play_D_dead();
 		xpos = 750;
 		ypos = ypos;
 		block_xpos = 19;
@@ -119,8 +116,7 @@ void defenderObject::Update(Money * attackerMoney, Money * defnederMoney, Music 
 		*attackerMoney += D_dead_reward;
 
 		return;
-	}
-	else{	// Defender is alive
+	} else {  // Defender is alive
 		*defnederMoney += D_alive_reward;
 	}
 
@@ -250,16 +246,16 @@ void defenderObject::D_range_attack(vector<attackerObject *> &attacker_list) {
 		case Home:
 			for (auto &a_idx: attacker_list) {
 				if (a_idx->A_is_dead()) continue;
-				for (int i = max(0, block_xpos - D_attack_radius); i < min(18, block_xpos + block_width + D_attack_radius); i++){
+				for (int i = max(0, block_xpos - D_attack_radius); i < min(18, block_xpos + block_width + D_attack_radius); i++) {
 					bool D_attack_finished = false;
-					for (int j = max (0, block_ypos - D_attack_radius); j < min(14, block_ypos + block_height + D_attack_radius); j++){
-						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()){
+					for (int j = max(0, block_ypos - D_attack_radius); j < min(14, block_ypos + block_height + D_attack_radius); j++) {
+						if (i == a_idx->A_block_xpos_get() && j == a_idx->A_block_ypos_get()) {
 							a_idx->A_heart_minus(D_attack);
 							D_attack_finished = true;
 							break;
 						}
 					}
-					if(D_attack_finished)	break;
+					if (D_attack_finished) break;
 				}
 			}
 			break;
@@ -401,4 +397,11 @@ int defenderObject::getDestX() {
 }
 int defenderObject::getDestY() {
 	return destRect.y;
+}
+
+void defenderObject::destroy() {
+	// Destroy the texture
+	SDL_DestroyTexture(objTexture);
+	// Destroy the texture
+	SDL_RenderClear(renderer);
 }
