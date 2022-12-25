@@ -4,12 +4,13 @@
 
 #include "Attack_path.h"
 #include "Money.h"
+#include "Music.h"
 #include "SDL.h"
+#include "Text.h"
 #include "Timer.h"
 #include "attackerObject.h"
 #include "block.h"
 #include "defenderObject.h"
-#include "Music.h"
 
 std::vector<int> leftupCorner = {30, 34, 38, 86, 90, 94, 142, 146, 150, 202, 206};
 std::vector<int> leftdownCorner = {31, 35, 39, 87, 91, 95, 143, 147, 151, 203, 207};
@@ -29,9 +30,14 @@ Money *defenderMoney;
 int A_id = 0;  // Attacker id
 int D_id = 0;  // Defender id
 
-//Music;
+// Music;
 Music *gameMusic;
 bool playCompletePathMusic = false;
+
+// Text
+Text *systemText;
+Text *attackerText;
+Text *defenderText;
 
 Game::Game() {}
 Game::~Game() {}
@@ -50,14 +56,14 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 		}
 
 		// Render window
-		renderer = SDL_CreateRenderer(window, -1, 0);  
+		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer) {
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 			std::cout << "renderer created" << std::endl;
 		}
 
 		// SDL Mixer (Musics and sounds)
-		if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ){
+		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 			cout << "SDL_mixer could not initialize!" << endl;
 		}
 
@@ -66,18 +72,18 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(19, 0), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 0), 40, defenderOption));
-	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 0), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(19, 1), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 1), 40, defenderOption));
-	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 1), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(19, 2), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 2), 40, defenderOption));
-	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 2), 40, defenderOption));
+	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(19, 3), 40, defenderOption));
 	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(20, 3), 40, defenderOption));
-	defenderChoiceRegion.push_back(new block(renderer, std::make_pair(21, 3), 40, defenderOption));
-	defender_option.push_back(new defenderObject(renderer, 800, 0, 40, 40, 0, Prof1));
-	defender_option.push_back(new defenderObject(renderer, 840, 0, 40, 40, 0, Prof2));
-	defender_option.push_back(new defenderObject(renderer, 800, 40, 80, 40, 0, Bike));
-	defender_option.push_back(new defenderObject(renderer, 800, 80, 80, 80, 0, Library));
+	defender_option.push_back(new defenderObject(renderer, 760, 0, 40, 40, 0, Prof1));
+	defender_option.push_back(new defenderObject(renderer, 800, 0, 40, 40, 0, Prof2));
+	defender_option.push_back(new defenderObject(renderer, 760, 40, 80, 40, 0, Bike));
+	defender_option.push_back(new defenderObject(renderer, 760, 80, 80, 80, 0, Library));
 	defender_list.push_back(new defenderObject(renderer, 600, 0, 120, 80, 0, Home));
 
 	createMap();
@@ -110,9 +116,14 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 	// Start playing music
 	gameMusic->Play_bgm();
+
+	// Text
+	TTF_Init();
+	attackerText = new Text(0, 600);
+	defenderText = new Text(280, 600);
+	systemText = new Text(520, 600);
+	defenderText->showDefendingHint();
 }
-
-
 
 void Game::createMap() {
 	for (int i = 0; i < 18; i++) {
@@ -145,6 +156,7 @@ void Game::createMap() {
 }
 
 void Game::update() {
+	defenderText->Update();
 	// for (auto &i: map) {
 	// 	bool check = false;
 	// 	for (auto &j: defender_list) {
@@ -162,10 +174,10 @@ void Game::update() {
 		i->setOcupied(false);
 
 		for (auto &j: defender_list) {
-			if(i->isOcupied()){
+			if (i->isOcupied()) {
 				break;
 			}
-			switch(j->D_get_type()){
+			switch (j->D_get_type()) {
 				case Prof1:
 				case Prof2:
 					if (i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) {
@@ -175,8 +187,7 @@ void Game::update() {
 					break;
 				case Bike:
 					if ((i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) ||
-						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get())
-					) {
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get())) {
 						i->setOcupied(true);
 						break;
 					}
@@ -185,8 +196,7 @@ void Game::update() {
 					if ((i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get()) ||
 						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get()) ||
 						(i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get() + 40) ||
-						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get() + 40)
-					) {
+						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get() + 40)) {
 						i->setOcupied(true);
 						break;
 					}
@@ -197,8 +207,7 @@ void Game::update() {
 						(i->getDestX() == j->D_xpos_get() + 80 && i->getDestY() == j->D_ypos_get()) ||
 						(i->getDestX() == j->D_xpos_get() && i->getDestY() == j->D_ypos_get() + 40) ||
 						(i->getDestX() == j->D_xpos_get() + 40 && i->getDestY() == j->D_ypos_get() + 40) ||
-						(i->getDestX() == j->D_xpos_get() + 80 && i->getDestY() == j->D_ypos_get() + 40)
-					) {
+						(i->getDestX() == j->D_xpos_get() + 80 && i->getDestY() == j->D_ypos_get() + 40)) {
 						i->setOcupied(true);
 						break;
 					}
@@ -232,7 +241,7 @@ void Game::update() {
 	for (auto &i: defender_list) {
 		i->D_Attack(attacker_list);
 	}
-	
+
 	// // Money
 	// *attackerMoney += 1;
 	// *defenderMoney += 1;
@@ -265,7 +274,7 @@ void Game::handleEvents() {
 	if (event.type == SDL_MOUSEBUTTONDOWN) {
 		int x, y;
 		Uint32 MouseState = SDL_GetMouseState(&x, &y);
-		if (x >= 800) {
+		if (x >= 720) {
 			// click on defender option
 			defenderChoiceRegion[0]->setMouseState(MouseState);
 			defenderChoiceRegion[0]->setMouseX(x);
@@ -340,14 +349,13 @@ void Game::handleEvents() {
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof1));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
-							} 
-							else if (chosenDefender == defender2) {
+							} else if (chosenDefender == defender2) {
 								if (defenderMoney->money_get() < defenderObject::D_get_price(Prof2)) {
 									gameMusic->Play_noMoney();
 									cout << "Defender not have enough money" << endl;
 									break;
 								}
-								
+
 								gameMusic->Play_D_build();
 								*defenderMoney -= defenderObject::D_get_price(Prof2);
 								cout << "Defender's money : " << defenderMoney->money_get() << endl;
@@ -356,8 +364,7 @@ void Game::handleEvents() {
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof2));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
-							} 
-							else if (chosenDefender == truck) {
+							} else if (chosenDefender == truck) {
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -434,7 +441,7 @@ void Game::handleEvents() {
 											cout << "can't place" << endl;
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
-												gameMusic->Play_noMoney();	
+												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
 												break;
 											}
@@ -455,8 +462,7 @@ void Game::handleEvents() {
 									default:
 										break;
 								}
-							} 
-							else if (chosenDefender == NTULibrary) {
+							} else if (chosenDefender == NTULibrary) {
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -825,7 +831,7 @@ void Game::handleEvents() {
 			case SDLK_c:
 				gameMusic->Play_clearPath();
 				playCompletePathMusic = false;
-				//std::cout << "c pressed" << std::endl;
+				// std::cout << "c pressed" << std::endl;
 				path->restart();
 				break;
 		}
@@ -840,7 +846,7 @@ void Game::handleEvents() {
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker1);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
-					
+
 					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "1 pressed" << endl;
@@ -907,7 +913,7 @@ void Game::handleEvents() {
 					gameMusic->Play_buildPath();
 					std::cout << "w pressed" << std::endl;
 					path->draw_path('U');
-					if(path->is_path_end() && playCompletePathMusic == false) {
+					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
 					}
@@ -916,7 +922,7 @@ void Game::handleEvents() {
 					gameMusic->Play_buildPath();
 					std::cout << "a pressed" << std::endl;
 					path->draw_path('L');
-					if(path->is_path_end() && playCompletePathMusic == false) {
+					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
 					}
@@ -925,7 +931,7 @@ void Game::handleEvents() {
 					gameMusic->Play_buildPath();
 					std::cout << "s pressed" << std::endl;
 					path->draw_path('D');
-					if(path->is_path_end() && playCompletePathMusic == false) {
+					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
 					}
@@ -934,7 +940,7 @@ void Game::handleEvents() {
 					gameMusic->Play_buildPath();
 					std::cout << "d pressed" << std::endl;
 					path->draw_path('R');
-					if(path->is_path_end() && playCompletePathMusic == false) {
+					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
 					}
@@ -967,6 +973,7 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(renderer);
+	
 	for (auto &i: defenderChoiceRegion) {
 		i->Render();
 	}
@@ -982,7 +989,7 @@ void Game::render() {
 	for (auto &i: defender_list) {
 		i->Render();
 	}
-	// attacker_list[0]->Render();
+	defenderText->Render(renderer);
 	SDL_RenderPresent(renderer);
 }
 

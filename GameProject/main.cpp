@@ -10,7 +10,7 @@ int main() {
 	int frameTime;
 
 	game = new Game();
-	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 1000, false);
+	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 720, false);
 	while (game->running()) {
 		frameStart = SDL_GetTicks();
 
