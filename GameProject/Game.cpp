@@ -138,7 +138,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	attackerMoneyText = new Text(855, 17, 20);
 	defenderMoneyText = new Text(990, 17, 20);
 	timerText = new Text(910, 105, 30);
-	BL_heart = new Text(910, 185, 30);
+	BL_heart = new Text(960, 210, 30);
 	attacker1Data = new Text(770, 330, 15);
 	attacker2Data = new Text(850, 330, 15);
 	attacker3Data = new Text(930, 330, 15);
@@ -162,6 +162,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	moneyTexture = IMG_LoadTexture(renderer, "assets/backgrounds/money.png");
 	timeTexture = IMG_LoadTexture(renderer, "assets/backgrounds/clock.png");
 	backgroundTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay.png");
+	BL_bloodTexture = IMG_LoadTexture(renderer, "assets/backgrounds/blood.png");
 }
 
 void Game::createMap() {
@@ -1076,10 +1077,13 @@ void Game::render() {
 	timeDestRect = {840, 80, 240, 80};
 	backgroundSrcRect = {0, 0, 1080, 720};
 	backgroundDestRect = {0, 0, 1080, 720};
+	BL_bloodSrcRect = {0, 0, 320, 120};
+	BL_bloodDestRect = {760, 160, 320, 120};
 
+	SDL_RenderCopy(renderer, backgroundTexture, &backgroundSrcRect, &backgroundDestRect);
 	SDL_RenderCopy(renderer, moneyTexture, &moneySrcRect, &moneyDestRect);
 	SDL_RenderCopy(renderer, timeTexture, &timeSrcRect, &timeDestRect);
-	SDL_RenderCopy(renderer, backgroundTexture, &backgroundSrcRect, &backgroundDestRect);
+	SDL_RenderCopy(renderer, BL_bloodTexture, &BL_bloodSrcRect, &BL_bloodDestRect);
 	if (winner != unassigned) {
 		// render a 1080 * 720 image
 		// clear all objects on the screen

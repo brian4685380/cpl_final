@@ -35,9 +35,11 @@ class Game {
 	SDL_Texture *moneyTexture;
 	SDL_Texture *timeTexture;
 	SDL_Texture *backgroundTexture;
+	SDL_Texture *BL_bloodTexture;
 	SDL_Rect backgroundSrcRect, backgroundDestRect;
 	SDL_Rect moneySrcRect, moneyDestRect;
 	SDL_Rect timeSrcRect, timeDestRect;
+	SDL_Rect BL_bloodSrcRect, BL_bloodDestRect;
 	void handleEvents();
 	void update();
 	void render();
