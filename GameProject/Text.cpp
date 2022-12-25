@@ -129,28 +129,28 @@ void Text::showAttacker1Data() {
 	text.push_back("範圍: 1");
 }
 void Text::showAttacker2Data() {
-    text.clear();
-    text.push_back("攻擊者2");
-    text.push_back("生命: 100");
-    text.push_back("攻擊: 10");
-    text.push_back("速度: 1");
-    text.push_back("範圍: 1");
+	text.clear();
+	text.push_back("攻擊者2");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("速度: 1");
+	text.push_back("範圍: 1");
 }
 void Text::showAttacker3Data() {
-    text.clear();
-    text.push_back("攻擊者3");
-    text.push_back("生命: 100");
-    text.push_back("攻擊: 10");
-    text.push_back("速度: 1");
-    text.push_back("範圍: 1");
+	text.clear();
+	text.push_back("攻擊者3");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("速度: 1");
+	text.push_back("範圍: 1");
 }
 void Text::showAttacker4Data() {
-    text.clear();
-    text.push_back("攻擊者4");
-    text.push_back("生命: 100");
-    text.push_back("攻擊: 10");
-    text.push_back("速度: 1");
-    text.push_back("範圍: 1");
+	text.clear();
+	text.push_back("攻擊者4");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("速度: 1");
+	text.push_back("範圍: 1");
 }
 void Text::noMoney() {
 	text.clear();
@@ -161,6 +161,13 @@ void Text::showNumber(int num) {
 	text.push_back(to_string(num));
 }
 void Text::cannotPlace() {
-    text.clear();
-    text.push_back("此格已被佔用");
+	text.clear();
+	text.push_back("此格已被佔用");
+}
+
+void Text::destroy() {
+	// Destroy the texture
+	textRect.x = -200;
+	SDL_DestroyTexture(textTexture);
+	// Destroy the texture
 }

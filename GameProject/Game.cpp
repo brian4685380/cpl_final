@@ -1079,6 +1079,36 @@ void Game::render() {
 		// render a 1080 * 720 image
 		// clear all objects on the screen
 		// show the winner
+		SDL_RenderClear(renderer);
+		defenderText->destroy();
+		defenderText->UpdateAndRender(renderer);
+		attackerText->destroy();
+		attackerText->UpdateAndRender(renderer);
+		attackerMoneyText->destroy();
+		attackerMoneyText->UpdateAndRender(renderer);
+		defenderMoneyText->destroy();
+		defenderMoneyText->UpdateAndRender(renderer);
+		timerText->destroy();
+		timerText->UpdateAndRender(renderer);
+		attacker1Data->destroy();
+		attacker1Data->UpdateAndRender(renderer);
+		attacker2Data->destroy();
+		attacker2Data->UpdateAndRender(renderer);
+		attacker3Data->destroy();
+		attacker3Data->UpdateAndRender(renderer);
+		attacker4Data->destroy();
+		attacker4Data->UpdateAndRender(renderer);
+		defender1Data->destroy();
+		defender1Data->UpdateAndRender(renderer);
+		defender2Data->destroy();
+		defender2Data->UpdateAndRender(renderer);
+		defender3Data->destroy();
+		defender3Data->UpdateAndRender(renderer);
+		defender4Data->destroy();
+		defender4Data->UpdateAndRender(renderer);
+		BL_heart->destroy();
+		BL_heart->UpdateAndRender(renderer);
+		
 		for (auto &i: map) {
 			i->destroy();
 		}

@@ -45,4 +45,6 @@ class Text {
     void noMoney();
     void cannotPlace();
     void showNumber(int);
+
+    void destroy();
 };
