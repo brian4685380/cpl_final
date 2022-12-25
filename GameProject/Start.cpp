@@ -63,13 +63,13 @@ void Start::handleEvents() {
 						SDL_DestroyRenderer(renderer);
 						SDL_Quit();
 					} else if (x >= 200 && x <= 800 && y >= 520 && y <= 680) {
-						objTexture = IMG_LoadTexture(renderer, "assets/Defender/NTULibrary.png");
+						objTexture = IMG_LoadTexture(renderer, "assets/backgrounds/rule.png");
 						showingCover = false;
 					}
 				}
 				if (showingCover == false) {
 					cout << "showingCover = false" << endl;
-                    if (x >= 1000 && x <= 1080 && y >= 640 && y <= 720) {
+                    if (x >= 760 && x <= 1080 && y >= 600 && y <= 720) {
                         objTexture = IMG_LoadTexture(renderer, "assets/backgrounds/cover.png");
                         showingCover = true;
                     }

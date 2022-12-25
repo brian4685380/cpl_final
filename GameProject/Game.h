@@ -32,6 +32,10 @@ class Game {
 	void init(const char *, int, int, int, int, bool);
 
 	SDL_Texture *resultTexture;
+	SDL_Texture *moneyTexture;
+	SDL_Rect moneySrcRect, moneyDestRect;
+	SDL_Texture *timeTexture;
+	SDL_Rect timeSrcRect, timeDestRect;
 	void handleEvents();
 	void update();
 	void render();

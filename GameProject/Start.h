@@ -10,9 +10,6 @@ class Start {
 	void handleEvents();
 	void update();
 	void render();
-	void clean();
-
-	void startEnd();
 
 	bool running();
 	bool showingCover = 1;

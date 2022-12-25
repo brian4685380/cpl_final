@@ -102,13 +102,13 @@ void defenderObject::Update(Money *attackerMoney, Money *defnederMoney, Music *g
 	destRect.x = xpos;
 	destRect.y = ypos;
 
-	if (D_is_dead() && (xpos != 750)) {
+	if (D_is_dead() && (xpos != -100)) {
 		gameMusic->Play_D_dead();
-		xpos = 750;
+		xpos = -100;
 		ypos = ypos;
-		block_xpos = 19;
+		block_xpos = -10;
 		block_ypos = block_ypos;
-		destRect.x = 750;
+		destRect.x = -100;
 
 		// Give attacker money
 

@@ -3,18 +3,19 @@
 #include "Text.h"
 using namespace std;
 
-Text::Text(int x, int y){
-    textRect.x = x;
-    textRect.y = y;
+Text::Text(int x, int y, int size) {
+	textRect.x = x;
+	textRect.y = y;
+	font = TTF_OpenFont("assets/Font/Cubic_11/fonts/ttf/Cubic_11_1.010_R.ttf", size);
+	fontHeight = TTF_FontHeight(font);
 }
 
 // void Text::TextInit(SDL_Renderer *renderer){         // Redundant (equivalent to TextUpdate)
-    
+
 //     textSurface = TTF_RenderUTF8_Solid(font, text[0].c_str(), textColor);
 //     textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 //     SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
-    
-	
+
 //     //todo textsurface = TTF_RenderUTF8_Solid(font, i.c_str(), textColor);
 //     //textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 //     //SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
@@ -29,7 +30,7 @@ Text::Text(int x, int y){
 // 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 // 		SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
 // 		// SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-// 		// textRect.y += fontHeight; 
+// 		// textRect.y += fontHeight;
 // 	}
 //     // textRect.y -= fontHeight * text.size();
 
@@ -39,27 +40,26 @@ Text::Text(int x, int y){
 //     return;
 // }
 
-void Text::UpdateAndRender(SDL_Renderer *renderer){
-    for (auto &i: text) {
+void Text::UpdateAndRender(SDL_Renderer *renderer) {
+	for (auto &i: text) {
 		textSurface = TTF_RenderUTF8_Solid(font, i.c_str(), textColor);
 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 		SDL_QueryTexture(textTexture, NULL, NULL, &textRect.w, &textRect.h);
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-		textRect.y += fontHeight; 
+		textRect.y += fontHeight;
 	}
-    textRect.y -= fontHeight * text.size();
-    //SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
-    return;
+	textRect.y -= fontHeight * text.size();
+	// SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+	return;
 }
 
-void Text::TextClean(){
-    SDL_FreeSurface(textSurface);
-    textSurface = nullptr;
+void Text::TextClean() {
+	SDL_FreeSurface(textSurface);
+	textSurface = nullptr;
 
-    SDL_DestroyTexture(textTexture);
+	SDL_DestroyTexture(textTexture);
 	textTexture = nullptr;
 }
-
 
 void Text::showDrawingHint() {
 	text.clear();
@@ -91,58 +91,76 @@ void Text::showDefendingHint() {
 void Text::showDefender1Data() {
 	text.clear();
 	text.push_back("防守者1");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("生產力: 1塊/秒");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("生產: 1");
+	text.push_back("範圍: 1");
 }
 void Text::showDefender2Data() {
 	text.clear();
 	text.push_back("防守者2");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("生產力: 1塊/秒");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("生產: 1");
+	text.push_back("範圍: 1");
 }
 void Text::showDefender3Data() {
 	text.clear();
 	text.push_back("防守者3");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("生產力: 1塊/秒");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("生產: 1");
+	text.push_back("範圍: 1");
 }
 void Text::showDefender4Data() {
 	text.clear();
 	text.push_back("防守者4");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("生產力: 1塊/秒");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("生產: 1");
+	text.push_back("範圍: 1");
 }
-void Text::showAttackerData() {
+void Text::showAttacker1Data() {
 	text.clear();
 	text.push_back("攻擊者1");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("移動速度: 1");
-	text.push_back("攻擊範圍: 1");
-	text.push_back("攻擊者2");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("移動速度: 1");
-	text.push_back("攻擊範圍: 1");
-	text.push_back("攻擊者3");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("移動速度: 1");
-	text.push_back("攻擊範圍: 1");
-	text.push_back("攻擊者4");
-	text.push_back("生命值: 100");
-	text.push_back("攻擊力: 10");
-	text.push_back("移動速度: 1");
-	text.push_back("攻擊範圍: 1");
+	text.push_back("生命: 100");
+	text.push_back("攻擊: 10");
+	text.push_back("速度: 1");
+	text.push_back("範圍: 1");
 }
-
-void Text::showSystemData(int attackerMoney, int defenderMoney, int remainTime) {
+void Text::showAttacker2Data() {
+    text.clear();
+    text.push_back("攻擊者2");
+    text.push_back("生命: 100");
+    text.push_back("攻擊: 10");
+    text.push_back("速度: 1");
+    text.push_back("範圍: 1");
+}
+void Text::showAttacker3Data() {
+    text.clear();
+    text.push_back("攻擊者3");
+    text.push_back("生命: 100");
+    text.push_back("攻擊: 10");
+    text.push_back("速度: 1");
+    text.push_back("範圍: 1");
+}
+void Text::showAttacker4Data() {
+    text.clear();
+    text.push_back("攻擊者4");
+    text.push_back("生命: 100");
+    text.push_back("攻擊: 10");
+    text.push_back("速度: 1");
+    text.push_back("範圍: 1");
+}
+void Text::noMoney() {
 	text.clear();
-	text.push_back("攻擊方金錢: " + std::to_string(attackerMoney));
-	text.push_back("防守方金錢: " + std::to_string(defenderMoney));
-	text.push_back("剩餘時間: " + std::to_string(remainTime));
+	text.push_back("金錢不足");
+}
+void Text::showNumber(int num) {
+	text.clear();
+	text.push_back(to_string(num));
+}
+void Text::cannotPlace() {
+    text.clear();
+    text.push_back("此格已被佔用");
 }

@@ -35,10 +35,20 @@ Music *gameMusic;
 bool playCompletePathMusic = false;
 
 // Text
-Text *systemText = nullptr;
+Text *attackerMoneyText = nullptr;
+Text *defenderMoneyText = nullptr;
+Text *timerText = nullptr;
 Text *attackerText = nullptr;
 Text *defenderText = nullptr;
-
+Text *defender1Data = nullptr;
+Text *defender2Data = nullptr;
+Text *defender3Data = nullptr;
+Text *defender4Data = nullptr;
+Text *attacker1Data = nullptr;
+Text *attacker2Data = nullptr;
+Text *attacker3Data = nullptr;
+Text *attacker4Data = nullptr;
+Text *BL_heart = nullptr;
 Game::Game() {}
 Game::~Game() {}
 
@@ -68,7 +78,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 		}
 
 		// SDL ttf
-		if (TTF_Init() < 0){
+		if (TTF_Init() < 0) {
 			cout << "SDL_ttf could not initialize!" << endl;
 		}
 
@@ -123,10 +133,34 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	gameMusic->Play_bgm();
 
 	// Text
-	attackerText = new Text(0, 600);
-	defenderText = new Text(280, 600);
-	systemText = new Text(520, 600);
+	attackerText = new Text(0, 560, 20);
+	defenderText = new Text(320, 560, 20);
+	attackerMoneyText = new Text(855, 17, 20);
+	defenderMoneyText = new Text(990, 17, 20);
+	timerText = new Text(910, 105, 30);
+	BL_heart = new Text(910, 185, 30);
+	attacker1Data = new Text(770, 330, 15);
+	attacker2Data = new Text(850, 330, 15);
+	attacker3Data = new Text(930, 330, 15);
+	attacker4Data = new Text(1010, 330, 15);
+	defender1Data = new Text(770, 490, 15);
+	defender2Data = new Text(850, 490, 15);
+	defender3Data = new Text(930, 490, 15);
+	defender4Data = new Text(1010, 490, 15);
+
 	defenderText->showDefendingHint();
+	attackerText->showDrawingHint();
+	defender1Data->showDefender1Data();
+	defender2Data->showDefender2Data();
+	defender3Data->showDefender3Data();
+	defender4Data->showDefender4Data();
+	attacker1Data->showAttacker1Data();
+	attacker2Data->showAttacker2Data();
+	attacker3Data->showAttacker3Data();
+	attacker4Data->showAttacker4Data();
+
+	moneyTexture = IMG_LoadTexture(renderer, "assets/backgrounds/money.png");
+	timeTexture = IMG_LoadTexture(renderer, "assets/backgrounds/clock.png");
 }
 
 void Game::createMap() {
@@ -251,6 +285,9 @@ void Game::update() {
 
 	// Timer update
 	gameTimer->timer_update();
+	timerText->showNumber(gameTimer->get_left_s());
+	attackerMoneyText->showNumber(attackerMoney->money_get());
+	defenderMoneyText->showNumber(defenderMoney->money_get());
 	if (gameTimer->get_elapsed_ms() >= 10 * gameTimerCount) {
 		gameTimerCount++;
 		// cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
@@ -300,11 +337,13 @@ void Game::handleEvents() {
 								defenderChoiceRegion[i]->setType(defenderChosen);
 								defenderChoiceRegion[i]->setChosen(true);
 								setDefenderChosen(defender1);
+								defenderText->showDefender1Data();
 							} else if (i == 1) {
 								std::cout << "clicked" << std::endl;
 								defenderChoiceRegion[i]->setType(defenderChosen);
 								defenderChoiceRegion[i]->setChosen(true);
 								setDefenderChosen(defender2);
+								defenderText->showDefender2Data();
 							} else if (i == 2 || i == 3) {
 								std::cout << "clicked" << std::endl;
 								defenderChoiceRegion[2]->setType(defenderChosen);
@@ -312,6 +351,7 @@ void Game::handleEvents() {
 								defenderChoiceRegion[3]->setType(defenderChosen);
 								defenderChoiceRegion[3]->setChosen(true);
 								setDefenderChosen(truck);
+								defenderText->showDefender3Data();
 							} else if (i == 4 || i == 5 || i == 6 || i == 7) {
 								std::cout << "clicked" << std::endl;
 								defenderChoiceRegion[4]->setType(defenderChosen);
@@ -323,6 +363,7 @@ void Game::handleEvents() {
 								defenderChoiceRegion[7]->setType(defenderChosen);
 								defenderChoiceRegion[7]->setChosen(true);
 								setDefenderChosen(NTULibrary);
+								defenderText->showDefender4Data();
 							}
 						}
 					}
@@ -341,36 +382,42 @@ void Game::handleEvents() {
 					if (i->getType() == defenderOnIt) {
 						if (i->isOcupied() == false) {
 							if (chosenDefender == defender1) {
+								defenderText->showDefender1Data();
 								if (defenderMoney->money_get() < defenderObject::D_get_price(Prof1)) {
 									gameMusic->Play_noMoney();
 									cout << "Defender not have enough money" << endl;
+									defenderText->noMoney();
 									break;
 								}
 
 								gameMusic->Play_D_build();
 								*defenderMoney -= defenderObject::D_get_price(Prof1);
 								cout << "Defender's money : " << defenderMoney->money_get() << endl;
-
+								defenderMoneyText->showNumber(defenderMoney->money_get());
 								D_id++;
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof1));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
 							} else if (chosenDefender == defender2) {
+								defenderText->showDefender2Data();
 								if (defenderMoney->money_get() < defenderObject::D_get_price(Prof2)) {
 									gameMusic->Play_noMoney();
 									cout << "Defender not have enough money" << endl;
+									defenderText->noMoney();
 									break;
 								}
 
 								gameMusic->Play_D_build();
 								*defenderMoney -= defenderObject::D_get_price(Prof2);
 								cout << "Defender's money : " << defenderMoney->money_get() << endl;
+								defenderMoneyText->showNumber(defenderMoney->money_get());
 
 								D_id++;
 								defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 40, 40, D_id, Prof2));
 								i->setOcupied(true);
 								i->setType(defenderOnIt);
 							} else if (chosenDefender == truck) {
+								defenderText->showDefender3Data();
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -383,13 +430,14 @@ void Game::handleEvents() {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
-
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
 											i->setOcupied(true);
@@ -401,10 +449,12 @@ void Game::handleEvents() {
 									case leftUp:
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
+
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
@@ -423,9 +473,11 @@ void Game::handleEvents() {
 									case rightDown:
 										if (map[idx - 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												gameMusic->Play_noMoney();
 												break;
 											}
@@ -433,6 +485,7 @@ void Game::handleEvents() {
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 40, D_id, Bike));
@@ -445,16 +498,19 @@ void Game::handleEvents() {
 									case leftDown:
 										if (map[idx + 14]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Bike)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Bike);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 40, D_id, Bike));
@@ -469,6 +525,7 @@ void Game::handleEvents() {
 										break;
 								}
 							} else if (chosenDefender == NTULibrary) {
+								defenderText->showDefender4Data();
 								int idx = i->getDestX() / 40 * 14 + i->getDestY() / 40;
 								corner currentCorner = getCorner(idx);
 								std::cout << "idx = " << idx << std::endl;
@@ -477,16 +534,19 @@ void Game::handleEvents() {
 									case rightUp:
 										if (map[idx - 14]->isOcupied() == true || map[idx - 13]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY(), 80, 80, D_id, Library));
@@ -503,16 +563,19 @@ void Game::handleEvents() {
 									case leftUp:
 										if (map[idx + 14]->isOcupied() == true || map[idx + 15]->isOcupied() == true || map[idx + 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY(), 80, 80, D_id, Library));
@@ -529,16 +592,19 @@ void Game::handleEvents() {
 									case rightDown:
 										if (map[idx - 14]->isOcupied() == true || map[idx - 15]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX() - 40, i->getDestY() - 40, 80, 80, D_id, Library));
@@ -555,16 +621,19 @@ void Game::handleEvents() {
 									case leftDown:
 										if (map[idx + 14]->isOcupied() == true || map[idx + 13]->isOcupied() == true || map[idx - 1]->isOcupied() == true) {
 											cout << "can't place" << endl;
+											defenderText->cannotPlace();
 										} else {
 											if (defenderMoney->money_get() < defenderObject::D_get_price(Library)) {
 												gameMusic->Play_noMoney();
 												cout << "Defender not have enough money" << endl;
+												defenderText->noMoney();
 												break;
 											}
 
 											gameMusic->Play_D_build();
 											*defenderMoney -= defenderObject::D_get_price(Library);
 											cout << "Defender's money : " << defenderMoney->money_get() << endl;
+											defenderMoneyText->showNumber(defenderMoney->money_get());
 
 											D_id++;
 											defender_list.push_back(new defenderObject(renderer, i->getDestX(), i->getDestY() - 40, 80, 80, D_id, Library));
@@ -614,6 +683,7 @@ void Game::handleEvents() {
 							case leftUp:
 								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx + 14]->setType(defenderOnIt);
@@ -622,6 +692,7 @@ void Game::handleEvents() {
 							case rightUp:
 								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx - 14]->setType(defenderOnIt);
@@ -630,6 +701,7 @@ void Game::handleEvents() {
 							case rightDown:
 								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx - 14]->setType(defenderOnIt);
@@ -638,6 +710,7 @@ void Game::handleEvents() {
 							case leftDown:
 								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx + 14]->setType(defenderOnIt);
@@ -655,6 +728,7 @@ void Game::handleEvents() {
 							case leftUp:
 								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx + 15]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx + 14]->setType(defenderOnIt);
@@ -665,6 +739,7 @@ void Game::handleEvents() {
 							case rightUp:
 								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true || map[idx + 1]->isOcupied() == true || map[idx - 13]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx - 14]->setType(defenderOnIt);
@@ -675,6 +750,7 @@ void Game::handleEvents() {
 							case rightDown:
 								if (i->isOcupied() == true || map[idx - 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx - 15]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx - 14]->setType(defenderOnIt);
@@ -685,6 +761,7 @@ void Game::handleEvents() {
 							case leftDown:
 								if (i->isOcupied() == true || map[idx + 14]->isOcupied() == true || map[idx - 1]->isOcupied() == true || map[idx + 13]->isOcupied() == true) {
 									cout << "can't place here" << endl;
+									defenderText->cannotPlace();
 								} else {
 									i->setType(defenderOnIt);
 									map[idx + 14]->setType(defenderOnIt);
@@ -838,24 +915,28 @@ void Game::handleEvents() {
 				gameMusic->Play_clearPath();
 				playCompletePathMusic = false;
 				// std::cout << "c pressed" << std::endl;
+				attackerText->showDrawingHint();
 				path->restart();
 				break;
 		}
 		if (path->is_path_end()) {
 			// std::cout << "path end" << std::endl;
+			attackerText->showAttackingHint();
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker1)) {
 						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
+						attackerText->noMoney();
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker1);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
-
+					attackerText->showNumber(attackerMoney->money_get());
 					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "1 pressed" << endl;
+					attackerText->showAttacker1Data();
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker1));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
@@ -865,14 +946,17 @@ void Game::handleEvents() {
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker2)) {
 						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
+						attackerText->noMoney();
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker2);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					attackerText->showNumber(attackerMoney->money_get());
 
 					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "2 pressed" << endl;
+					attackerText->showAttacker2Data();
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker2));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
@@ -882,14 +966,17 @@ void Game::handleEvents() {
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker3)) {
 						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
+						attackerText->noMoney();
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker3);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					attackerText->showNumber(attackerMoney->money_get());
 
 					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "3 pressed" << endl;
+					attackerText->showAttacker3Data();
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker3));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
@@ -899,14 +986,17 @@ void Game::handleEvents() {
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker4)) {
 						gameMusic->Play_noMoney();
 						cout << "Attacker not having enough money" << endl;
+						attackerText->noMoney();
 						break;
 					}
 					*attackerMoney -= attackerObject::A_get_price(Attacker4);
 					cout << "Attacker's money : " << attackerMoney->money_get() << endl;
+					attackerText->showNumber(attackerMoney->money_get());
 
 					gameMusic->Play_A_summon();
 					A_id++;
 					// cout << "4 pressed" << endl;
+					attackerText->showAttacker4Data();
 					attacker_list.push_back(new attackerObject(renderer, 0, 520, A_id, Attacker4));
 					attacker_list[attacker_list.size() - 1]->getAttackerPath(path->get_path());
 					attacker_list[attacker_list.size() - 1]->getAttackerDir(path->get_dir());
@@ -979,6 +1069,12 @@ void Game::handleEvents() {
 
 void Game::render() {
 	SDL_RenderClear(renderer);
+	moneySrcRect = {0, 0, 240, 80};
+	moneyDestRect = {840, 0, 240, 80};
+	timeSrcRect = {0, 0, 240, 80};
+	timeDestRect = {840, 80, 240, 80};
+	SDL_RenderCopy(renderer, moneyTexture, &moneySrcRect, &moneyDestRect);
+	SDL_RenderCopy(renderer, timeTexture, &timeSrcRect, &timeDestRect);
 	if (winner != unassigned) {
 		// render a 1080 * 720 image
 		// clear all objects on the screen
@@ -1024,10 +1120,21 @@ void Game::render() {
 	}
 
 	// Text
-	systemText->UpdateAndRender(renderer);
 	defenderText->UpdateAndRender(renderer);
 	attackerText->UpdateAndRender(renderer);
-
+	defender1Data->UpdateAndRender(renderer);
+	defender2Data->UpdateAndRender(renderer);
+	defender3Data->UpdateAndRender(renderer);
+	defender4Data->UpdateAndRender(renderer);
+	attacker1Data->UpdateAndRender(renderer);
+	attacker2Data->UpdateAndRender(renderer);
+	attacker3Data->UpdateAndRender(renderer);
+	attacker4Data->UpdateAndRender(renderer);
+	timerText->UpdateAndRender(renderer);
+	attackerMoneyText->UpdateAndRender(renderer);
+	defenderMoneyText->UpdateAndRender(renderer);
+	BL_heart->showNumber(defender_list[0]->D_heart_get());
+	BL_heart->UpdateAndRender(renderer);
 	SDL_RenderPresent(renderer);
 }
 
@@ -1036,9 +1143,8 @@ void Game::clean() {
 	SDL_DestroyRenderer(renderer);
 
 	gameMusic->MusicClean();
-	
+
 	// Text
-	systemText->TextClean();
 	defenderText->TextClean();
 	attackerText->TextClean();
 

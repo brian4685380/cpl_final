@@ -73,15 +73,15 @@ void attackerObject::A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren) {
 void attackerObject::Update(Music *gameMusic) {
 	// Dead
 	if (A_is_dead()) {
-		if (xpos != 750) {
+		if (xpos != -100) {
 			gameMusic->Play_A_dead();
 			cout << "Adead"
 				 << " " << xpos << endl;
-			xpos = 750;
+			xpos = -100;
 			ypos = ypos;
-			block_xpos = 19;
+			block_xpos = -10;
 			block_ypos = block_ypos;
-			destRect.x = 750;
+			destRect.x = -100;
 		}
 		return;
 	}
@@ -89,7 +89,7 @@ void attackerObject::Update(Music *gameMusic) {
 		// ATTACK BL BUILDING
 
 		// destRect.x = -100;
-		destRect.x = 750;
+		destRect.x = -100;
 		return;
 	}
 
