@@ -161,6 +161,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 	moneyTexture = IMG_LoadTexture(renderer, "assets/backgrounds/money.png");
 	timeTexture = IMG_LoadTexture(renderer, "assets/backgrounds/clock.png");
+	backgroundTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay.png");
 }
 
 void Game::createMap() {
@@ -1073,8 +1074,12 @@ void Game::render() {
 	moneyDestRect = {840, 0, 240, 80};
 	timeSrcRect = {0, 0, 240, 80};
 	timeDestRect = {840, 80, 240, 80};
+	backgroundSrcRect = {0, 0, 1080, 720};
+	backgroundDestRect = {0, 0, 1080, 720};
+
 	SDL_RenderCopy(renderer, moneyTexture, &moneySrcRect, &moneyDestRect);
 	SDL_RenderCopy(renderer, timeTexture, &timeSrcRect, &timeDestRect);
+	SDL_RenderCopy(renderer, backgroundTexture, &backgroundSrcRect, &backgroundDestRect);
 	if (winner != unassigned) {
 		// render a 1080 * 720 image
 		// clear all objects on the screen

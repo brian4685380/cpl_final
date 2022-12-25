@@ -10,22 +10,22 @@ int main() {
 	Uint32 frameStart;
 	int frameTime;
 	start = new Start();
-	// start->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 720, false);
-	// cout << "init success" << endl;
-	// while (start->running()) {
-	// 	frameStart = SDL_GetTicks();
+	start->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 720, false);
+	cout << "init success" << endl;
+	while (start->running()) {
+		frameStart = SDL_GetTicks();
 
-	// 	start->handleEvents();
-	// 	start->update();
-	// 	start->render();
+		start->handleEvents();
+		start->update();
+		start->render();
 
-	// 	// Limiting frame rate
-	// 	// prevent too object from moving too fast
-	// 	frameTime = SDL_GetTicks() - frameStart;
-	// 	if (frameDelay > frameTime) {
-	// 		SDL_Delay(frameDelay - frameTime);
-	// 	}  // prevent too object from moving too fast
-	// }
+		// Limiting frame rate
+		// prevent too object from moving too fast
+		frameTime = SDL_GetTicks() - frameStart;
+		if (frameDelay > frameTime) {
+			SDL_Delay(frameDelay - frameTime);
+		}  // prevent too object from moving too fast
+	}
 	game = new Game();
 	game->init("PionEEr", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1080, 720, false);
 	while (game->running()) {
