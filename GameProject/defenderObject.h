@@ -19,13 +19,13 @@ class defenderObject: public defender {
 	static int D_get_price(od_type otp) {
 		switch (otp) {
 			case Prof1:
-				return 100;
+				return 150;
 				break;
 			case Prof2:
 				return 300;
 				break;
 			case Bike:
-				return 500;
+				return 650;
 				break;
 			case Library:
 				return 1500;
@@ -36,7 +36,7 @@ class defenderObject: public defender {
 		}
 	}
 
-	void Update(Money *, Money *, Music *);
+	void Update(Money *, Money *, Music *, int);
 	void D_Attack(vector<attackerObject *> &);
 	void D_range_attack(vector<attackerObject *> &);
 	void D_single_attack(vector<attackerObject *> &);
@@ -50,6 +50,7 @@ class defenderObject: public defender {
 
    private:
 	int D_attack_count = 0;
+	int D_alive_reward_count = 0;
 	SDL_Texture *objTexture;
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer *renderer;

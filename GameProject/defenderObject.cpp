@@ -38,7 +38,7 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_attack = 10;
 			D_attack_type = d_Single;
 			D_attack_radius = 2;
-			D_dead_reward = 80;
+			D_dead_reward = 80;///////
 			D_alive_reward = 1;
 			break;
 
@@ -47,10 +47,10 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			Od_type = Prof2;
 			D_id = id;
 			D_heart = 350;
-			D_attack = 15;
+			D_attack = 12;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
-			D_dead_reward = 240;
+			D_dead_reward = 240;//////
 			D_alive_reward = 1;
 			break;
 
@@ -62,9 +62,9 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			D_heart = 600;
 			D_attack = 20;
 			D_attack_type = d_Single;
-			D_attack_radius = 2;
-			D_dead_reward = 400;
-			D_alive_reward = 1;
+			D_attack_radius = 3;
+			D_dead_reward = 400;///////
+			D_alive_reward = 2;
 			break;
 
 		case Library:
@@ -73,11 +73,11 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			Od_type = Library;
 			D_id = id;
 			D_heart = 1000;
-			D_attack = 25;
+			D_attack = 18;
 			D_attack_type = d_Range;
-			D_attack_radius = 2;
-			D_dead_reward = 1200;
-			D_alive_reward = 1;
+			D_attack_radius = 1;
+			D_dead_reward = 1200;/////
+			D_alive_reward = 3;
 			break;
 
 		case Home:
@@ -85,8 +85,8 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/BL_building_hollow.png");
 			Od_type = Home;
 			D_id = id;
-			D_heart = 10;
-			D_attack = 5;
+			D_heart = 100;
+			D_attack = 3;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
 			D_dead_reward = 0;
@@ -95,30 +95,41 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 	}
 }
 
-void defenderObject::Update(Money *attackerMoney, Money *defnederMoney, Music *gameMusic) {
+void defenderObject::Update(Money *attackerMoney, Money *defnederMoney, Music *gameMusic, int timer_elapsed_s) {
+
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
 
-	if (D_is_dead() && (xpos != -100)) {
-		gameMusic->Play_D_dead();
-		xpos = -100;
-		ypos = ypos;
-		block_xpos = -10;
-		block_ypos = block_ypos;
-		destRect.x = -100;
+	if (D_is_dead()) {
+		if((xpos != -100)){
+			gameMusic->Play_D_dead();
+			xpos = -100;
+			ypos = ypos;
+			block_xpos = -10;
+			block_ypos = block_ypos;
+			destRect.x = -100;
 
-		// Give attacker money
+			// Give attacker money
 
-		cout << "dead" << endl;
-		*attackerMoney += D_dead_reward;
-
+			//cout << "dead" << endl;
+			*attackerMoney += D_dead_reward;
+		}
 		return;
-	} else {  // Defender is alive
-		*defnederMoney += D_alive_reward;
+	} 
+	else {  // Defender is alive
+		if(timer_elapsed_s > D_alive_reward_count){
+			cout << "D rew " << D_alive_reward << endl;
+			*defnederMoney += D_alive_reward;
+
+			cout << "D money" << defnederMoney->money_get() << endl;
+			D_alive_reward_count = timer_elapsed_s;
+			cout << timer_elapsed_s << " reward!  " << "count : " << D_alive_reward_count << endl;
+		}
 	}
+	return;
 
 	// if(Od_type == Home){
 	// 	cout << D_heart << endl;

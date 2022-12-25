@@ -115,14 +115,14 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	path->getInitialMap(map);
 
 	// Timer
-	gameTimer = new Timer(10000000);
+	gameTimer = new Timer(120000);	//ms
 
 	// Money
-	attackerMoney = new Money(10000);
-	defenderMoney = new Money(10000);
+	attackerMoney = new Money(0);
+	defenderMoney = new Money(0);
 
 	for (auto &i: defender_option) {
-		i->Update(attackerMoney, defenderMoney, gameMusic);
+		i->Update(attackerMoney, defenderMoney, gameMusic, gameTimer->get_elapsed_s());
 	}
 
 	// Music
@@ -133,20 +133,20 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	gameMusic->Play_bgm();
 
 	// Text
-	attackerText = new Text(0, 560, 20);
-	defenderText = new Text(320, 560, 20);
-	attackerMoneyText = new Text(855, 17, 20);
-	defenderMoneyText = new Text(990, 17, 20);
+	attackerText = new Text(50, 610, 14);
+	defenderText = new Text(500, 610, 14);
+	attackerMoneyText = new Text(866, 17, 20);
+	defenderMoneyText = new Text(997, 17, 20);
 	timerText = new Text(910, 105, 30);
-	BL_heart = new Text(960, 210, 30);
-	attacker1Data = new Text(770, 330, 15);
-	attacker2Data = new Text(850, 330, 15);
-	attacker3Data = new Text(930, 330, 15);
-	attacker4Data = new Text(1010, 330, 15);
-	defender1Data = new Text(770, 490, 15);
-	defender2Data = new Text(850, 490, 15);
-	defender3Data = new Text(930, 490, 15);
-	defender4Data = new Text(1010, 490, 15);
+	BL_heart = new Text(973, 200, 38);
+	attacker1Data = new Text(770, 335, 14);
+	attacker2Data = new Text(850, 335, 14);
+	attacker3Data = new Text(930, 335, 14);
+	attacker4Data = new Text(1010, 335, 14);
+	defender1Data = new Text(770, 575, 14);
+	defender2Data = new Text(850, 575, 14);
+	defender3Data = new Text(930, 575, 14);
+	defender4Data = new Text(1010, 575, 14);
 
 	defenderText->showDefendingHint();
 	attackerText->showDrawingHint();
@@ -161,7 +161,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 
 	moneyTexture = IMG_LoadTexture(renderer, "assets/backgrounds/money.png");
 	timeTexture = IMG_LoadTexture(renderer, "assets/backgrounds/clock.png");
-	backgroundTexture = IMG_LoadTexture(renderer, "assets/Blocks/redclay.png");
+	backgroundTexture = IMG_LoadTexture(renderer, "assets/backgrounds/background.png");
 	BL_bloodTexture = IMG_LoadTexture(renderer, "assets/backgrounds/blood.png");
 }
 
@@ -267,7 +267,7 @@ void Game::update() {
 		i->Update(gameMusic);
 	}
 	for (auto &i: defender_list) {
-		i->Update(attackerMoney, defenderMoney, gameMusic);
+		i->Update(attackerMoney, defenderMoney, gameMusic, gameTimer->get_elapsed_s());
 	}
 
 	// Attacker attack
@@ -288,15 +288,17 @@ void Game::update() {
 	// Timer update
 	gameTimer->timer_update();
 	timerText->showNumber(gameTimer->get_left_s());
+
 	attackerMoneyText->showNumber(attackerMoney->money_get());
 	defenderMoneyText->showNumber(defenderMoney->money_get());
+
 	if (gameTimer->get_elapsed_ms() >= 10 * gameTimerCount) {
 		gameTimerCount++;
 		// cout << "Game Time : " << gameTimer->get_elapsed_s() << endl;
 
 		// Money update
-		//*attackerMoney += 1;
-		//*defenderMoney += 1;
+		*attackerMoney += 1;
+		*defenderMoney += 1;
 		// cout << "attacker money : " << attackerMoney->money_get() << endl;
 		// cout << "defender money : " << defenderMoney->money_get() << endl;
 	}
@@ -923,7 +925,6 @@ void Game::handleEvents() {
 		}
 		if (path->is_path_end()) {
 			// std::cout << "path end" << std::endl;
-			attackerText->showAttackingHint();
 			switch (event.key.keysym.sym) {
 				case SDLK_1:
 					if (attackerMoney->money_get() < attackerObject::A_get_price(Attacker1)) {
@@ -1014,6 +1015,7 @@ void Game::handleEvents() {
 					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
+						attackerText->showAttackingHint();
 					}
 					break;
 				case SDLK_a:
@@ -1023,6 +1025,7 @@ void Game::handleEvents() {
 					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
+						attackerText->showAttackingHint();
 					}
 					break;
 				case SDLK_s:
@@ -1032,6 +1035,7 @@ void Game::handleEvents() {
 					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
+						attackerText->showAttackingHint();
 					}
 					break;
 				case SDLK_d:
@@ -1041,6 +1045,7 @@ void Game::handleEvents() {
 					if (path->is_path_end() && playCompletePathMusic == false) {
 						gameMusic->Play_completePath();
 						playCompletePathMusic = true;
+						attackerText->showAttackingHint();
 					}
 					break;
 				case SDLK_1:
