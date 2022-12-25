@@ -1120,22 +1120,24 @@ void Game::render() {
 	}
 
 	// Text
-	defenderText->UpdateAndRender(renderer);
-	attackerText->UpdateAndRender(renderer);
-	defender1Data->UpdateAndRender(renderer);
-	defender2Data->UpdateAndRender(renderer);
-	defender3Data->UpdateAndRender(renderer);
-	defender4Data->UpdateAndRender(renderer);
-	attacker1Data->UpdateAndRender(renderer);
-	attacker2Data->UpdateAndRender(renderer);
-	attacker3Data->UpdateAndRender(renderer);
-	attacker4Data->UpdateAndRender(renderer);
-	timerText->UpdateAndRender(renderer);
-	attackerMoneyText->UpdateAndRender(renderer);
-	defenderMoneyText->UpdateAndRender(renderer);
-	BL_heart->showNumber(defender_list[0]->D_heart_get());
-	BL_heart->UpdateAndRender(renderer);
-	SDL_RenderPresent(renderer);
+	if (gameTimer->get_left_ms() % 10 == 0) {
+		defenderText->UpdateAndRender(renderer);
+		attackerText->UpdateAndRender(renderer);
+		defender1Data->UpdateAndRender(renderer);
+		defender2Data->UpdateAndRender(renderer);
+		defender3Data->UpdateAndRender(renderer);
+		defender4Data->UpdateAndRender(renderer);
+		attacker1Data->UpdateAndRender(renderer);
+		attacker2Data->UpdateAndRender(renderer);
+		attacker3Data->UpdateAndRender(renderer);
+		attacker4Data->UpdateAndRender(renderer);
+		timerText->UpdateAndRender(renderer);
+		attackerMoneyText->UpdateAndRender(renderer);
+		defenderMoneyText->UpdateAndRender(renderer);
+		BL_heart->showNumber(defender_list[0]->D_heart_get());
+		BL_heart->UpdateAndRender(renderer);
+		SDL_RenderPresent(renderer);
+	}
 }
 
 void Game::clean() {
