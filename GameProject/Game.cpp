@@ -115,7 +115,7 @@ void Game::init(const char *title, int xpos, int ypos, int width, int height, bo
 	path->getInitialMap(map);
 
 	// Timer
-	gameTimer = new Timer(120000);	//ms
+	gameTimer = new Timer(180000);	//ms
 
 	// Money
 	attackerMoney = new Money(0);

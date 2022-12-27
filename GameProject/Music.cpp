@@ -56,7 +56,7 @@ void Music::MusicClean(){
 }
 
 void Music::Play_bgm(){
-	Mix_VolumeMusic(10);
+	Mix_VolumeMusic(90);
     Mix_PlayMusic(M_bgm, -1);	// the second parameter means how many times we want to loop it (-1 means infinity);
 	return;
 }

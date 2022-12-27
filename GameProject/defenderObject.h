@@ -22,13 +22,13 @@ class defenderObject: public defender {
 				return 150;
 				break;
 			case Prof2:
-				return 300;
+				return 250;
 				break;
 			case Bike:
-				return 650;
+				return 550;
 				break;
 			case Library:
-				return 1500;
+				return 1000;
 				break;
 			default:
 				return 0;

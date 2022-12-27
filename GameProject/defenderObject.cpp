@@ -34,24 +34,24 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender1.png");
 			Od_type = Prof1;
 			D_id = id;
-			D_heart = 250;
+			D_heart = 300;
 			D_attack = 10;
 			D_attack_type = d_Single;
 			D_attack_radius = 2;
-			D_dead_reward = 80;///////
-			D_alive_reward = 1;
+			D_dead_reward = 100;
+			D_alive_reward = 2;
 			break;
 
 		case Prof2:
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/defender2.png");
 			Od_type = Prof2;
 			D_id = id;
-			D_heart = 350;
+			D_heart = 400;
 			D_attack = 12;
 			D_attack_type = d_Range;
 			D_attack_radius = 2;
-			D_dead_reward = 240;//////
-			D_alive_reward = 1;
+			D_dead_reward = 200;
+			D_alive_reward = 2;
 			break;
 
 		case Bike:
@@ -60,11 +60,11 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			Od_type = Bike;
 			D_id = id;
 			D_heart = 600;
-			D_attack = 20;
+			D_attack = 18;
 			D_attack_type = d_Single;
 			D_attack_radius = 3;
-			D_dead_reward = 400;///////
-			D_alive_reward = 2;
+			D_dead_reward = 400;
+			D_alive_reward = 4;
 			break;
 
 		case Library:
@@ -72,12 +72,12 @@ void defenderObject::O_Init_Profile(int id, od_type otp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Defender/NTULibrary.png");
 			Od_type = Library;
 			D_id = id;
-			D_heart = 1000;
+			D_heart = 1200;
 			D_attack = 18;
 			D_attack_type = d_Range;
 			D_attack_radius = 1;
-			D_dead_reward = 1200;/////
-			D_alive_reward = 3;
+			D_dead_reward = 800;
+			D_alive_reward = 6;
 			break;
 
 		case Home:

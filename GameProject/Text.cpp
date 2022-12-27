@@ -92,60 +92,60 @@ void Text::showDefender1Data() {
 	text.clear();
 	text.push_back("H教授");
 	text.push_back("價格: 150");
-	text.push_back("生命: 250");
+	text.push_back("生命: 300");
 	text.push_back("攻擊: 10");
 	text.push_back("單體: 2");
-	text.push_back("經濟: 1");
+	text.push_back("經濟: 2");
 }
 void Text::showDefender2Data() {
 	text.clear();
 	text.push_back("Y教授");
-	text.push_back("價格:300");
-	text.push_back("生命:350");
+	text.push_back("價格:250");
+	text.push_back("生命:400");
 	text.push_back("攻擊:12");
 	text.push_back("範圍:2");
-	text.push_back("經濟:1");
+	text.push_back("經濟:2");
 }
 void Text::showDefender3Data() {
 	text.clear();
 	text.push_back("水源阿杯");
-	text.push_back("價格:650");
+	text.push_back("價格:550");
 	text.push_back("生命:600");
 	text.push_back("攻擊:20");
 	text.push_back("單體:3");
-	text.push_back("經濟:2");
+	text.push_back("經濟:4");
 }
 void Text::showDefender4Data() {
 	text.clear();
 	text.push_back("總圖");
-	text.push_back("價格:1500");
-	text.push_back("生命:1000");
+	text.push_back("價格:1000");
+	text.push_back("生命:1200");
 	text.push_back("攻擊:18");
 	text.push_back("範圍:1");
-	text.push_back("經濟:3");
+	text.push_back("經濟:6");
 }
 void Text::showAttacker1Data() {
 	text.clear();
-	text.push_back("攻擊者1");
-	text.push_back("價格:100");
-	text.push_back("生命:100");
+	text.push_back("大一鮮肝");
+	text.push_back("價格:75");
+	text.push_back("生命:120");
 	text.push_back("攻擊:10");
 	text.push_back("單體:2");
 	text.push_back("速度:1");
 }
 void Text::showAttacker2Data() {
 	text.clear();
-	text.push_back("攻擊者2");
-	text.push_back("價格:100");
-	text.push_back("生命:150");
+	text.push_back("大二猴");
+	text.push_back("價格:150");
+	text.push_back("生命:180");
 	text.push_back("攻擊:12");
 	text.push_back("範圍:2");
 	text.push_back("速度:2");
 }
 void Text::showAttacker3Data() {
 	text.clear();
-	text.push_back("攻擊者3");
-	text.push_back("價格:100");
+	text.push_back("大三老人");
+	text.push_back("價格:400");
 	text.push_back("生命:600");
 	text.push_back("攻擊:15");
 	text.push_back("單體:1");
@@ -153,8 +153,8 @@ void Text::showAttacker3Data() {
 }
 void Text::showAttacker4Data() {
 	text.clear();
-	text.push_back("攻擊者4");
-	text.push_back("價格:100");
+	text.push_back("大四已去");
+	text.push_back("價格:700");
 	text.push_back("生命:1000");
 	text.push_back("攻擊:20");
 	text.push_back("範圍:1");

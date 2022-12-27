@@ -16,16 +16,16 @@ class attackerObject: public Attacker {
 	static int A_get_price(oa_type atp) {
 		switch (atp) {
 			case Attacker1:
-				return 50;
+				return 75;
 				break;
 			case Attacker2:
-				return 100;
+				return 150;
 				break;
 			case Attacker3:
-				return 200;
+				return 400;
 				break;
 			case Attacker4:
-				return 500;
+				return 700;
 				break;
 			default:
 				return 0;

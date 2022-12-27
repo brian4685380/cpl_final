@@ -30,7 +30,7 @@ void attackerObject::A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren) {
 			Oa_type = Attacker1;
 			A_id = id;
 			A_v = 1;
-			A_heart = 100;
+			A_heart = 120;
 			A_attack = 10;
 			A_attack_type = a_Single;
 			A_attack_range = 2;
@@ -40,7 +40,7 @@ void attackerObject::A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren) {
 			Oa_type = Attacker2;
 			A_id = id;
 			A_v = 2;
-			A_heart = 150;
+			A_heart = 180;
 			A_attack = 10;
 			A_attack_type = a_Range;
 			A_attack_range = 2;
@@ -49,7 +49,7 @@ void attackerObject::A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student3.png");
 			Oa_type = Attacker3;
 			A_id = id;
-			A_v = 4;
+			A_v = 5;
 			A_heart = 600;
 			A_attack = 8;
 			A_attack_type = a_Single;
