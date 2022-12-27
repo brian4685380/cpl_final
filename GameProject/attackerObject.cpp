@@ -49,7 +49,7 @@ void attackerObject::A_Init_Profile(int id, oa_type atp, SDL_Renderer *ren) {
 			objTexture = IMG_LoadTexture(renderer, "assets/Attackers/student3.png");
 			Oa_type = Attacker3;
 			A_id = id;
-			A_v = 5;
+			A_v = 4;
 			A_heart = 600;
 			A_attack = 8;
 			A_attack_type = a_Single;
